@@ -1,0 +1,19 @@
+
+/* Home.css */
+.banner-container {
+    position: relative;
+   
+  }
+  
+  .banner {
+    background-size: cover;
+    background-position: center;
+    /* height: 600; */
+  }
+.hover-card:hover {
+  transform: scale(1.07);
+  transition: transform 0.3s ease;
+  border: 2px solid rgb(30 58 138);
+  border-radius: 10px; /* Change 'blue' to the desired color */
+}
+

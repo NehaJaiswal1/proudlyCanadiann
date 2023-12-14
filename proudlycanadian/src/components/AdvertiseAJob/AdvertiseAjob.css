@@ -1,0 +1,23 @@
+
+
+
+.hover-card:hover {
+    transform: scale(1.07);
+    transition: transform 0.3s ease;
+  }
+
+.recommended-banner {
+    position: absolute;
+  top: 5px; /* Adjust the positioning */
+  left: 10px; /* Adjust the positioning */
+  background-color: #b30620;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-top: 4px;
+  z-index: 1; /* Ensure it's above the card content */
+  }
+
+ 
