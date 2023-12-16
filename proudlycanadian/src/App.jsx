@@ -11,6 +11,8 @@ import ApplicantRegistration from './components/LoginRegister/ApplicantRegistrat
 import ApplicantLogin from './components/LoginRegister/ApplicantLogin';
 import PasswordReset from './components/LoginRegister/PasswordReset';
 import JobFairs from './components/JobFairs/JobFairs';
+import ContactUs from './components/ContactUs';
+import VirtualCareerFair from './components/JobFairs/VirtualCareerFair';
 
 
 const App = () => {
@@ -19,10 +21,12 @@ const App = () => {
       <div>
         <Routes> 
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/aboutus" element={<About />} />
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/employers" element={<AdvertiseAJob />} />
+          <Route path="/contact" element={<ContactUs/>} />
           <Route path="/job-fair" element={<JobFairs/>} />
+          <Route path="/virtualcareerfair" element={<VirtualCareerFair />} /> 
           <Route path="/employers/auth/registration" element={<EmployerRegistration/>} />
           <Route path="/employers/auth/login" element={<EmployerLogin />} />
           <Route path="/auth/registration" element={<ApplicantRegistration />} />

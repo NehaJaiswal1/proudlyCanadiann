@@ -2,7 +2,19 @@ import React, { useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { AppBar, Container, Tab, Tabs, Card, CardContent } from '@mui/material';
+import {
+    AppBar,
+    Container,
+    Tab,
+    Tabs,
+    Card,
+    CardContent,
+    Popover,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+} from '@mui/material';
 import Navbar from '../Navbar';
 import Footer from '../JobFairs/JobFairsFooter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -47,7 +59,7 @@ import companyImage16 from '../../images/companies/ups.jpg';
 
 function JobFairs() {
 
-    
+
     const getVideoId = (url) => {
         const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
         return match && match[1];
@@ -85,15 +97,15 @@ function JobFairs() {
 
     const NextArrow = (props) => (
         <div {...props} className="slick-arrow slick-next bg-black rounded-full justify-center mr-7">
-          <FontAwesomeIcon icon={faArrowRight} />
+            <FontAwesomeIcon icon={faArrowRight} />
         </div>
-      );
-    
-      const PrevArrow = (props) => (
+    );
+
+    const PrevArrow = (props) => (
         <div {...props} className="slick-arrow slick-prev bg-black rounded-full justify-center ml-7">
-          <FontAwesomeIcon icon={faArrowLeft} />
+            <FontAwesomeIcon icon={faArrowLeft} />
         </div>
-      );
+    );
 
     const cardSettings = {
 
@@ -130,6 +142,30 @@ function JobFairs() {
         'Virtual Career Fair',
     ];
 
+    const locations = [
+        'ONTARIO',
+        'ALBERTA',
+        'BRITISH COLUMBIA',
+        'SASKATCHEWAN',
+        'NOVA SCOTIA',
+        'NEW BRUNSWICK',
+        'QUEBEC',
+        'MANITOBA WINNIPEG',
+        'YUKON',
+        'PRINCE EDWARD ISLAND',
+        'NORTH WEST TERRITORIES',
+    ];
+
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleLocationClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleLocationClose = () => {
+        setAnchorEl(null);
+    };
+
     const opts = {
         height: '100%',
         width: '100%',
@@ -147,7 +183,7 @@ function JobFairs() {
         setLikeCounts(newLikeCounts);
     };
 
-    
+
 
     return (
         <div>
@@ -155,39 +191,92 @@ function JobFairs() {
 
             <div style={{ height: '90px' }}></div>
 
-            <AppBar position="static" color="default" >
-                <Container >
+            <AppBar position="static" color="default">
+                <Container>
                     <Tabs className='ml-4'>
                         {navOptions.map((option, index) => (
-                            <Tab
-                                key={index}
-                                label={option}
-                                href={`#${option.toLowerCase().replace(' ', '-')}`}
-                                sx={{
-                                    padding: '20px',
-                                    fontSize: '12px',
-                                    fontWeight: 'bold',
-                                    marginTop: '20px',
-                                    borderTop: '2px solid transparent',
-                                    borderLeft: '2px solid transparent',
-                                    borderRight: '2px solid transparent',
-                                    borderBottom: '2px solid transparent',
-                                    '&:hover': {
-                                        borderBottomColor: '#1e3a8a',
-                                        borderTopColor: '#1e3a8a',
-                                        borderLeftColor: '#1e3a8a',
-                                        borderRightColor: '#1e3a8a',
-                                        backgroundColor: '#1e3a8a',
-                                        color: 'white',
-                                        borderRadius: '5px',
-                                    },
-                                }}
-                            />
+                            <React.Fragment key={index}>
+                                {option === 'Career Fairs' ? (
+                                    <Tab
+                                        label={option}
+                                        aria-controls="simple-menu"
+                                        aria-haspopup="true"
+                                        onClick={handleLocationClick}
+                                        sx={{
+                                            padding: '20px',
+                                            fontSize: '12px',
+                                            fontWeight: 'bold',
+                                            marginTop: '20px',
+                                            borderTop: '2px solid transparent',
+                                            borderLeft: '2px solid transparent',
+                                            borderRight: '2px solid transparent',
+                                            borderBottom: '2px solid transparent',
+                                            '&:hover': {
+                                                borderBottomColor: '#1e3a8a',
+                                                borderTopColor: '#1e3a8a',
+                                                borderLeftColor: '#1e3a8a',
+                                                borderRightColor: '#1e3a8a',
+                                                backgroundColor: '#1e3a8a',
+                                                color: 'white',
+                                                borderRadius: '5px',
+                                            },
+                                        }}
+                                    />
+                                ) : (
+                                    <Tab
+                                        key={index}
+                                        label={option}
+                                        href={`#${option.toLowerCase().replace(' ', '-')}`}
+                                        sx={{
+                                            padding: '20px',
+                                            fontSize: '12px',
+                                            fontWeight: 'bold',
+                                            marginTop: '20px',
+                                            borderTop: '2px solid transparent',
+                                            borderLeft: '2px solid transparent',
+                                            borderRight: '2px solid transparent',
+                                            borderBottom: '2px solid transparent',
+                                            '&:hover': {
+                                                borderBottomColor: '#1e3a8a',
+                                                borderTopColor: '#1e3a8a',
+                                                borderLeftColor: '#1e3a8a',
+                                                borderRightColor: '#1e3a8a',
+                                                backgroundColor: '#1e3a8a',
+                                                color: 'white',
+                                                borderRadius: '5px',
+                                            },
+                                        }}
+                                    />
+                                )}
+                            </React.Fragment>
                         ))}
+                     
+                        <Popover
+                            open={Boolean(anchorEl)}
+                            anchorEl={anchorEl}
+                            onClose={handleLocationClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                        >
+                            <List>
+                                {locations.map((location, index) => (
+                                    <ListItemButton 
+                                    key={index} onClick={handleLocationClose}>
+                                        <ListItemText primary={location} 
+                                        />
+                                    </ListItemButton>
+                                ))}
+                            </List>
+                        </Popover>
                     </Tabs>
                 </Container>
             </AppBar>
-
 
             <div className="bg-white">
                 <div className="h-96 px-12 overflow-hidden">
@@ -250,20 +339,20 @@ function JobFairs() {
 
 
             <div className="h-96 overflow-hidden flex  mt-10 px-8">
-  {upcomingfair2.map((fair, index) => (
-    <div key={index} style={{  position: 'relative' }}>
-      <Card sx={{ width: '350px', height: '300px' }} style={{ margin: '15px' }} >
-        <div style={{ height: '60%' }}>
-          <YouTube videoId={getVideoId(fair.video)} opts={opts} />
-        </div>
-        <CardContent>
-          <h2 className='text-red-700'>{fair.title}</h2>
-          <p className='text-slate-700'>{fair.des}</p>
-        </CardContent>
-      </Card>
-    </div>
-  ))}
-</div>
+                {upcomingfair2.map((fair, index) => (
+                    <div key={index} style={{ position: 'relative' }}>
+                        <Card sx={{ width: '350px', height: '300px' }} style={{ margin: '15px' }} >
+                            <div style={{ height: '60%' }}>
+                                <YouTube videoId={getVideoId(fair.video)} opts={opts} />
+                            </div>
+                            <CardContent>
+                                <h2 className='text-red-700'>{fair.title}</h2>
+                                <p className='text-slate-700'>{fair.des}</p>
+                            </CardContent>
+                        </Card>
+                    </div>
+                ))}
+            </div>
 
 
             <div className="bg-white mt-8">
@@ -307,20 +396,20 @@ function JobFairs() {
             </div>
             <h1 className='text-slate-500 font-bold text-lg mt-10 px-12'>THANK YOU FOR TRUSTING US FOR THE PAST 14 YEARS : </h1>
             <div className=' p-7  h-30 m-4 relative px-12'>
-            
-                <Slider {...cardSettings} 
-                className='px-7'
+
+                <Slider {...cardSettings}
+                    className='px-7'
                 >
                     {companyImages.map((image, index) => (
                         <div key={index} style={{ width: '80px', height: '40px' }}>
-                           
+
                             <img
                                 src={image}
                                 alt={`Company ${index + 1}`}
                                 className='w-full h-full object-cover'
                                 style={{ width: '100px', height: '40px', padding: '5px' }}
                             />
-                            
+
                         </div>
                     ))}
                 </Slider>

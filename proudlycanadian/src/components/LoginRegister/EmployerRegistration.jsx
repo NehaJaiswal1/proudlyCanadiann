@@ -49,10 +49,9 @@ function EmployerRegistration() {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Navbar />
+            <div style={{ height: '100px' }}></div>
             <div>
-                <div style={{ backgroundImage: `url(${pagetitle})`, height: '500px', position: 'relative', opacity: 0.3 }}>
-                    <p className='font-bold text-white text-center text-3xl' style={{ position: 'absolute', top: '50%', left: '50%' }}>Sign Up</p>
-                </div>
+               
                 <div >
                     <Container  className='shadow-lg shadow-blue-900 p-8' maxWidth="sm" style={{ marginTop: '20px' }}>
                         <form onSubmit={handleSubmit}>

@@ -10,6 +10,7 @@ function ApplicantRegistration() {
         firstName: '',
         lastName: '',
         email: '',
+        phoneNumber:'',
         password: '',
         confirmPassword: ''
     });
@@ -30,18 +31,15 @@ function ApplicantRegistration() {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Add your form submission logic here
         console.log('Form submitted:', formData);
-        // You can send the form data to your backend or perform any other actions.
+        
     };
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Navbar />
+            <div style={{ height: '100px' }}></div>
             <div>
-                <div style={{ backgroundImage: `url(${pagetitle})`, height: '500px', position: 'relative', opacity: 0.3 }}>
-                    <p className='font-bold text-white text-center text-3xl' style={{ position: 'absolute', top: '50%', left: '50%' }}>Sign Up</p>
-                </div>
                 <div >
                     <Container  className='shadow-lg shadow-blue-900 p-8' maxWidth="sm" style={{ marginTop: '20px' }}>
                         <form onSubmit={handleSubmit}>
@@ -67,7 +65,7 @@ function ApplicantRegistration() {
                                         onChange={handleChange}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sm={6}>
                                     <TextField
                                         label="Email"
                                         type="email"
@@ -77,7 +75,17 @@ function ApplicantRegistration() {
                                         onChange={handleChange}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        label="Phone Number"
+                                        type="phoneNumber"
+                                        name="phoneNumber"
+                                        fullWidth
+                                        value={formData.phoneNumber}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
                                     <TextField
                                         label="Password"
                                         type="password"
@@ -87,7 +95,7 @@ function ApplicantRegistration() {
                                         onChange={handleChange}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sm={6}>
                                     <TextField
                                         label="Confirm Password"
                                         type="password"
