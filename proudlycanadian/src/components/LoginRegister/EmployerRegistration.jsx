@@ -3,9 +3,11 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 import pagetitle from '../../images/page-title.jpg';
 import { TextField, Button, Container, Grid, Typography, Checkbox, FormControlLabel, Link } from '@mui/material';
+import { useNavigate } from 'react-router';
 
 
 function EmployerRegistration() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -39,11 +41,28 @@ function EmployerRegistration() {
     const handleCheckboxChange = () => {
         setAgreeTerms(!agreeTerms);
     };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Add your form submission logic here
-        console.log('Form submitted:', formData);
-        // You can send the form data to your backend or perform any other actions.
+        console.log("some")
+        try {
+            const response = await fetch('https://job-portal-website-by5i.onrender.com/job-Portal/Employee/signUp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            
+            console.log("some")
+
+            const responseData = await response.json();
+            console.log('API Response:', responseData);
+            if(responseData.message && responseData.accessToken ) navigate('/employers/auth/login')
+            // You can add further logic here based on the response
+        } catch (error) {
+            console.error('Error submitting form:', error);
+        }
     };
 
     return (
@@ -134,7 +153,7 @@ function EmployerRegistration() {
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         label="Organisation Type"
-                                        name="organisationType"
+                                        name="organizationType"
                                         fullWidth
                                         value={formData.organizationType}
                                         onChange={handleChange}
@@ -209,7 +228,7 @@ function EmployerRegistration() {
                                     <TextField
                                         label="Company Desription"
                                         type="text"
-                                        name="companyDesription"
+                                        name="companyDescription"
                                         fullWidth
                                         value={formData.companyDescription}
                                         onChange={handleChange}

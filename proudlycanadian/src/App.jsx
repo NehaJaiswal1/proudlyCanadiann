@@ -13,6 +13,7 @@ import PasswordReset from './components/LoginRegister/PasswordReset';
 import JobFairs from './components/JobFairs/JobFairs';
 import ContactUs from './components/ContactUs';
 import VirtualCareerFair from './components/JobFairs/VirtualCareerFair';
+import EmployerDashboard from './components/Dashboard/EmployerDashboard';
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/virtualcareerfair" element={<VirtualCareerFair />} /> 
           <Route path="/employers/auth/registration" element={<EmployerRegistration/>} />
           <Route path="/employers/auth/login" element={<EmployerLogin />} />
+          <Route path="/employers/job/listing" element={EmployerDashboard} />
           <Route path="/auth/registration" element={<ApplicantRegistration />} />
           <Route path="/auth/login" element={<ApplicantLogin/>}/>
           <Route path="auth/forgot_password" element={<PasswordReset/>} />

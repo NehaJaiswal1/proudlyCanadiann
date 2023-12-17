@@ -1,5 +1,5 @@
-// Home.jsx
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import Navbar from './Navbar';
 import banner from '../images/banner-1.jpg';
 import one from '../images/1.png';
@@ -25,6 +25,7 @@ import Footer from './Footer';
 
 
 function Home() {
+  const navigate = useNavigate();
   const [jobTitle, setJobTitle] = useState('');
   const [selectedNOC, setSelectedNOC] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
@@ -44,7 +45,41 @@ function Home() {
 
   const handleFindJob = () => {
     console.log('Searching for a job...');
+    const updatedData={
+      jobTitle:jobTitle,
+      selectedLocation:selectedLocation,
+    }
+
+    console.log(updatedData)
+
+    fetch(`http://localhost:3001/findJob`,{
+      method:"POST",
+      headers:{
+      'Content-Type': 'application/json',
+      },
+      body:JSON.stringify(updatedData)
+    })
+    .then((response) => response.json())
+    .then((result) => {
+    console.log(result);
+    if (result.status == true) {
+      console.log('tonextpage');
+      // navigate('/verification', { state: { email } });
+    }
+    if(result.status == false) console.log("false coming")
+  })
+  .catch((error) => {
+    console.error('error', error);
+  });
   };
+
+  const readMore=()=>{
+    navigate('/aboutus')
+  }
+  const jobs=()=>{
+    navigate('/jobs')
+  }
+  
 
 
   return (
@@ -130,7 +165,7 @@ function Home() {
           </p>
 
           <button className='font-semibold p-4 mt-4  bg-blue-900 
-       rounded-md text-white'>READ MORE</button>
+       rounded-md text-white'onClick={readMore}>READ MORE</button>
         </div>
       </div>
       <div className='bg-slate-900 text-center ' style={{ height: '300px' }}>
@@ -150,12 +185,12 @@ function Home() {
       <div style={{ backgroundImage: `url(${banner2})`, height: '500px', width: '100%' }}>
         <div className='font-bold p-20 mr-'>
           <h2 className='font-bold text-xl text-white mt-7 '>FOR JOB SEEKERS</h2>
-          <p className='font-semibold text-white mt-7'>Now's a great time to look for a new job. Candidates have the upper hand as the country's labour shortage continues. Wages are rising, benefits are getting beefier and the options are getting more interesting.</p>
+          <p className='font-semibold text-white mt-7'>Now's a great time to look for a new job. Candidates have the upper hand as the country's labour shortage<br/> continues. Wages are rising, benefits are getting beefier and the options are getting more interesting.</p>
           <p className='font-semibold text-white mt-2'>
 
-            Whether you're looking for a career stepping-stone or your dream job, chances are you're scouring online job boards. This is the best websites for job searches in Canada.
+            Whether you're looking for a career stepping-stone or your dream job, chances are you're scouring <br/> online job boards. This is the best websites for job searches in Canada.
           </p>
-          <button className='font-semibold p-4 mt-20 bg-blue-950  rounded-md text-white'>BROWSE OUR JOB LISTINGS</button>
+          <button className='font-semibold p-4 mt-20 bg-blue-950  rounded-md text-white'onClick={jobs}>BROWSE OUR JOB LISTINGS</button>
         </div>
 
       </div>
@@ -202,14 +237,14 @@ function Home() {
           ))}
         </div>
         <div className='flex justify-center'>
-          <button className='font-semibold p-4 mt-3 bg-blue-900  rounded-md text-slate-200'>
+          <button className='font-semibold p-4 mt-3 bg-blue-900  rounded-md text-slate-200' >
             BROWSE ALL JOB
           </button>
         </div>
       </div>
 
       <div
-        className="employer-background"
+        classNae="emplomyer-background"
         style={{
           backgroundImage: `url(${employer})`,
           backgroundSize: 'cover',

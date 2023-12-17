@@ -10,29 +10,71 @@ function ApplicantRegistration() {
         firstName: '',
         lastName: '',
         email: '',
-        phoneNumber:'',
+        mobileno:'',
         password: '',
         confirmPassword: ''
     });
 
-
     const [agreeTerms, setAgreeTerms] = useState(false);
-
+    const [passwordMismatchError, setPasswordMismatchError] = useState('');
+    const [agreeTermsError, setAgreeTermsError] = useState('');
+    const [mobileNoError, setMobileNoError] = useState('');
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        if(name=='mobileno' && !/^\d*$/.test(value)  ){
+            setMobileNoError('please enter numbers only');
+            return;
+        }
+        
+       
         setFormData({
             ...formData,
             [name]: value,
         });
+
+        // Clear password mismatch error when either password or confirm password is updated
+        setPasswordMismatchError('');
+        setAgreeTermsError('');
+        setMobileNoError('');
     };
 
     const handleCheckboxChange = () => {
         setAgreeTerms(!agreeTerms);
+        setAgreeTermsError('')
     };
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
         
+        if (formData.password !== formData.confirmPassword) {
+            setPasswordMismatchError('Password and Confirm Password do not match');
+            return;
+        }
+        if(!agreeTerms) {
+             setAgreeTermsError('Please agree to the terms and conditions');
+             return;
+        }
+        
+        // console.log('Form submitted:', formData);
+
+        try {
+            const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/signUp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+
+            const responseData = await response.json();
+            console.log('Registration successful:', responseData)
+        } catch (error) {
+            console.error('An error occurred during registration:', error);
+            // Handle the error, e.g., show an error message to the user
+        }
     };
 
     return (
@@ -77,13 +119,18 @@ function ApplicantRegistration() {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        label="Phone Number"
-                                        type="phoneNumber"
-                                        name="phoneNumber"
+                                        label="mobile No"
+                                        type="mobileno"
+                                        name="mobileno"
                                         fullWidth
-                                        value={formData.phoneNumber}
+                                        value={formData.mobileno}
                                         onChange={handleChange}
                                     />
+                                    {mobileNoError && (
+                                    <Typography color="error" variant="body2" gutterBottom>
+                                        {mobileNoError}
+                                    </Typography>
+                                )}
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
@@ -96,28 +143,37 @@ function ApplicantRegistration() {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        label="Confirm Password"
-                                        type="password"
-                                        name="confirmPassword"
-                                        fullWidth
-                                        value={formData.confirmPassword}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                
+                                <TextField
+                            label="Confirm Password"
+                            type="password"
+                            name="confirmPassword"
+                            fullWidth
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            error={!!passwordMismatchError}
+                            helperText={passwordMismatchError}
+                        />
+                    </Grid>
+                    
                                 <Grid item xs={12}>
                                     <FormControlLabel
                                         control={
                                             <Checkbox
-                                                checked={agreeTerms}
-                                                onChange={handleCheckboxChange}
-                                                name="agreeTerms"
-                                                color="primary"
-                                            />
-                                        }
-                                        label="I agree to the terms and conditions"
-                                    />
+                                            checked={agreeTerms}
+                                            onChange={handleCheckboxChange}
+                                            name="agreeTerms"
+                                            color="primary"
+                                            helperText={setAgreeTermsError}
+                                        />
+                                    }
+                                    label="I agree to the terms and conditions"
+                                />
+                                {/* Display error message for agree terms */}
+                                {agreeTermsError && (
+                                    <Typography color="error" variant="body2" gutterBottom>
+                                        {agreeTermsError}
+                                    </Typography>
+                                )}
                                 </Grid>
 
                                 <Grid item xs={12}>

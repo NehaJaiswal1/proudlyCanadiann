@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
@@ -25,6 +24,22 @@ const FindAJob = () => {
   const [selectedExperience, setSelectedExperience] = useState('');
   const [selectedJobType, setSelectedJobType] = useState('');
   const [selectedEmploymentType, setSelectedEmploymentType] = useState('');
+  const [data, setData] = useState([]); 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/allJobs');
+        const responseData = await response.json();
+        setData(responseData.allJObDetails); // <-- Set the data state
+        console.log('API Response:', responseData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  console.log('Data:', data);
 
   const handleFindJob = () => {
     console.log('Searching for a job...');
@@ -132,7 +147,7 @@ const FindAJob = () => {
         </Grid>
       </div>
       <div className='flex p-10 '>
-        <div className='shadow-md shadow-blue-900 
+      <div className='shadow-md shadow-blue-900 
         p-5 h-3/6 w-5/12 mt-8'>
           <Grid className='' container spacing={1} justifyContent="center">
             <Grid item xs={12}>
@@ -233,24 +248,26 @@ const FindAJob = () => {
           </Grid>
         </div>
         <div className="p-4">
-          {hotJobs.map((job, index) => (
+          {data.map((job, index) => (
             <div className='shadow shadow-slate-400 '>
               <div key={index} className=" flex rounded-lg mt-4 mb-4 justify-between">
                 <div className='flex ml-10 '>
-                  <img src={job.logo} className="w-1/12 rounded-full border-gray-800" alt="logo-img" />
+                  <img src='https://proudlycanadians.ca/assets_new/img/company-logo.png' className="w-12 rounded-full border-gray-800" alt="logo-img" />
                   <div className='ml-10 '>
                     <p className='font-bold mt-3'>
-                      {job.title}</p>
+                      {job.jobTitle}</p>
                     <div className=' mb-2 mt-1'>
+                     
+                      
+                      <p className=' text-xs '>
+                      <FontAwesomeIcon icon={faMapMarker} className="mr-2" />{job.City}</p>
                       <p className='text-xs flex items-center'>
-                        <FontAwesomeIcon icon={faTags} className="mr-2" /> {job.id}
+                        <FontAwesomeIcon icon={faTags} className="mr-2" /> {job.jobType}
                       </p>
                       <p className='  text-xs flex items-center'>
                       <FontAwesomeIcon icon={faIndustry} className="mr-2" /> 
-                        {job.noc}</p>
-                      <p className=' text-xs '>
-                      <FontAwesomeIcon icon={faMapMarker} className="mr-2" />{job.location}</p>
-                      <p className=' text-xs '> <FontAwesomeIcon icon={faClock} className="mr-2" /> {job.postedOn}</p>
+                        {job.jobCategory}</p>
+                      <p className=' text-xs '> <FontAwesomeIcon icon={faClock} className="mr-2" /> {job.postedDate}</p>
                     </div>
                   </div>
 
