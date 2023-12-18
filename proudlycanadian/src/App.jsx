@@ -14,6 +14,7 @@ import JobFairs from './components/JobFairs/JobFairs';
 import ContactUs from './components/ContactUs';
 import VirtualCareerFair from './components/JobFairs/VirtualCareerFair';
 import EmployerDashboard from './components/Dashboard/EmployerDashboard';
+import ApplicantDashboard from './components/Dashboard/ApplicantDashboard';
 
 
 const App = () => {
@@ -30,8 +31,9 @@ const App = () => {
           <Route path="/virtualcareerfair" element={<VirtualCareerFair />} /> 
           <Route path="/employers/auth/registration" element={<EmployerRegistration/>} />
           <Route path="/employers/auth/login" element={<EmployerLogin />} />
-          <Route path="/employers/job/listing" element={EmployerDashboard} />
+          <Route path="/employers/job/listing" element={<EmployerDashboard/>} />
           <Route path="/auth/registration" element={<ApplicantRegistration />} />
+          <Route path="/applicant/job" element={<ApplicantDashboard/>} />
           <Route path="/auth/login" element={<ApplicantLogin/>}/>
           <Route path="auth/forgot_password" element={<PasswordReset/>} />
         </Routes>
