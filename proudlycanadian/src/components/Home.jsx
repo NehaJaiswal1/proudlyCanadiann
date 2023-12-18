@@ -79,7 +79,19 @@ function Home() {
   const jobs=()=>{
     navigate('/jobs')
   }
-  
+  const advertiseJob=()=>{
+    navigate('/employers')
+  }
+  const disablePeople=()=>{
+    navigate('/business-benefits-of-hiring-disabled-people')
+  }
+  const coverLetter=()=>{
+    navigate('/the-importance-of-a-great-cover-letter')
+  }
+  const disabledWorker=()=>{
+    navigate('/disabled-workers-have-much-to-offer')
+  }
+
 
 
   return (
@@ -172,11 +184,11 @@ function Home() {
         <p className='text-white font-bold  text-2xl p-4 '>Supporting original And Indigenous People </p>
         <p className='text-white font-thin text-lg mt-2'> Proudly Canadians is a online interface jobsite aimed at increasing the employment rate of Canada’s aboriginal and indigenous people community. It is designed to “inclusive” e-recruitment.
           Many aboriginal and indigenous workers are able and very interested to work.</p>
-        <button className='font-semibold text-sm p-4  my-20  mx-2 bg-blue-950  rounded-md border border-white text-white'>BUSINESS BENEFITS OF HIRING DISABLED PEOPLE</button>
+        <button className='font-semibold text-sm p-4  my-20  mx-2 bg-blue-950  rounded-md border border-white text-white' onClick={disablePeople}>BUSINESS BENEFITS OF HIRING DISABLED PEOPLE</button>
 
-        <button className='font-semibold text-sm p-4 my-20  mx-2 bg-blue-950  rounded-md border border-white text-white'>THE IMPORTANCE OF A GREAT COVER LETTER PEOPLE</button>
+        <button className='font-semibold text-sm p-4 my-20  mx-2 bg-blue-950  rounded-md border border-white text-white' onClick={coverLetter}>THE IMPORTANCE OF A GREAT COVER LETTER PEOPLE</button>
 
-        <button className='font-semibold text-sm p-4 my-20 mx-2 bg-blue-950  rounded-md border border-white text-white'>DISABLED WORKERS HAVE MUCH TO OFFER</button>
+        <button className='font-semibold text-sm p-4 my-20 mx-2 bg-blue-950  rounded-md border border-white text-white' onClick={disabledWorker}>DISABLED WORKERS HAVE MUCH TO OFFER</button>
 
 
 
@@ -237,7 +249,7 @@ function Home() {
           ))}
         </div>
         <div className='flex justify-center'>
-          <button className='font-semibold p-4 mt-3 bg-blue-900  rounded-md text-slate-200' >
+          <button className='font-semibold p-4 mt-3 bg-blue-900  rounded-md text-slate-200' onClick={jobs}>
             BROWSE ALL JOB
           </button>
         </div>
@@ -261,7 +273,7 @@ function Home() {
           <p className='text-slate-600 font-semibold text-lg text-justify mt-8'>
             Proudly Canadians is a frontrunner when it comes to the top job search websites in Canada. It hosts many job opportunities in the English language. Handy features include the ability to search by salary and find roles in nearby cities. And it's all mobile-optimized, allowing you to search and apply for jobs on the go. Proudly Canadians is highly recommended for aboriginal and indigenous candidates this is a user-friendly site and great opportunities for career advancement.
           </p>
-          <button className='font-bold p-4 mt-8 bg-blue-900  hover:bg-red-600 rounded-md text-slate-200 text-sm'>
+          <button className='font-bold p-4 mt-8 bg-blue-900  hover:bg-red-600 rounded-md text-slate-200 text-sm' onClick={advertiseJob}>
             ADVERTISE YOUR JOB NOW
 
           </button>
