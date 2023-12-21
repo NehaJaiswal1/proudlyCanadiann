@@ -88,8 +88,7 @@ const Navbar = () => {
                     <Link to="/auth/registration">APPLICANT REGISTRATION</Link>
                   </li>
                   <li className="hover:text-white hover:bg-blue-900 hover:rounded-lg p-1 text-sm font-bold">
-                    <Link to="/auth/login">AP
-                      PLICANT LOGIN</Link>
+                    <Link to="/auth/login">APPLICANT LOGIN</Link>
                   </li>
                   <li className="hover:text-white hover:bg-blue-900 hover:rounded-lg p-1 text-sm font-bold">
                     <Link to="/auth/forgot_password">PASSWORD RESET</Link>

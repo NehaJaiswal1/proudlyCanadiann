@@ -11,11 +11,13 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { hotJobs } from '../../Data/HotJobs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTag,faLocation, faMapMarker, faTags, faIndustry, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router';
 
 
 
 const FindAJob = () => {
+  const navigate = useNavigate();
   const [jobTitle, setJobTitle] = useState('');
   const [selectedNOC, setSelectedNOC] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
@@ -24,13 +26,13 @@ const FindAJob = () => {
   const [selectedExperience, setSelectedExperience] = useState('');
   const [selectedJobType, setSelectedJobType] = useState('');
   const [selectedEmploymentType, setSelectedEmploymentType] = useState('');
-  const [data, setData] = useState([]); 
+  const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/allJobs');
         const responseData = await response.json();
-        setData(responseData.allJObDetails); // <-- Set the data state
+        setData(responseData.allJObDetails);
         console.log('API Response:', responseData);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -49,12 +51,12 @@ const FindAJob = () => {
     console.log('Searching for a job...');
   };
 
-
+ 
   const handleApply = (jobId) => {
-
-    console.log(`Applying for job with ID ${jobId}`);
+    console.log(jobId)
+    navigate(`/job-details/${jobId}`);
   };
-
+  
   const handleQuickApply = (jobId) => {
 
     console.log(`Quick applying for job with ID ${jobId}`);
@@ -146,9 +148,9 @@ const FindAJob = () => {
           </Grid>
         </Grid>
       </div>
-      <div className='flex p-10 '>
-      <div className='shadow-md shadow-blue-900 
-        p-5 h-3/6 w-5/12 mt-8'>
+      <div className='flex p-10 space-x-5 '>
+        <div className='shadow-md shadow-blue-900 
+        p-5 h-3/6 w-1/3 mt-8'>
           <Grid className='' container spacing={1} justifyContent="center">
             <Grid item xs={12}>
               <FormControl fullWidth variant="outlined" margin="normal">
@@ -247,33 +249,39 @@ const FindAJob = () => {
             </Grid>
           </Grid>
         </div>
-        <div className="p-4">
+        <div className="p-4 w-2/3 ">
           {data.map((job, index) => (
-            <div className='shadow shadow-slate-400 '>
+            <div className='shadow-md rounded-2xl shadow-slate-400  hover-card bg-slate-50  
+            h-1/4 hover:h-36'>
               <div key={index} className=" flex rounded-lg mt-4 mb-4 justify-between">
                 <div className='flex ml-10 '>
                   <img src='https://proudlycanadians.ca/assets_new/img/company-logo.png' className="w-12 rounded-full border-gray-800" alt="logo-img" />
                   <div className='ml-10 '>
                     <p className='font-bold mt-3'>
                       {job.jobTitle}</p>
-                    <div className=' mb-2 mt-1'>
-                     
-                      
-                      <p className=' text-xs '>
-                      <FontAwesomeIcon icon={faMapMarker} className="mr-2" />{job.City}</p>
-                      <p className='text-xs flex items-center'>
-                        <FontAwesomeIcon icon={faTags} className="mr-2" /> {job.jobType}
-                      </p>
+                    <div className=' mb-2 mt-5'>
+
+                      <div className='flex space-x-6'>
+                        <p className=' text-xs '>
+                          <FontAwesomeIcon icon={faMapMarker} className="mr-2" />{job.City}</p>
+                        <p className='text-xs flex items-center'>
+                          <FontAwesomeIcon icon={faTags} className="mr-2" /> {job.jobType}
+                        </p>
+                      </div>
+                      <div className='flex space-x-6'>
                       <p className='  text-xs flex items-center'>
-                      <FontAwesomeIcon icon={faIndustry} className="mr-2" /> 
+                        <FontAwesomeIcon icon={faIndustry} className="mr-2" />
                         {job.jobCategory}</p>
-                      <p className=' text-xs '> <FontAwesomeIcon icon={faClock} className="mr-2" /> {job.postedDate}</p>
+                      <p className=' text-xs '> <FontAwesomeIcon icon={faClock} className="mr-2" /> {job.postedDate}
+                      </p>
+                      </div>
                     </div>
                   </div>
 
                 </div>
                 <div className='flex mt-5 '>
-                  <button className='bg-blue-900 text-white p-2 rounded-2xl w-20 h-10 m-4 text-xs font-bold hover:bg-red-600' onClick={() => handleApply(job.id)}>APPLY</button>
+                  <button className='bg-blue-900 text-white p-2 rounded-2xl w-20 h-10 m-4 text-xs font-bold hover:bg-red-600' 
+                   onClick={() => handleApply(`${job._id}`)}>APPLY</button>
                   <button className='bg-blue-900 hover:bg-red-600 text-white  rounded-2xl w-32  h-10 m-4 text-xs font-bold' onClick={() => handleQuickApply(job.id)}>QUICK APPLY</button>
 
                 </div>

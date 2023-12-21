@@ -1,0 +1,50 @@
+/* PrintStyles.css */
+
+@media print {
+  body * {
+    visibility: visible;
+  }
+
+  .print-content,
+  .print-content * {
+    visibility: visible;
+  }
+
+  button {
+    display: none;
+  }
+
+  .exclude-from-print {
+    display: none;
+  }
+
+  /* Hide localhost URL */
+  .print-content::before {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background-color: white;
+  }
+
+  /* Hide tab image */
+  @page {
+    size: auto;
+    margin: 0mm;
+  }
+
+  .flex.print-content {
+    /* Adjust the layout for printing */
+    /* display: block; */
+    margin: 1cm;
+  }
+
+
+
+  body {
+    print-color-adjust: exact;
+  }
+}

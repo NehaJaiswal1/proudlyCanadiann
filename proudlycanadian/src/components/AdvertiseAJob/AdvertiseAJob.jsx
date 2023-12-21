@@ -7,7 +7,7 @@ import { faForward, faBackward, faLineChart, faGlobe, faBarChart, faBullseye, fa
 import { cardInfo } from '../../Data/Data';
 import { useNavigate } from 'react-router-dom';
 import './AdvertiseAjob.css';
-
+import axios from 'axios';
 
 function AdvertiseAJob() {
   const cardsPerPage = 3;
@@ -16,16 +16,33 @@ function AdvertiseAJob() {
   const [selectedCard, setSelectedCard] = useState(null);
 
   const navigate = useNavigate();  // Initialize useNavigate
-
   useEffect(() => {
-    // Sort cards by price in descending order
-    const sortedCards = [...cardInfo].sort((a, b) => {
-      const priceA = parseFloat(a.rate.replace('$', ''));
-      const priceB = parseFloat(b.rate.replace('$', ''));
-      return priceB - priceA; // Sort in descending order
-    });
-    setSortedCardInfo(sortedCards);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://job-portal-website-by5i.onrender.com/Job-Portal/Packages/allPackages');
+        const fetchedData = response.data.allPackages;
+    
+        if (!Array.isArray(fetchedData)) {
+          console.error('Fetched data is not an array:', fetchedData);
+          return;
+        }
+    
+        const sortedData = fetchedData.sort((a, b) => {
+          const priceA = parseFloat(a.Price.replace('$', ''));
+          const priceB = parseFloat(b.Price.replace('$', ''));
+          return priceB - priceA;
+        });
+        setSortedCardInfo(sortedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    
+    
+    fetchData();
   }, []);
+  
+  
 
   const totalCards = sortedCardInfo.length;
   const totalPages = Math.ceil(totalCards / cardsPerPage);
@@ -54,8 +71,6 @@ function AdvertiseAJob() {
   const handleBuyNow = (card) => {
     setSelectedCard(card);
     console.log(card);
-    
-    // Navigate to the specified path
     navigate('/employers/auth/login');
   };
 
@@ -71,8 +86,8 @@ function AdvertiseAJob() {
               className="hover-card"
               style={{
                 flex: 1,
-                maxWidth: '280px',
-                height: '450px',
+                maxWidth: '300px',
+                height: '420px',
                 margin: '10px',
                 borderRadius: '15px',
                 boxShadow: '0px 4px 8px rgba(0, 0, 255, 0.7)',
@@ -94,15 +109,15 @@ function AdvertiseAJob() {
                     fontSize: '25px',
                   }}
                 >
-                  {card.rate}
+                  ₹ {card.Price}
                 </div>
-                <Typography variant="h7" className='text-center font-bold text-blue-950'>
-                  {card.priceHeading}
+                <Typography variant="h7" className='text-center font-semibold text-blue-950'>
+                   {card.noOfPosts} posts for {card.noOfDays}days
                 </Typography>
                 <Typography variant="body2" color="text.secondary" className='text-center font-bold'>
-                  {card.des}
+                  {card.packageDetails}
                 </Typography>
-                <Button variant="contained" color="primary" onClick={() => handleBuyNow(card)}>
+                <Button style={{marginBottom: '10px', borderRadius:'15px'}} variant="contained" color="primary" onClick={() => handleBuyNow(card)}>
                   Buy Now
                 </Button>
               </Box>
@@ -155,4 +170,4 @@ function AdvertiseAJob() {
   );
 }
 
-export default AdvertiseAJob;
+export default AdvertiseAJob

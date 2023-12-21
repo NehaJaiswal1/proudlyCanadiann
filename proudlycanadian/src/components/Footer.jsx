@@ -56,8 +56,8 @@ const Footer = () => {
 
                     <div className=" md:w-1/4 mb-8 text-black">
                         <h3 className="text-xl font-bold text-blue-900">HEAD OFFICE</h3>
-                        <p className='text-black mt-2 text-sm p-1'><FontAwesomeIcon icon={faPhone} size='l' /> +1 (416) 871-5196</p>
-                        <p className='text-black mt-2 text-sm p-1'><FontAwesomeIcon icon={faEnvelope} size='l' /> contact@proudlycanadians.ca</p>
+                        <p className='text-black mt-2 text-sm p-1'><FontAwesomeIcon icon={faPhone} size='lg' /> +1 (416) 871-5196</p>
+                        <p className='text-black mt-2 text-sm p-1'><FontAwesomeIcon icon={faEnvelope} size='lg' /> contact@proudlycanadians.ca</p>
 
                         <div className="flex items-center  mt-4">
                             <FontAwesomeIcon icon={faFacebook} className="text-blue-900 mr-2 rounded-full" size="2x" />

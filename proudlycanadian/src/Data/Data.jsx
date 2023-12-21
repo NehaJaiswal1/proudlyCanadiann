@@ -4,62 +4,86 @@
 export const cardInfo = [
 
   {
-    rate: "$90*",
-    priceHeading: '12 JOB POSTS FOR 3 MONTHS',
-   des : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
+    packageTitle:'Premium',
+    Price: "₹ 399",
+    noOfPosts: '12 JOB POSTS FOR 3 MONTHS',
+    noOfDays:'3',
+    packageDetails : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
   },
     {
-    rate: "$595*",
-      priceHeading: '200 JOB POSTS FOR 6 MONTHS',
-   des : "$595.00 FOR 200 JOBS LISTED FOR 180 DAYS"
+      packageTitle:'Premium',
+      Price: "₹ 399",
+      noOfPosts: '12 JOB POSTS FOR 3 MONTHS',
+      noOfDays:'3',
+      packageDetails : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
 },  {
-    rate: "$90*",
-    priceHeading: '12 JOB POSTS FOR 3 MONTHS',
-   des : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
+  packageTitle:'Premium',
+  Price: "₹ 399",
+  noOfPosts: '12 JOB POSTS FOR 3 MONTHS',
+  noOfDays:'3',
+  packageDetails : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
   },
     {
-    rate: "$250*",
-      priceHeading: '30 JOB POSTS FOR 6 MONTHS',
-   des : "$250.00 FOR 30 JOBS LISTED FOR 90 DAYS"
+      packageTitle:'Premium',
+      Price: "₹ 399",
+      noOfPosts: '12 JOB POSTS FOR 3 MONTHS',
+      noOfDays:'3',
+      packageDetails : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
   },
       {
-    rate: "$90*",
-    priceHeading: '12 JOB POSTS FOR 3 MONTHS',
-   des : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
-  },
-    {
-    rate: "$100",
-      priceHeading: '12 JOB POSTS FOR 6 MONTHS',
-   des : "$100.00 FOR 12 JOBS LISTED FOR 183 DAYS"
+        packageTitle:'Premium',
+        Price: "₹ 399",
+        noOfPosts: '12 JOB POSTS FOR 3 MONTHS',
+        noOfDays:'3',
+        packageDetails : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
+      },
+      {
+        packageTitle:'Premium',
+        Price: "₹ 399",
+        noOfPosts: '12 JOB POSTS FOR 3 MONTHS',
+        noOfDays:'3',
+        packageDetails : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
   },
       {
-    rate: "$90*",
-    priceHeading: '12 JOB POSTS FOR 3 MONTHS',
-   des : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
+        packageTitle:'Premium',
+        Price: "₹ 399",
+        noOfPosts: '12 JOB POSTS FOR 3 MONTHS',
+        noOfDays:'3',
+        packageDetails : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
   },
     {
-        rate: "$90*",
-        priceHeading: '12 JOB POSTS FOR 3 MONTHS',
-       des : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
+      packageTitle:'Premium',
+      Price: "₹ 399",
+      noOfPosts: '12 JOB POSTS FOR 3 MONTHS',
+      noOfDays:'3',
+      packageDetails : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
     
 },  {
-    rate: "$90*",
-    priceHeading: '12 JOB POSTS FOR 3 MONTHS',
-   des : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
+  packageTitle:'Premium',
+  Price: "₹ 399",
+  noOfPosts: '12 JOB POSTS FOR 3 MONTHS',
+  noOfDays:'3',
+  packageDetails : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
   },
     {
-    rate: "$15*",
-    priceHeading: '12 JOB POSTS FOR 3 MONTHS',
-    des : " $90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
+      packageTitle:'Premium',
+      Price: "₹ 399",
+      noOfPosts: '12 JOB POSTS FOR 3 MONTHS',
+      noOfDays:'3',
+      packageDetails : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
 },  {
-    rate: "$90*",
-    priceHeading: '12 JOB POSTS FOR 3 MONTHS',
-   des : " $90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
+  packageTitle:'Premium',
+  Price: "₹ 399",
+  noOfPosts: '12 JOB POSTS FOR 3 MONTHS',
+  noOfDays:'3',
+  packageDetails : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
   },
     {
-    rate: "$20*",
-      priceHeading: '1 JOB POSTS FOR 1 MONTH',
-   des : "$20.00 FOR 1 JOBS LISTED FOR 183 DAYS"
+      packageTitle:'Premium',
+      Price: "₹ 399",
+      noOfPosts: '12 JOB POSTS FOR 3 MONTHS',
+      noOfDays:'3',
+      packageDetails : "$90.00 FOR 12 JOBS LISTED FOR 90 DAYS"
 }
     
 ]

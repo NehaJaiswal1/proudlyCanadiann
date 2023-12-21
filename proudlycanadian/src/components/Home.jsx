@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import banner from '../images/banner-1.jpg';
 import one from '../images/1.png';
@@ -24,71 +25,76 @@ import { faLineChart, faGlobe, faBarChart, faBullseye, faCalculator, faLaptop } 
 import Footer from './Footer';
 
 
+
 function Home() {
   const navigate = useNavigate();
+
   const [jobTitle, setJobTitle] = useState('');
   const [selectedNOC, setSelectedNOC] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedSalary, setSelectedSalary] = useState('');
+ 
+
 
 
   const handleApply = (jobId) => {
-
-    console.log(`Applying for job with ID ${jobId}`);
+    
+    navigate(`/job-details/${jobId}`);
   };
-
+  
   const handleQuickApply = (jobId) => {
-
+    
     console.log(`Quick applying for job with ID ${jobId}`);
   };
+  
 
 
   const handleFindJob = () => {
     console.log('Searching for a job...');
-    const updatedData={
-      jobTitle:jobTitle,
-      selectedLocation:selectedLocation,
+    const updatedData = {
+      jobTitle: jobTitle,
+      selectedLocation: selectedLocation,
     }
 
     console.log(updatedData)
 
-    fetch(`http://localhost:3001/findJob`,{
-      method:"POST",
-      headers:{
-      'Content-Type': 'application/json',
+    fetch(`http://localhost:3001/findJob`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
       },
-      body:JSON.stringify(updatedData)
+      body: JSON.stringify(updatedData)
     })
-    .then((response) => response.json())
-    .then((result) => {
-    console.log(result);
-    if (result.status == true) {
-      console.log('tonextpage');
-      // navigate('/verification', { state: { email } });
-    }
-    if(result.status == false) console.log("false coming")
-  })
-  .catch((error) => {
-    console.error('error', error);
-  });
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        if (result.status == true) {
+          console.log('tonextpage');
+          // navigate('/verification', { state: { email } });
+        }
+        if (result.status == false) console.log("false coming")
+      })
+      .catch((error) => {
+        console.error('error', error);
+      });
   };
 
-  const readMore=()=>{
+  const readMore = () => {
     navigate('/aboutus')
   }
-  const jobs=()=>{
+  const jobs = () => {
     navigate('/jobs')
   }
-  const advertiseJob=()=>{
+  const advertiseJob = () => {
     navigate('/employers')
   }
-  const disablePeople=()=>{
+  const disablePeople = () => {
     navigate('/business-benefits-of-hiring-disabled-people')
   }
-  const coverLetter=()=>{
+  const coverLetter = () => {
     navigate('/the-importance-of-a-great-cover-letter')
   }
-  const disabledWorker=()=>{
+  const disabledWorker = () => {
     navigate('/disabled-workers-have-much-to-offer')
   }
 
@@ -103,21 +109,21 @@ function Home() {
           <div className='text-white p-5 '>
             <p className='text-3xl font-bold'>Change Your Career, Start Now!</p>
             <p className='text-xl mt-4 font-semibold'>A National Job Site for Aboriginal And Indigenous People.</p>
-            <p className='text-xl mt-2 font-semibold'>Find Jobs, Employment & Career Making Over 100,000 Applications Every Month.</p>
+            <p className='text-xl mt-2 font-semibold '>Find Jobs, Employment & Career Making Over 100,000 Applications Every Month.</p>
           </div>
 
           <div className='w-5/12 p-4' style={{ position: 'absolute', top: '110px', right: '160px' }}>
-            <img src={learn} alt="online-learn" className='w-' />
+            <img src={learn} alt="online-learn" />
           </div>
 
-          <div className='w-5/12 p-4' style={{ position: 'absolute', bottom: '5px', right: '10px' }}>
+          <div className='w-5/12 p-4' style={{ position: 'absolute', bottom: '5px', right: '5px' }}>
             <img src={one} alt="Image 1" />
           </div>
 
           <Grid container justifyContent="left" alignItems="flex-end" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px' }}>
             <Grid item xs={12} md={8} lg={3}>
               <div style={{ padding: '2px' }}>
-                <TextField style={{ backgroundColor: 'white', borderRadius: '5px' }}
+                <TextField style={{ backgroundColor: 'white', borderRadius: '10px' }}
                   label="Job Search?"
                   variant="outlined"
                   fullWidth
@@ -130,7 +136,7 @@ function Home() {
 
             <Grid item xs={12} md={4} lg={2}>
               <div style={{ padding: '2px' }} >
-                <TextField style={{ backgroundColor: 'white', borderRadius: '5px' }}
+                <TextField style={{ backgroundColor: 'white', borderRadius: '10px' }}
                   select
                   label="Select Location"
                   variant="outlined"
@@ -152,7 +158,7 @@ function Home() {
                   color="primary"
                   fullWidth
                   onClick={handleFindJob}
-                  style={{ marginBottom: '10px', height: '56px'}}
+                  style={{ marginBottom: '10px', height: '56px', width: '100px', borderRadius: '10px' }}
                 >
                   Find Job
                 </Button>
@@ -176,8 +182,8 @@ function Home() {
           <p className='text-slate-700 text-lg mt-2'>1 lacs people visit Proudly Canadians every month, giving you access to the most talent in every field.*
           </p>
 
-          <button className='font-semibold p-4 mt-4  bg-blue-900 
-       rounded-md text-white'onClick={readMore}>READ MORE</button>
+          <button className='font-semibold p-4 mt-4  bg-blue-900 text-xs 
+       rounded-lg text-white'onClick={readMore}>READ MORE</button>
         </div>
       </div>
       <div className='bg-slate-900 text-center ' style={{ height: '300px' }}>
@@ -197,50 +203,65 @@ function Home() {
       <div style={{ backgroundImage: `url(${banner2})`, height: '500px', width: '100%' }}>
         <div className='font-bold p-20 mr-'>
           <h2 className='font-bold text-xl text-white mt-7 '>FOR JOB SEEKERS</h2>
-          <p className='font-semibold text-white mt-7'>Now's a great time to look for a new job. Candidates have the upper hand as the country's labour shortage<br/> continues. Wages are rising, benefits are getting beefier and the options are getting more interesting.</p>
+          <p className='font-semibold text-white mt-7'>Now's a great time to look for a new job. Candidates have the upper hand as the country's labour shortage<br /> continues. Wages are rising, benefits are getting beefier and the options are getting more interesting.</p>
           <p className='font-semibold text-white mt-2'>
 
-            Whether you're looking for a career stepping-stone or your dream job, chances are you're scouring <br/> online job boards. This is the best websites for job searches in Canada.
+            Whether you're looking for a career stepping-stone or your dream job, chances are you're scouring <br /> online job boards. This is the best websites for job searches in Canada.
           </p>
-          <button className='font-semibold p-4 mt-20 bg-blue-950  rounded-md text-white'onClick={jobs}>BROWSE OUR JOB LISTINGS</button>
+          <button className='font-semibold p-4 mt-20 bg-blue-950  rounded-lg text-xs   text-white'
+            onClick={jobs}>BROWSE OUR JOB LISTINGS</button>
         </div>
 
       </div>
       <div>
-        <div className="flex justify-center space-x-4 ">
-          <button className='font-semibold p-4 mt-20 w-72 bg-blue-900 
-       rounded-md text-white hover:bg-red-700'>HOT JOBS</button>
-          <button className='font-semibold p-4 mt-20 bg-blue-900  w-72
-       rounded-md text-white hover:bg-red-700'>LATEST JOBS</button>
+        <div className="flex justify-center space-x-4 text-xs">
+          <button className='font-semibold p-4 mt-20 w-1/5 bg-blue-900 
+       rounded-lg text-white hover:bg-red-700'>HOT JOBS</button>
+          <button className='font-semibold p-4 mt-20 bg-blue-900  w-1/5
+       rounded-lg text-white hover:bg-red-700'>LATEST JOBS</button>
           <button className='font-semibold p-4 mt-20 bg-blue-900 
-       rounded-md w-72 text-white hover:bg-red-700'>LMIA JOBS FOR TFW'S</button>
-          <button className='font-semibold p-4 mt-20 bg-blue-900  w-72
-       rounded-md text-white hover:bg-red-700'>JOB'S FOR CANADIANS</button>
+       rounded-lg w-1/5 text-white hover:bg-red-700'>LMIA JOBS FOR TFW'S</button>
+          <button className='font-semibold p-4 mt-20 bg-blue-900  w-1/5
+       rounded-lg text-white hover:bg-red-700'>JOB'S FOR CANADIANS</button>
         </div>
       </div>
       <div className='p-10'>
-        <div className=''>
-          <h1 className='font-bold text-xl mt-4  text-blue-900'>HOT JOBS</h1>
-        </div>
-        <div className="p-4 ">
-          {hotJobs.map((job, index) => (
-            <div className='shadow shadow-slate-400  hover-card'>
-              <div key={index} className=" flex rounded-lg mt-4 mb-4 justify-between">
+
+        <div className="p-10 space-y-10 ">
+          <h1 className='font-bold text-xl mt-4  text-blue-900 '>HOT JOBS</h1>
+          {hotJobs.map((job) => (
+            <div className='shadow-md rounded-2xl shadow-slate-400  hover-card bg-slate-50 '>
+              <div key={job.id} className=" flex rounded-lg mt-4 mb-4 justify-between">
                 <div className='flex ml-10 '>
-                  <img src={job.logo} className="w-1/12 rounded-full border-gray-800" alt="logo-img" />
+                  <img src={job.logo} className="w-1/12 rounded-full border-gray-800 " alt="logo-img" />
                   <div className='ml-10 '>
                     <p className='font-bold mt-3'>{job.title}</p>
                     <div className='flex mt-3 mb-3'>
-                      <p className='p-2 m-2 text-sm font-semibold shadow shadow-slate-400'>{job.id}</p>
-                      <p className='p-2 m-2 shadow text-sm font-semibold shadow-slate-400'>{job.noc}</p>
-                      <p className='p-2 m-2 text-sm font-semibold shadow shadow-slate-400'>{job.location}</p>
-                      <p className='p-2 m-2 text-sm font-semibold shadow shadow-slate-400'>{job.postedOn}</p>
+                      <p className='p-2 m-2 text-xs font-semibold shadow shadow-slate-400 rounded-2xl'>{job.id}</p>
+                      <p className='p-2 m-2 shadow text-xs font-semibold 
+                      shadow-slate-400 rounded-2xl'>
+                        {job.noc}</p>
+                      <p className='p-2 m-2 text-xs font-semibold shadow 
+                      shadow-slate-400 rounded-2xl'>{job.location}</p>
+                      <p className='p-2 m-2 text-xs font-semibold shadow
+                       shadow-slate-400 rounded-2xl'>{job.postedOn}</p>
                     </div>
                   </div>
 
                 </div>
                 <div className='flex mt-3'>
-                  <button className='bg-blue-900 text-white p-2 rounded-2xl w-20 h-10 m-4 text-xs font-bold hover:bg-red-600' onClick={() => handleApply(job.id)}>APPLY</button>
+                
+                <button
+                  className='bg-blue-900 text-white p-2 rounded-2xl w-20 h-10 m-4 text-xs font-bold hover:bg-red-600'
+                  onClick={() => handleApply(`${job.id}`)}
+                >
+                  
+                  APPLY
+                </button>
+             
+
+
+
                   <button className='bg-blue-900 hover:bg-red-600 text-white  rounded-2xl w-32  h-10 m-4 text-xs font-bold' onClick={() => handleQuickApply(job.id)}>QUICK APPLY</button>
 
                 </div>
@@ -256,7 +277,7 @@ function Home() {
       </div>
 
       <div
-        classNae="emplomyer-background"
+        className=""
         style={{
           backgroundImage: `url(${employer})`,
           backgroundSize: 'cover',
@@ -360,6 +381,7 @@ function Home() {
 
       <Footer />
 
+     
 
     </div>
   );

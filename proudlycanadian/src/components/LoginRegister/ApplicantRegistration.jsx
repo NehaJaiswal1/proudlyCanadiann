@@ -34,7 +34,6 @@ function ApplicantRegistration() {
             [name]: value,
         });
 
-        // Clear password mismatch error when either password or confirm password is updated
         setPasswordMismatchError('');
         setAgreeTermsError('');
         setMobileNoError('');
