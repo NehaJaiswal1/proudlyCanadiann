@@ -49,7 +49,7 @@ const App = () => {
             <Route path="/applicant/job" element={<ApplicantDashboard />} />
             <Route path="/auth/login" element={<ApplicantLogin />} />
 
-            <Route path="auth/forgot_password" element={<PasswordReset />} />
+            <Route path="/forgot_password" element={<PasswordReset />} />
             <Route path="/business-benefits-of-hiring-disabled-people" element={<DisabledPeople />} />
             <Route path="/the-importance-of-a-great-cover-letter" element={<CoverLetter />} />
             <Route path="/disabled-workers-have-much-to-offer" element={<DisabledWorker />} />

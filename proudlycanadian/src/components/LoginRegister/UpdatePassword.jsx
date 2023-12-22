@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 import pagetitle from '../../images/page-title.jpg';
@@ -9,6 +9,9 @@ import { useNavigate } from 'react-router-dom';
 
 
 function UpdatePassword() {
+    useEffect(() => {
+        window.scrollTo(0, 0); 
+      }, []);
     const { authData } = useAuth();
     const navigate = useNavigate();
     // const token = authData.token

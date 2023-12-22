@@ -8,6 +8,9 @@ import './JobDetails.css';
 import { faCloudversify } from '@fortawesome/free-brands-svg-icons';
 
 const JobDetails = () => {
+    useEffect(() => {
+        window.scrollTo(0, 0); 
+      }, []);
     const { jobId } = useParams();
     const [allJobs, setAllJobs] = useState([]);
     const [foundJob, setFoundJob] = useState(null);
@@ -154,6 +157,15 @@ const JobDetails = () => {
 
                             <li className="text-gray-500 text-sm">
                                 {foundJob ? capitalizeFirstLetter(foundJob.jobDescription) : '-'}
+                            </li>
+                        </ul>
+                    </div>
+                    <div className='mt-5'>
+                        <span className=" font-semibold text-gray-500 ">Skills : </span>
+                        <ul className="list-disc pl-6 mt-1">
+
+                            <li className="text-gray-500 text-sm">
+                                {foundJob ? foundJob.skills : '-'}
                             </li>
                         </ul>
                     </div>

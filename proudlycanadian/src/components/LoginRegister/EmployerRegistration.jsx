@@ -1,14 +1,18 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 import pagetitle from '../../images/page-title.jpg';
-import { TextField, Button, Container, Grid, Typography, Checkbox, FormControlLabel, Link } from '@mui/material';
+import { TextField, Alert, AlertTitle, Button, Container, Grid, Typography, Checkbox, FormControlLabel, Link } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 
 function EmployerRegistration() {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     const navigate = useNavigate();
+    const [successMessage, setSuccessMessage] = useState(null);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -45,7 +49,11 @@ function EmployerRegistration() {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("some", formData)
+        if (formData.password !== formData.confirmPassword) {
+            setApiResponseMessage('Password and Confirm Password do not match.');
+            return;
+        }
+        
         try {
             const response = await fetch('https://job-portal-website-by5i.onrender.com/job-Portal/Employee/signUp', {
                 method: 'POST',
@@ -54,19 +62,19 @@ function EmployerRegistration() {
                 },
                 body: JSON.stringify(formData),
             });
-        
+
             console.log('API Response:', response);
-        
+
             const responseData = await response.json();
             console.log('Parsed API Response:', responseData);
-        
+
             setApiResponseMessage(responseData.message);
-        
+
             if (responseData.error) {
-                
+
                 alert(responseData.error);
             } else {
-                
+
                 setApiResponseMessage(responseData.message);
 
                 if (responseData.message && responseData.accessToken) {
@@ -74,28 +82,42 @@ function EmployerRegistration() {
                 }
             }
         } catch (error) {
-           
-           
+
+
             console.error('Error submitting form:', error);
             alert('Error in submitting form');
-           
+
         }
-        
+
     };
+    // useEffect(() => {
+    //     if () {
+    //       const timer = setTimeout(() => {
+    //         navigate('/employers/auth/login');
+    //       }, 3000); 
+      
+    //       return () => clearTimeout(timer); 
+    //     }
+    //   }, [successMessage, navigate]);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Navbar />
             <div style={{ height: '100px' }}></div>
             <div>
-               
+
                 <div className='mt-10 mb-10'>
-                    <Container  className='shadow-xl shadow-blue-950 p-8  rounded-3xl' maxWidth="sm" style={{ marginTop: '20px' }}>
+                    <Container className='shadow-xl shadow-blue-950 p-8  rounded-3xl' maxWidth="sm" style={{ marginTop: '20px' }}>
                         <form onSubmit={handleSubmit}>
                             <Typography variant="h6" component="div" gutterBottom className='font-semibold '>
                                 Employer Registration
                             </Typography>
+
+                            
                             <Grid container spacing={2}>
+                            {apiResponseMessage && <Alert severity="error">
+                                 <strong>{apiResponseMessage}</strong>
+                            </Alert>}
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         label="First Name"
@@ -103,10 +125,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.firstName}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -117,10 +141,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.lastName}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -132,10 +158,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.email}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -147,10 +175,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.password}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -162,10 +192,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -182,10 +214,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.companyName}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -196,10 +230,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.category}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -210,10 +246,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.organizationType}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -224,10 +262,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.country}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -238,10 +278,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.province}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -252,10 +294,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.city}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -266,10 +310,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.postalCode}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -280,10 +326,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.address}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -293,11 +341,21 @@ function EmployerRegistration() {
                                         name="phoneNumber"
                                         fullWidth
                                         value={formData.phoneNumber}
-                                        onChange={handleChange}
-                                        required 
+                                        onChange={(e) => {
+                                            
+                                            const numericValue = e.target.value.replace(/[^0-9]/g, '');
+                                            
+                                            setFormData({
+                                                ...formData,
+                                                phoneNumber: numericValue,
+                                            });
+                                        }}
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -308,10 +366,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.website}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -325,10 +385,12 @@ function EmployerRegistration() {
                                         fullWidth
                                         value={formData.companyDescription}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                         InputProps={{
-                                            style: { fontSize: '12px', padding: '1px' ,
-                                        borderRadius:'10px'}, 
+                                            style: {
+                                                fontSize: '12px', padding: '1px',
+                                                borderRadius: '10px'
+                                            },
                                         }}
                                     />
                                 </Grid>
@@ -340,7 +402,7 @@ function EmployerRegistration() {
                                                 onChange={handleCheckboxChange}
                                                 name="agreeTerms"
                                                 color="primary"
-                                                required 
+                                                required
                                             />
                                         }
                                         label="I agree to the terms and conditions"
@@ -348,15 +410,15 @@ function EmployerRegistration() {
                                 </Grid>
 
                                 <Grid item xs={12}>
-                                    <Button type="submit" variant="contained" color="primary" 
-                                    fullWidth>
+                                    <Button type="submit" variant="contained" color="primary"
+                                        fullWidth>
 
                                         Register
                                     </Button>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Typography variant="body2" align="center">
-                                    {apiResponseMessage && <span>{apiResponseMessage}</span>}
+
                                         Already have an account? <Link href="/signin">Sign In Now</Link>
                                     </Typography>
                                 </Grid>

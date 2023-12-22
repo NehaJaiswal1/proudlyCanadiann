@@ -1,5 +1,5 @@
 
-import React, {  useState  } from 'react';
+import React, {  useState, useEffect  } from 'react';
 import { useContext } from 'react';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
@@ -11,6 +11,9 @@ import { useAuth } from '../AuthContext/AuthContext.jsx';
 
 
 function PasswordReset() {
+  useEffect(() => {
+    window.scrollTo(0, 0); 
+  }, []);
   const { authData, saveAuthData } = useAuth();
   const navigate = useNavigate();
   // const { setAuthData } = useAuth();

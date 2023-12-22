@@ -17,6 +17,9 @@ import { useNavigate } from 'react-router';
 
 
 const FindAJob = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0); 
+  }, []);
   const navigate = useNavigate();
   const [jobTitle, setJobTitle] = useState('');
   const [selectedNOC, setSelectedNOC] = useState('');

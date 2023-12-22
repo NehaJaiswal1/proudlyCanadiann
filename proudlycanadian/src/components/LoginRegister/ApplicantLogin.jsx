@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 import pagetitle from '../../images/page-title.jpg';
 import { TextField, Button, Container, Grid, Typography, Checkbox, FormControlLabel, Link, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 function ApplicantLogin() {
+    useEffect(() => {
+        window.scrollTo(0, 0); 
+      }, []);
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -79,7 +82,7 @@ function ApplicantLogin() {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Typography variant="body2" align="center">
-                                        <Link href="/forgot-password">Forget Password?</Link>
+                                        <Link href="/forgot_password">Forget Password?</Link>
                                     </Typography>
                                 </Grid>
                             </Grid>

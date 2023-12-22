@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +7,9 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function ContactUs() {
+  useEffect(() => {
+    window.scrollTo(0, 0); 
+  }, []);
 
     const navigate = useNavigate();
     const [buttonColor, setButtonColor] = useState('bg-blue-900');

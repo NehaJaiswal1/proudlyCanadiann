@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -58,6 +58,9 @@ import companyImage16 from '../../images/companies/ups.jpg';
 
 
 function JobFairs() {
+    useEffect(() => {
+        window.scrollTo(0, 0); 
+      }, []);
 
 
     const getVideoId = (url) => {

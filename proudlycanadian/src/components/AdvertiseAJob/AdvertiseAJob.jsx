@@ -10,6 +10,9 @@ import './AdvertiseAjob.css';
 import axios from 'axios';
 
 function AdvertiseAJob() {
+  useEffect(() => {
+    window.scrollTo(0, 0); 
+  }, []);
   const cardsPerPage = 3;
   const [currentPage, setCurrentPage] = useState(1);
   const [sortedCardInfo, setSortedCardInfo] = useState([]);

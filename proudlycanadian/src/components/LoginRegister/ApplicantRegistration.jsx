@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 import pagetitle from '../../images/page-title.jpg';
@@ -6,6 +6,9 @@ import { TextField, Button, Container, Grid, Typography, Checkbox, FormControlLa
 
 
 function ApplicantRegistration() {
+    useEffect(() => {
+        window.scrollTo(0, 0); 
+      }, []);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
