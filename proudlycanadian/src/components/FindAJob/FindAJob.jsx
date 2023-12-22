@@ -255,7 +255,7 @@ const FindAJob = () => {
         <div className="p-4 w-2/3 ">
           {data.map((job, index) => (
             <div className='shadow-md rounded-2xl shadow-slate-400  hover-card bg-slate-50  
-            h-1/4 hover:h-36'>
+             hover:h-36'>
               <div key={index} className=" flex rounded-lg mt-4 mb-4 justify-between">
                 <div className='flex ml-10 '>
                   <img src='https://proudlycanadians.ca/assets_new/img/company-logo.png' className="w-12 rounded-full border-gray-800" alt="logo-img" />
@@ -271,7 +271,7 @@ const FindAJob = () => {
                           <FontAwesomeIcon icon={faTags} className="mr-2" /> {job.jobType}
                         </p>
                       </div>
-                      <div className='flex space-x-6'>
+                      <div className='flex space-x-6 mb-5'>
                       <p className='  text-xs flex items-center'>
                         <FontAwesomeIcon icon={faIndustry} className="mr-2" />
                         {job.jobCategory}</p>

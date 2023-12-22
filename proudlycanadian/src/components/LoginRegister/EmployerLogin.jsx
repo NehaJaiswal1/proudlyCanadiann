@@ -23,15 +23,15 @@ function EmployerLogin() {
 
   const [loginMessage, setLoginMessage] = useState(null);
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem('employerToken');
-    const storedEmailId = localStorage.getItem('employerEmailId');
+  // useEffect(() => {
+  //   const storedToken = localStorage.getItem('employerToken');
+  //   const storedEmailId = localStorage.getItem('employerEmailId');
 
-    if (storedToken && storedEmailId) {
-      auth.saveAuthData({ token: storedToken, emailId: storedEmailId });
+  //   if (storedToken && storedEmailId) {
+  //     auth.saveAuthData({ token: storedToken, emailId: storedEmailId });
      
-    }
-  }, [auth, navigate]);
+  //   }
+  // }, [auth, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,6 +45,7 @@ function EmployerLogin() {
     e.preventDefault();
   
     try {
+      
       const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/signIn', 
       {
         method: 'POST',
@@ -59,9 +60,9 @@ function EmployerLogin() {
       }
   
       const responseData = await response.json();
-      console.log('API Response:', responseData);
+      console.log('API Response:', response);
   
-      if (responseData.loggedInFrom === "Employee") {
+      if (responseData.loggedInFrom == "Employee") {
         const comingToken = responseData.accessToken;
         const comingEmailId = responseData.email;
         auth.saveAuthData({ token: comingToken, emailId: comingEmailId });
@@ -70,12 +71,27 @@ function EmployerLogin() {
         localStorage.setItem('employerEmailId', comingEmailId);
   
         setSuccessMessage('Successfully Logged In!');
-        setErrorMessage(null); 
-      } else {
-        setLoginMessage('Invalid login for employer.');
-        setSuccessMessage(null); 
-        setErrorMessage('Error logging in. Please check your credentials.');
+        navigate('/employers/job/listing');
+        setErrorMessage(null);
+
       }
+      if(responseData.loggedInFrom == "Applicant") {
+        const comingToken = responseData.accessToken;
+        const comingEmailId = responseData.email;
+        auth.saveAuthData({ token: comingToken, emailId: comingEmailId });
+  
+        localStorage.setItem('employerToken', comingToken);
+        localStorage.setItem('employerEmailId', comingEmailId);
+        setSuccessMessage('Successfully Logged In!');
+        navigate('/applicant/job');
+        setErrorMessage(null);
+      }
+      
+      // else {
+      //   setLoginMessage('Invalid login for employer.');
+      //   setSuccessMessage(null); 
+      //   setErrorMessage('Error logging in. Please check your credentials.');
+      // }
   
     } catch (error) {
       setSuccessMessage(null); 
@@ -85,15 +101,15 @@ function EmployerLogin() {
   };
   
   
-  useEffect(() => {
-    if (successMessage == 'Successfully Logged In!') {
-      const timer = setTimeout(() => {
-        navigate('/employers/job/listing');
-      }, 3000); 
+  // useEffect(() => {
+  //   if (successMessage == 'Successfully Logged In !') {
+  //     const timer = setTimeout(() => {
+  //       navigate('/employers/job/listing');
+  //     }, 3000); 
   
-      return () => clearTimeout(timer); 
-    }
-  }, [successMessage, navigate]);
+  //     return () => clearTimeout(timer); 
+  //   }
+  // }, [successMessage, navigate]);
   
   const register = () => {
     navigate("/employers/auth/registration");

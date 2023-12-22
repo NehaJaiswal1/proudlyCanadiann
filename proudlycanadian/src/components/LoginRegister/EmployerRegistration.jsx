@@ -78,7 +78,7 @@ function EmployerRegistration() {
                 setApiResponseMessage(responseData.message);
 
                 if (responseData.message && responseData.accessToken) {
-                    navigate('/employers/auth/login');
+                    navigate('/thankyou');
                 }
             }
         } catch (error) {

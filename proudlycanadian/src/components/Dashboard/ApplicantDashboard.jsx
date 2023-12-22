@@ -6,16 +6,25 @@ import Footer from '../Footer.jsx';
 import { Container, Grid, Paper, Typography, Button, styled, Card, CardContent, TextField, FormControl, InputLabel, Select, MenuItem, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { useAuth } from '../AuthContext/AuthContext.jsx'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 
 function ApplicantDashboard() {
+  const { logout, authData } = useAuth();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const navigate = useNavigate();
 
 
   const handleLogout = () => {
+    logout();
+    localStorage.removeItem('employerToken');
+    localStorage.removeItem('employerEmailId');
     navigate('/');
+
   };
 
   

@@ -19,6 +19,7 @@ import DisabledWorker from './components/DisabledWorker/DisabledWorker';
 import DisabledPeople from './components/DisabledPeople/DisabledPeople';
 import CoverLetter from './components/CoverLetter/CoverLetter';
 import UpdatePassword from './components/LoginRegister/UpdatePassword';
+import Thankyou from './components/Thankyou';
 import { AuthProvider } from './components/AuthContext/AuthContext';
 
 import JobDetails from './components/JobDetails/JobDetails';
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="/employers" element={<AdvertiseAJob />} />
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/job-fair" element={<JobFairs />} />
+            <Route path='/thankyou' element={<Thankyou/>}/>
             <Route path="/job-details/:jobId" element={<JobDetails />} />
             <Route path="/virtualcareerfair" element={<VirtualCareerFair />} />
             <Route path="/employers/auth/registration" element={<EmployerRegistration />} />

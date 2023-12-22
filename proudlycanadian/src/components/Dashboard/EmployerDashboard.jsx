@@ -410,9 +410,11 @@ function CompanyProfileForm({ handleClose }) {
 
 
 function EmployerDashboard() {
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   const { logout, authData } = useAuth();
   const navigate = useNavigate();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -432,6 +434,7 @@ function EmployerDashboard() {
   };
 // --------------------------------------------------------------
 // Manage jobs
+
   const [hotJobs, setHotJobs] = useState([]);
 
   useEffect(() => {
@@ -446,10 +449,12 @@ function EmployerDashboard() {
         
         if (response.ok) {
           const data = await response.json();
-          setHotJobs(data);
-          console.log(data)
-        } else {
-          console.error('Error fetching jobs:', response);
+          setHotJobs(data.jobsList);
+          console.log(data.jobsList)
+        }  else {
+          console.error('Error fetching jobs. Status:', response.status);
+          const errorData = await response.json();
+          console.error('Error data:', errorData);
         }
       } catch (error) {
         console.error('Error fetching jobs:', error);
@@ -522,7 +527,7 @@ function EmployerDashboard() {
       confirmPassword: candidateFormData.confirmPassword,
       address: candidateFormData.address,
     };
-    // console.log(data)
+    console.log(data)
 
     try {
 
@@ -536,7 +541,7 @@ function EmployerDashboard() {
         body: JSON.stringify(data),
       });
 
-      // console.log('response', response);
+      console.log('response', response);
       if (response.ok) {
         setSnackbarMessage('Candidate added successfully');
         setSnackbarOpen(true);
@@ -550,11 +555,12 @@ function EmployerDashboard() {
           confirmPassword: '',
           address: '',
         });
-      } else {
-        console.error('Error updating Password:', response);
-        setSnackbarMessage('Error updating Password');
-        setSnackbarOpen(true);
-      }
+      } 
+      // else {
+      //   console.error('Error adding candidate');
+      //   setSnackbarMessage('Error adding candidate');
+      //   setSnackbarOpen(true);
+      // }
     } catch (error) {
       console.error('Error adding candidate:', error.message);
       setSnackbarMessage('Error adding candidate');
@@ -567,7 +573,7 @@ function EmployerDashboard() {
 const [messageFormData, setMessageFormData] = useState({
   recipient: '',
   message: '',
-  document: null,
+ 
 });
 
 const [applicantList, setApplicantList] = useState([]);
@@ -605,39 +611,49 @@ const handleMessageChange = (event) => {
   });
 };
 
-const handleDocumentUpload = (event) => {
-  setMessageFormData({
-    ...messageFormData,
-    document: event.target.files[0],
-  });
-};
+// const handleDocumentUpload = (event) => {
+//   setMessageFormData({
+//     ...messageFormData,
+//     document: event.target.files[0],
+//   });
+// };
 const handleSendMessage = async () => {
-  try {
-    
+  const data = {
 
-    const response = await fetch('https://job-portal-website-by5i.onrender.com/job-Portal/Employee/sendMessageToApplicant', {
+   
+    email: messageFormData.recipient,
+   message: messageFormData.message,
+  };
+  console.log(data)
+  try {
+    const response = await fetch('https://job-portal-website-by5i.onrender.com/job-Portal/Employee/sendMessageToApplicant', 
+    {
       method: 'POST',
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${authData.token}`,
       },
-      body: messageFormData,
+      body: JSON.stringify(data), 
     });
 
-    // setMessageFormData({
-    //   recipient: '',
-    //   message: '',
-    //   document: null,
-    // });
-    
+    console.log(response);
+    console.log(data);
+
+    if (response.ok) {
+      console.log('Message sent successfully');
+    } else {
+      console.error('Error sending message:', response);
+    }
+
+    setMessageFormData({
+      recipient: '',
+      message: '',
+    });
   } catch (error) {
     console.error('Error sending message:', error);
   }
-   setMessageFormData({
-      recipient: '',
-      message: '',
-      document: null,
-    });
 };
+
 
 
 
@@ -677,8 +693,8 @@ const handleUpdate = async (e) => {
       body: JSON.stringify(passwordFormData),
     });
 
-    console.log(passwordFormData);
-    console.log(response);
+    // console.log(passwordFormData);
+    // console.log(response);
     if (response.ok) {
       setSnackbarMessage('Password Updated sucessfully');
       setSnackbarOpen(true);
@@ -729,6 +745,8 @@ const handleUpdate = async (e) => {
   }
 
   // Post a new job------------------------------------------
+
+
   const [postJobFormData, setPostJobFormData] = useState({
     company: '',
     jobTitle: '',
@@ -795,11 +813,12 @@ const handleUpdate = async (e) => {
 
     try {
       const response = await fetch(
-        'https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/addJob',
+        'https://job-portal-website-by5i.onrender.com/Job-Portal/Employee/postJob',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${authData.token}`,
           },
           body: JSON.stringify(postJobFormData),
         }
@@ -1013,19 +1032,23 @@ const handleUpdate = async (e) => {
                         <th className="text-center p-3 border-b ">Action</th>
                       </tr>
                     </thead>
-                    {/* <tbody>
+                    <tbody>
                       {hotJobs.map((job) => (
-                        <tr key={`${job.id}-${job.postedOn}`} className='mb-10 border-b'>
-                          <td className="text-center p-3">{job.title}</td>
-                          <td className="text-center p-3">{job.applications}</td>
-                          <td className="text-center p-3">{job.date}</td>
+                        <tr key={`${job._id}`} className='mb-10 border-b'>
+                          <td className="text-center p-3">
+                            {job.jobTitle}</td>
+                          <td className="text-center p-3">
+                            {job.jobIndustry}</td>
+                          <td className="text-center p-3">
+                            {job.PostedDate}</td>
                           <td className="text-center p-3  ">
-                            <button className='bg-blue-900 rounded-full text-white p-3 text-xs font-bold'>{job.status}</button>
+                            <button className='bg-blue-900 rounded-full text-white p-3 text-xs font-bold'>
+                              {job.status}</button>
                           </td>
                           <td className="text-center p-3 space-x-4"><FontAwesomeIcon icon={faEye} /> <FontAwesomeIcon icon={faPen} /></td>
                         </tr>
                       ))}
-                    </tbody> */}
+                    </tbody>
                   </table>
                 </div>
               )}
@@ -1194,7 +1217,7 @@ const handleUpdate = async (e) => {
                         margin="normal"
                       />
                     </Grid>
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                       <input
                         accept="application/pdf, application/msword"
                         style={{ display: 'none' }}
@@ -1210,7 +1233,7 @@ const handleUpdate = async (e) => {
                       {messageFormData.document && (
                         <span>{messageFormData.document.name}</span>
                       )}
-                    </Grid>
+                    </Grid> */}
                   </Grid>
                   <Button
                     type="button"
