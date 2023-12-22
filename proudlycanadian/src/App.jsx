@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, useNavigate  } from 'react-router-dom';
 import Home from './components/Home';
 import About from './components/About';
 import Jobs from './components/FindAJob/FindAJob';
@@ -25,6 +25,8 @@ import { AuthProvider } from './components/AuthContext/AuthContext';
 import JobDetails from './components/JobDetails/JobDetails';
 
 const App = () => {
+ 
+
   return (
     <Router>
       <div>

@@ -437,7 +437,6 @@ function EmployerDashboard() {
 
   const [hotJobs, setHotJobs] = useState([]);
 
-  useEffect(() => {
     const fetchJobs = async () => {
       try {
         const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/Employee/allJobs', {
@@ -461,10 +460,14 @@ function EmployerDashboard() {
       }
     };
 
-    fetchJobs();
-  }, [authData.token]);
 
-
+    const handleButtonClick1 = (content) => {
+      if (content === 'Manage Jobs') {
+        
+        fetchJobs();
+      }
+      setDisplayContent(content);
+    };
   //----------------------------------------------- 
   const handleProfilePictureChange = (event) => {
     const file = event.target.files[0];
@@ -941,7 +944,7 @@ const handleUpdate = async (e) => {
               </form>
 
               <div className='mt-5 '>
-                <StyledButton onClick={() => handleButtonClick('Manage Jobs')}>
+                <StyledButton onClick={() => handleButtonClick1('Manage Jobs')}>
                   <FontAwesomeIcon icon={faTasksAlt} className='mr-3' />
                   Manage Jobs
                 </StyledButton>
