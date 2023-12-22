@@ -581,7 +581,7 @@ const [messageFormData, setMessageFormData] = useState({
 
 const [applicantList, setApplicantList] = useState([]);
 
-useEffect(() => {
+
   const fetchData = async () => {
     try {
       const response = await fetch('https://job-portal-website-by5i.onrender.com/job-Portal/Employee/allCandidates', {
@@ -597,8 +597,14 @@ useEffect(() => {
     }
   };
 
+
+
+const handleButtonClick3 = () => {
+  
+    
   fetchData();
-}, [authData.token]);
+  
+};
 
 const handleMessageDropdownChange = (event) => {
   setMessageFormData({
@@ -660,7 +666,7 @@ const handleSendMessage = async () => {
 
 
 
-// --------------------------------------password Change
+// --------------------------------------password Change--------------------------------
 
   const [passwordFormData, setPasswordFormData] = useState({
     oldPassword: '',
@@ -1188,13 +1194,15 @@ const handleUpdate = async (e) => {
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <FormControl fullWidth variant="outlined" margin="normal">
-                        <InputLabel id="recipient-label">Recipient</InputLabel>
+                        <InputLabel id="recipient-label">
+                          Recipient</InputLabel>
                         <Select
                           labelId="recipient-label"
                           id="recipient"
                           value={messageFormData.recipient}
                           onChange={handleMessageDropdownChange}
                           label="Recipient"
+                          onClick={handleButtonClick3}
                           required
                         >
                           <MenuItem value="">Select a recipient</MenuItem>
