@@ -2,11 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../Navbar.jsx';
 import Footer from "../Footer.jsx";
-import { Container, Grid, Paper, Typography, Button, styled, Card, CardContent, TextField, FormControl, InputLabel, Select, MenuItem, IconButton, Alert, Snackbar } from '@mui/material';
+import {
+  Container, Grid, Paper, Typography, Button, styled, Card, CardContent, TextField, FormControl, InputLabel, Select, MenuItem, IconButton, Alert, Snackbar, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 // import { hotJobs } from '../../Data/HotJobs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock, faEye, faPen, faUser, faUpload, faPaperPlane, faImage, faEnvelope, faBuilding, faThLarge, faUserAlt, faMessage, faPerson, faAdd, faUserCircle, faUserPlus, faTasks, faTasksAlt, faFile, faLock, faSignOut } from '@fortawesome/free-solid-svg-icons';
+import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock, faEye, faPen, faUser, faUpload, faPaperPlane, faImage, faEnvelope, faBuilding, faThLarge, faUserAlt, faMessage, faPerson, faAdd, faUserCircle, faUserPlus, faTasks, faTasksAlt, faFile, faLock, faSignOut, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../AuthContext/AuthContext.jsx'
 
 
@@ -432,42 +437,42 @@ function EmployerDashboard() {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-// --------------------------------------------------------------
-// Manage jobs
+  // --------------------------------------------------------------
+  // Manage jobs
 
   const [hotJobs, setHotJobs] = useState([]);
 
-    const fetchJobs = async () => {
-      try {
-        const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/Employee/allJobs', {
-          headers: {
-            Authorization: `Bearer ${authData.token}`,
-          },
-        });
+  const fetchJobs = async () => {
+    try {
+      const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/Employee/allJobs', {
+        headers: {
+          Authorization: `Bearer ${authData.token}`,
+        },
+      });
 
-        
-        if (response.ok) {
-          const data = await response.json();
-          setHotJobs(data.jobsList);
-          console.log(data.jobsList)
-        }  else {
-          console.error('Error fetching jobs. Status:', response.status);
-          const errorData = await response.json();
-          console.error('Error data:', errorData);
-        }
-      } catch (error) {
-        console.error('Error fetching jobs:', error);
+
+      if (response.ok) {
+        const data = await response.json();
+        setHotJobs(data.jobsList);
+        console.log(data.jobsList)
+      } else {
+        console.error('Error fetching jobs. Status:', response.status);
+        const errorData = await response.json();
+        console.error('Error data:', errorData);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+    }
+  };
 
 
-    const handleButtonClick1 = (content) => {
-      if (content === 'Manage Jobs') {
-        
-        fetchJobs();
-      }
-      setDisplayContent(content);
-    };
+  const handleButtonClick1 = (content) => {
+    if (content === 'Manage Jobs') {
+
+      fetchJobs();
+    }
+    setDisplayContent(content);
+  };
   //----------------------------------------------- 
   const handleProfilePictureChange = (event) => {
     const file = event.target.files[0];
@@ -549,7 +554,7 @@ function EmployerDashboard() {
         setSnackbarMessage('Candidate added successfully');
         setSnackbarOpen(true);
         console.log('Candidate added successfully');
-        setCandidateFormData ({
+        setCandidateFormData({
           firstName: '',
           lastName: '',
           email: '',
@@ -558,7 +563,7 @@ function EmployerDashboard() {
           confirmPassword: '',
           address: '',
         });
-      } 
+      }
       // else {
       //   console.error('Error adding candidate');
       //   setSnackbarMessage('Error adding candidate');
@@ -571,15 +576,21 @@ function EmployerDashboard() {
     }
   };
 
-// --------------------------------------------------------------
+  // --------------------------------------------------------------
 
-const [messageFormData, setMessageFormData] = useState({
-  recipient: '',
-  message: '',
- 
-});
+  const [messageFormData, setMessageFormData] = useState({
+    recipient: '',
+    message: '',
 
-const [applicantList, setApplicantList] = useState([]);
+  });
+  const [applicantList, setApplicantList] = useState([]);
+  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+  const [editedApplicant, setEditedApplicant] = useState({
+    candidateId: '',
+    firstName: '',
+    lastName: '',
+  });
+
 
 
   const fetchData = async () => {
@@ -592,6 +603,7 @@ const [applicantList, setApplicantList] = useState([]);
       });
       const data = await response.json();
       setApplicantList(data.candidatesList);
+      console.log(data)
     } catch (error) {
       console.error('Error fetching applicants:', error);
     }
@@ -599,74 +611,135 @@ const [applicantList, setApplicantList] = useState([]);
 
 
 
-const handleButtonClick3 = () => {
-  
-    
-  fetchData();
-  
-};
+  const handleButtonClick3 = () => {
 
-const handleMessageDropdownChange = (event) => {
-  setMessageFormData({
-    ...messageFormData,
-    recipient: event.target.value,
-  });
-};
 
-const handleMessageChange = (event) => {
-  setMessageFormData({
-    ...messageFormData,
-    message: event.target.value,
-  });
-};
+    fetchData();
 
-// const handleDocumentUpload = (event) => {
-//   setMessageFormData({
-//     ...messageFormData,
-//     document: event.target.files[0],
-//   });
-// };
-const handleSendMessage = async () => {
-  const data = {
-
-   
-    email: messageFormData.recipient,
-   message: messageFormData.message,
   };
-  console.log(data)
-  try {
-    const response = await fetch('https://job-portal-website-by5i.onrender.com/job-Portal/Employee/sendMessageToApplicant', 
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${authData.token}`,
-      },
-      body: JSON.stringify(data), 
-    });
 
-    console.log(response);
-    console.log(data);
-
-    if (response.ok) {
-      console.log('Message sent successfully');
-    } else {
-      console.error('Error sending message:', response);
-    }
-
+  const handleMessageDropdownChange = (event) => {
     setMessageFormData({
-      recipient: '',
-      message: '',
+      ...messageFormData,
+      recipient: event.target.value,
     });
-  } catch (error) {
-    console.error('Error sending message:', error);
-  }
-};
+  };
+
+  const handleMessageChange = (event) => {
+    setMessageFormData({
+      ...messageFormData,
+      message: event.target.value,
+    });
+  };
+
+  const handleEdit = (applicant) => {
+    setEditedApplicant({
+      candidateId: applicant.candidateId,
+      firstName: applicant.firstName,
+      lastName: applicant.lastName,
+    });
+    setIsEditFormOpen(true);
+  };
+
+  const handleSendMessage = async () => {
+    const data = {
+
+
+      email: messageFormData.recipient,
+      message: messageFormData.message,
+    };
+    console.log(data)
+    try {
+      const response = await fetch('https://job-portal-website-by5i.onrender.com/job-Portal/Employee/sendMessageToApplicant',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authData.token}`,
+          },
+          body: JSON.stringify(data),
+        });
+
+      console.log(response);
+      console.log(data);
+
+      if (response.ok) {
+        console.log('Message sent successfully');
+      } else {
+        console.error('Error sending message:', response);
+      }
+
+      setMessageFormData({
+        recipient: '',
+        message: '',
+      });
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
+  const handleFaUpdate = () => {
+    setIsEditFormOpen(false);
+
+  };
+
+  const handlePopUpUpdate = async () => {
+    try {
+      const response = await fetch(
+        `https://job-portal-website-by5i.onrender.com/Job-Portal/updateApplicant/${editedApplicant.candidateId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+
+          },
+          body: JSON.stringify({
+            firstName: editedApplicant.firstName,
+            lastName: editedApplicant.lastName,
+          }),
+        }
+      );
+      console.log(response)
+      if (response.ok) {
+        console.log('Applicant updated successfully');
+        setIsEditFormOpen(false);
+      } else {
+        console.error('Error updating applicant:', response);
+      }
+    } catch (error) {
+      console.error('Error updating applicant:', error);
+    }
+  };
+
+  const handleDelete = async (applicant) => {
+    try {
+      const response = await fetch(
+        `https://job-portal-website-by5i.onrender.com/Job-Portal/deleteApplicant/${applicant.candidateId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+
+          },
+        }
+      );
+
+      if (response.ok) {
+        console.log('Applicant deleted successfully');
+        setSnackbarOpen(true);
+        setSnackbarMessage('Candidate deleted successfully');
+
+      } else {
+        console.error('Error deleting applicant:', response);
+      }
+    } catch (error) {
+      console.error('Error deleting applicant:', error);
+    }
+  };
 
 
 
 
-// --------------------------------------password Change--------------------------------
+  // --------------------------------------password Change--------------------------------
 
   const [passwordFormData, setPasswordFormData] = useState({
     oldPassword: '',
@@ -680,60 +753,57 @@ const handleSendMessage = async () => {
       [e.target.name]: e.target.value,
     });
   };
- 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
   };
 
-  console.log(passwordFormData)
 
- 
-const handleUpdate = async (e) => {
-  e.preventDefault();
 
-  try {
-    const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/Employee/change-Password', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${authData.token}`,
-      },
-      body: JSON.stringify(passwordFormData),
-    });
+  const handleUpdate = async (e) => {
+    e.preventDefault();
 
-    // console.log(passwordFormData);
-    // console.log(response);
-    if (response.ok) {
-      setSnackbarMessage('Password Updated sucessfully');
-      setSnackbarOpen(true);
-     
-      setPasswordFormData ({
-        oldPassword: '',
-        newPassword: '',
-        confirmPassword: '',
+    try {
+      const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/Employee/change-Password', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authData.token}`,
+        },
+        body: JSON.stringify(passwordFormData),
       });
-    } else {
-      console.error('Error adding candidate:', response);
-      setSnackbarMessage('Error while updating password');
+
+      // console.log(passwordFormData);
+      // console.log(response);
+      if (response.ok) {
+        setSnackbarMessage('Password Updated sucessfully');
+        setSnackbarOpen(true);
+
+        setPasswordFormData({
+          oldPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+        });
+      } else {
+        console.error('Error adding candidate:', response);
+        setSnackbarMessage('Error while updating password');
+        setSnackbarOpen(true);
+      }
+    } catch (error) {
+      console.error('Error updating Password:', error.message);
+      setSnackbarMessage('Error updating Password');
       setSnackbarOpen(true);
     }
-  } catch (error) {
-    console.error('Error updating Password:', error.message);
-    setSnackbarMessage('Error updating Password');
-    setSnackbarOpen(true);
   }
-}
 
   const handleLogout = () => {
     logout();
-    localStorage.removeItem('employerToken');
-    localStorage.removeItem('employerEmailId');
     navigate('/');
 
   };
 
- 
+
 
   const handleButtonClick = (content) => {
     setDisplayContent(content);
@@ -787,7 +857,8 @@ const handleUpdate = async (e) => {
     ExpiryDate: '',
   });
 
-  
+
+
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -795,11 +866,16 @@ const handleUpdate = async (e) => {
 
     setSnackbarOpen(false);
   };
+  useEffect(() => {
+    // Retrieve data from localStorage when the component mounts
+    const storedFormData = JSON.parse(localStorage.getItem('postJobFormData'));
+    if (storedFormData) {
+      setPostJobFormData(storedFormData);
+    }
+  }, []);
 
   const handlePostJobInputChange = (e) => {
     const { name, value } = e.target;
-
-    // Handle nested fields like salary and workingExperience
     if (name.includes('.')) {
       const [parentField, childField] = name.split('.');
       setPostJobFormData((prevData) => ({
@@ -808,6 +884,10 @@ const handleUpdate = async (e) => {
           ...prevData[parentField],
           [childField]: value,
         },
+      }));
+      localStorage.setItem('postJobFormData', JSON.stringify({
+        ...postJobFormData,
+        [name]: value,
       }));
     } else {
       setPostJobFormData({
@@ -837,7 +917,7 @@ const handleUpdate = async (e) => {
         console.log('Job successfully posted!', response);
 
         if (response.status === 200) {
-          
+
           setSnackbarSeverity('success');
           setSnackbarMessage('Job posted successfully');
           setSnackbarOpen(true);
@@ -872,6 +952,7 @@ const handleUpdate = async (e) => {
             PostedDate: '',
             ExpiryDate: '',
           });
+          localStorage.removeItem('postJobFormData');
 
         }
       } else {
@@ -890,7 +971,7 @@ const handleUpdate = async (e) => {
     }
   };
 
-// ----------------------------------------------------------
+  // ----------------------------------------------------------
   const StyledButton = styled(Button)({
     marginBottom: 8,
     width: '100%',
@@ -1023,7 +1104,16 @@ const handleUpdate = async (e) => {
                   handleInputChange={handleInputChange}
                 />
               )}
-
+              <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={2000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              >
+                <Alert severity={snackbarSeverity} onClose={handleSnackbarClose}>
+                  {snackbarMessage}
+                </Alert>
+              </Snackbar>
 
               {displayContent === 'Company Profile' && (
                 <CompanyProfileForm handleClose={() => setDisplayContent(null)} />
@@ -1207,13 +1297,14 @@ const handleUpdate = async (e) => {
                         >
                           <MenuItem value="">Select a recipient</MenuItem>
                           {applicantList.map((applicant) => (
-                            <MenuItem key={applicant.email} value={applicant.email}>
-                              {applicant.email} 
+                            <MenuItem key={applicant.candidateId} value={applicant.email}>
+                              {applicant.email}
                             </MenuItem>
                           ))}
                         </Select>
                       </FormControl>
                     </Grid>
+
                     <Grid item xs={12}>
                       <TextField
                         label="Message"
@@ -1228,23 +1319,41 @@ const handleUpdate = async (e) => {
                         margin="normal"
                       />
                     </Grid>
-                    {/* <Grid item xs={12}>
-                      <input
-                        accept="application/pdf, application/msword"
-                        style={{ display: 'none' }}
-                        id="file-upload"
-                        type="file"
-                        onChange={handleDocumentUpload}
-                      />
-                      <label htmlFor="file-upload">
-                        <IconButton color="primary" component="span">
-                          <FontAwesomeIcon icon={faUpload} />
-                        </IconButton>
-                      </label>
-                      {messageFormData.document && (
-                        <span>{messageFormData.document.name}</span>
-                      )}
-                    </Grid> */}
+                    <Grid item xs={12}>
+                      <TableContainer component={Paper}>
+                        <Table>
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>Name</TableCell>
+                              <TableCell>Email</TableCell>
+                              <TableCell>Phone Number</TableCell>
+                              <TableCell>Address</TableCell>
+                              <TableCell>Actions</TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {applicantList.map((applicant) => (
+                              <TableRow key={applicant.candidateId
+                              }>
+                                <TableCell>{applicant.Name}</TableCell>
+                                <TableCell>{applicant.email}</TableCell>
+                                <TableCell>{applicant.mobileNo}</TableCell>
+                                <TableCell>{applicant.address}</TableCell>
+                                <TableCell>
+                                  <IconButton onClick={() => handleEdit(applicant)}>
+                                    <FontAwesomeIcon icon={faEdit} />
+                                  </IconButton>
+                                  <IconButton onClick={() => handleDelete(applicant)}>
+                                    <FontAwesomeIcon icon={faTrash} />
+                                  </IconButton>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+
+                        </Table>
+                      </TableContainer>
+                    </Grid>
                   </Grid>
                   <Button
                     type="button"
@@ -1258,17 +1367,80 @@ const handleUpdate = async (e) => {
                   </Button>
                 </form>
               )}
+              <Dialog open={isEditFormOpen} onClose={() => setIsEditFormOpen(false)}>
+                <DialogTitle className=' text-gray-600'>Edit Candidate Data</DialogTitle>
+                <DialogContent>
+                
+                      <TextField
+                        label="First Name"
+                        variant="outlined"
+                        name="firstName"
+                        value={editedApplicant.firstName}
+                        onChange={(e) => setEditedApplicant({ ...editedApplicant, firstName: e.target.value })}
+                        fullWidth
+                        margin="normal"
+                        style={{ height: '50px' }}
+                        InputProps={{ style: { borderRadius: '10px' } }}
+                      />
+                    
+                  
+                      <TextField
+                        label="Last Name"
+                        variant="outlined"
+                        name="lastName"
+                        value={editedApplicant.lastName}
+                        onChange={(e) => setEditedApplicant({ ...editedApplicant, lastName: e.target.value })}
+                        fullWidth
+                        margin="normal"
+                        style={{ height: '50px' }}
+                        InputProps={{ style: { borderRadius: '10px' } }}
+                      />
+                      <TextField
+                        label="Email"
+                        variant="outlined"
+                        name="email"
+                        value={editedApplicant.email}
+                        onChange={(e) => setEditedApplicant({ ...editedApplicant, email: e.target.value })}
+                        fullWidth
+                        margin="normal"
+                        style={{ height: '50px' }}
+                        InputProps={{ style: { borderRadius: '10px' } }}
+                      />
+                      <TextField
+                        label="Phone Number "
+                        variant="outlined"
+                        name="phoneNumber"
+                        value={editedApplicant.phoneNumber}
+                        onChange={(e) => setEditedApplicant({ ...editedApplicant, phoneNumber: e.target.value })}
+                        fullWidth
+                        margin="normal"
+                        style={{ height: '50px' }}
+                        InputProps={{ style: { borderRadius: '10px' } }}
+                      />
+                      <TextField
+                        label="Address"
+                        variant="outlined"
+                        name="address"
+                        value={editedApplicant.address}
+                        onChange={(e) => setEditedApplicant({ ...editedApplicant, address: e.target.value })}
+                        fullWidth
+                        margin="normal"
+                        style={{ height: '50px' }}
+                        InputProps={{ style: { borderRadius: '10px' } }}
+                      />
+                    
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => setIsEditFormOpen(false)} color="primary">
+                    Cancel
+                  </Button>
+                  <Button onClick={handlePopUpUpdate} color="primary">
+                    Update
+                  </Button>
+                </DialogActions>
+              </Dialog>
 
-              <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={2000}
-                onClose={handleSnackbarClose}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-              >
-                <Alert severity={snackbarSeverity} onClose={handleSnackbarClose}>
-                  {snackbarMessage}
-                </Alert>
-              </Snackbar>
+
               {displayContent === 'Post A New job' && (
 
 
