@@ -769,13 +769,13 @@ function EmployerDashboard() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${authData.token}`,
+           Authorization: `Bearer ${authData.token}`,
         },
         body: JSON.stringify(passwordFormData),
       });
 
-      // console.log(passwordFormData);
-      // console.log(response);
+      console.log(passwordFormData);
+      console.log(response);
       if (response.ok) {
         setSnackbarMessage('Password Updated sucessfully');
         setSnackbarOpen(true);
@@ -785,6 +785,8 @@ function EmployerDashboard() {
           newPassword: '',
           confirmPassword: '',
         });
+        logout()
+        navigate('/employers/auth/login')
       } else {
         console.error('Error adding candidate:', response);
         setSnackbarMessage('Error while updating password');
@@ -1370,65 +1372,65 @@ function EmployerDashboard() {
               <Dialog open={isEditFormOpen} onClose={() => setIsEditFormOpen(false)}>
                 <DialogTitle className=' text-gray-600'>Edit Candidate Data</DialogTitle>
                 <DialogContent>
-                
-                      <TextField
-                        label="First Name"
-                        variant="outlined"
-                        name="firstName"
-                        value={editedApplicant.firstName}
-                        onChange={(e) => setEditedApplicant({ ...editedApplicant, firstName: e.target.value })}
-                        fullWidth
-                        margin="normal"
-                        style={{ height: '50px' }}
-                        InputProps={{ style: { borderRadius: '10px' } }}
-                      />
-                    
-                  
-                      <TextField
-                        label="Last Name"
-                        variant="outlined"
-                        name="lastName"
-                        value={editedApplicant.lastName}
-                        onChange={(e) => setEditedApplicant({ ...editedApplicant, lastName: e.target.value })}
-                        fullWidth
-                        margin="normal"
-                        style={{ height: '50px' }}
-                        InputProps={{ style: { borderRadius: '10px' } }}
-                      />
-                      <TextField
-                        label="Email"
-                        variant="outlined"
-                        name="email"
-                        value={editedApplicant.email}
-                        onChange={(e) => setEditedApplicant({ ...editedApplicant, email: e.target.value })}
-                        fullWidth
-                        margin="normal"
-                        style={{ height: '50px' }}
-                        InputProps={{ style: { borderRadius: '10px' } }}
-                      />
-                      <TextField
-                        label="Phone Number "
-                        variant="outlined"
-                        name="phoneNumber"
-                        value={editedApplicant.phoneNumber}
-                        onChange={(e) => setEditedApplicant({ ...editedApplicant, phoneNumber: e.target.value })}
-                        fullWidth
-                        margin="normal"
-                        style={{ height: '50px' }}
-                        InputProps={{ style: { borderRadius: '10px' } }}
-                      />
-                      <TextField
-                        label="Address"
-                        variant="outlined"
-                        name="address"
-                        value={editedApplicant.address}
-                        onChange={(e) => setEditedApplicant({ ...editedApplicant, address: e.target.value })}
-                        fullWidth
-                        margin="normal"
-                        style={{ height: '50px' }}
-                        InputProps={{ style: { borderRadius: '10px' } }}
-                      />
-                    
+
+                  <TextField
+                    label="First Name"
+                    variant="outlined"
+                    name="firstName"
+                    value={editedApplicant.firstName}
+                    onChange={(e) => setEditedApplicant({ ...editedApplicant, firstName: e.target.value })}
+                    fullWidth
+                    margin="normal"
+                    style={{ height: '50px' }}
+                    InputProps={{ style: { borderRadius: '10px' } }}
+                  />
+
+
+                  <TextField
+                    label="Last Name"
+                    variant="outlined"
+                    name="lastName"
+                    value={editedApplicant.lastName}
+                    onChange={(e) => setEditedApplicant({ ...editedApplicant, lastName: e.target.value })}
+                    fullWidth
+                    margin="normal"
+                    style={{ height: '50px' }}
+                    InputProps={{ style: { borderRadius: '10px' } }}
+                  />
+                  <TextField
+                    label="Email"
+                    variant="outlined"
+                    name="email"
+                    value={editedApplicant.email}
+                    onChange={(e) => setEditedApplicant({ ...editedApplicant, email: e.target.value })}
+                    fullWidth
+                    margin="normal"
+                    style={{ height: '50px' }}
+                    InputProps={{ style: { borderRadius: '10px' } }}
+                  />
+                  <TextField
+                    label="Phone Number "
+                    variant="outlined"
+                    name="phoneNumber"
+                    value={editedApplicant.phoneNumber}
+                    onChange={(e) => setEditedApplicant({ ...editedApplicant, phoneNumber: e.target.value })}
+                    fullWidth
+                    margin="normal"
+                    style={{ height: '50px' }}
+                    InputProps={{ style: { borderRadius: '10px' } }}
+                  />
+                  <TextField
+                    label="Address"
+                    variant="outlined"
+                    name="address"
+                    value={editedApplicant.address}
+                    onChange={(e) => setEditedApplicant({ ...editedApplicant, address: e.target.value })}
+                    fullWidth
+                    margin="normal"
+                    style={{ height: '50px' }}
+                    InputProps={{ style: { borderRadius: '10px' } }}
+                  />
+
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={() => setIsEditFormOpen(false)} color="primary">

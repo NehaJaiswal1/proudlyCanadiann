@@ -131,7 +131,7 @@ const JobDetails = () => {
                 </div >
 
             </div>
-            <div className="ml-24 mt-2 w-2/4 bg-white rounded-2xl overflow-hidden shadow-md  relative print-content job-description-card">
+            <div className="ml-20 mt-2 w-2/4 bg-white rounded-2xl overflow-hidden shadow-md  relative print-content job-description-card">
 
                 <div className="px-6 py-4">
                     <p className="text-gray-600 text-xl font-bold mt-3 text-left">

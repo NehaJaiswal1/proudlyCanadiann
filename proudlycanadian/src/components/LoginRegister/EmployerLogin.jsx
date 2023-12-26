@@ -60,7 +60,7 @@ function EmployerLogin() {
       }
   
       const responseData = await response.json();
-      console.log('API Response:', response);
+      console.log('API Response:', responseData);
   
       if (responseData.loggedInFrom == "Employee") {
         const comingToken = responseData.accessToken;

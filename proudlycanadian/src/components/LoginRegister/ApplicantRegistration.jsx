@@ -3,6 +3,7 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 import pagetitle from '../../images/page-title.jpg';
 import { TextField, Button, Container, Grid, Typography, Checkbox, FormControlLabel, Link } from '@mui/material';
+import { useNavigate } from 'react-router';
 
 
 function ApplicantRegistration() {
@@ -18,6 +19,7 @@ function ApplicantRegistration() {
         confirmPassword: ''
     });
 
+    const navigate = useNavigate();
     const [agreeTerms, setAgreeTerms] = useState(false);
     const [passwordMismatchError, setPasswordMismatchError] = useState('');
     const [agreeTermsError, setAgreeTermsError] = useState('');
@@ -59,8 +61,7 @@ function ApplicantRegistration() {
              return;
         }
         
-        // console.log('Form submitted:', formData);
-
+       
         try {
             const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/signUp', {
                 method: 'POST',
@@ -73,9 +74,10 @@ function ApplicantRegistration() {
 
             const responseData = await response.json();
             console.log('Registration successful:', responseData)
+            navigate('/thankyou');
         } catch (error) {
             console.error('An error occurred during registration:', error);
-            // Handle the error, e.g., show an error message to the user
+            
         }
     };
 

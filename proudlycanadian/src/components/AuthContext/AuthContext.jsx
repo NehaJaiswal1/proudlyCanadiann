@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
 
   const saveAuthData = ({ token, emailId }) => {
     console.log("from AuthContext", token, emailId);
-    setAuthData({ token, emailId });
+    setAuthData({ token, emailId});
   };
   const logout = () => {
    
