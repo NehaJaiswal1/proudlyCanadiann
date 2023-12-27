@@ -4,7 +4,7 @@ import { TextField, Button, Typography } from '@mui/material';
 
 const ChangePassword = ({ changePasswordFormData, handleChangePasswordInputChange, handleChangePasswordUpdate, handleChangePasswordCancel }) => (
     <form style={{
-        padding: '30px', borderRadius: '8px', width: '450px', margin: 'auto', height: '50%',
+        padding: '30px', borderRadius: '8px', width: '450px', margin: 'auto', height: '80%',
         boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.2), -2px 2px 10px rgba(0, 0, 0, 0.1)'
     }}>
 

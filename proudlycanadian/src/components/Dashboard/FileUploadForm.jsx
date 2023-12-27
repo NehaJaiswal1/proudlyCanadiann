@@ -142,7 +142,7 @@ return (
         <div style={{ marginRight: '8px', flex: 1 }}>
           <TextField
             label="Linkedin Profile"
-            name="linkedin profile"
+            name="linkedinProfile"
             value={fileUploadFormData.linkedinProfile}
             onChange={handleFileUploadInputChange}
             fullWidth

@@ -29,10 +29,11 @@ function AdvertiseAJob() {
           console.error('Fetched data is not an array:', fetchedData);
           return;
         }
+        console.log(fetchedData)
     
         const sortedData = fetchedData.sort((a, b) => {
-          const priceA = parseFloat(a.Price.replace('$', ''));
-          const priceB = parseFloat(b.Price.replace('$', ''));
+          const priceA = a && a.Price ? parseFloat(a.Price.replace('$', '')) : 0;
+          const priceB = b && b.Price ? parseFloat(b.Price.replace('$', '')) : 0;
           return priceB - priceA;
         });
         setSortedCardInfo(sortedData);
@@ -46,7 +47,7 @@ function AdvertiseAJob() {
   }, []);
   
   
-
+console.log(sortedCardInfo)
   const totalCards = sortedCardInfo.length;
   const totalPages = Math.ceil(totalCards / cardsPerPage);
 
@@ -73,8 +74,9 @@ function AdvertiseAJob() {
 
   const handleBuyNow = (card) => {
     setSelectedCard(card);
-    console.log(card);
-    navigate('/employers/auth/login');
+    // console.log(card);
+    // navigate('/employers/auth/login');
+    navigate('/employers/job/listing')
   };
 
   return (

@@ -44,6 +44,7 @@ import {
 import ProfileForm from './ProfileForm.jsx';
 import FileUploadForm from './FileUploadForm.jsx';
 import ChangePassword from './ChangePassword.jsx';
+import AppliedJobs from './AppliedJobs.jsx';
 
 
 function ApplicantDashboard() {
@@ -54,6 +55,11 @@ function ApplicantDashboard() {
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [allJobDetails, setAllJobDetails] = useState([]);
+  const [appliedJobs, setAppliedJobs] = useState([]);
+  const [appliedJobIds, setAppliedJobIds] = useState([]);
+  
+  const [isApplied, setIsApplied] = useState(false)
+
 
 
 
@@ -185,7 +191,6 @@ function ApplicantDashboard() {
   // -------------------------------------------Resume-------------
 
 
-
   const [fileUploadFormData, setFileUploadFormData] = useState({
     fullName: '',
     aboutMe: '',
@@ -238,57 +243,93 @@ function ApplicantDashboard() {
         },
       }));
     } else {
-     
+
       setFileUploadFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
       }));
     }
   };
-  const handleFileUpload = () => {
-    console.log('Uploading file:', fileUploadFormData);
-    setSelectedIcon(null);
+
+
+  const handleFileUpload = async () => {
+    try {
+      const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/Resume-Section/addResume', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authData.token}`,
+        },
+        body: JSON.stringify(fileUploadFormData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload resume');
+      }
+
+
+      const responseData = await response.json();
+      console.log('Upload response:', responseData);
+      console.log('Upload response:', fileUploadFormData);
+
+      setSnackbarSeverity('success');
+      setSnackbarMessage('Resume uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading resume:', error);
+      setSnackbarSeverity('error');
+      setSnackbarMessage('Error uploading resume');
+    } finally {
+
+      setSnackbarOpen(true);
+      setSelectedIcon(null);
+    }
   };
+
+
 
   const formatPostedDate = (dateString) => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    const formattedDate = new 
-    Date(dateString).toLocaleDateString('en-GB', options);
+    const formattedDate = new
+      Date(dateString).toLocaleDateString('en-GB', options);
     return formattedDate;
   };
-  
 
-const handleApply = async (jobId) => {
-  try {
-    console.log(jobId)
-    console.log(authData.token)
-    const response = await fetch(`https://job-portal-website-by5i.onrender.com/Job-Portal/apply-job/${jobId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${authData.token}`,
-      },
-    });
+// -------------------------------------------------------------------
 
-    if (!response.ok) {
-      throw new Error('Failed to apply for the job');
+
+  const handleApply = async (jobId) => {
+    try {
+      console.log(jobId)
+      console.log(authData.token)
+      const response = await fetch(`https://job-portal-website-by5i.onrender.com/Job-Portal/apply-job/${jobId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authData.token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to apply for the job');
+      }
+      console.log(response)
+
+
+
+      setSnackbarSeverity('success');
+      setSnackbarMessage('Job application submitted successfully');
+      setAppliedJobIds((prevIds) => [...prevIds, jobId]);
+      setIsApplied(true)
+    } catch (error) {
+      console.error('Error applying for the job:', error);
+      setSnackbarSeverity('error');
+      setSnackbarMessage('You have already applied for the job');
+    } finally {
+      setSnackbarOpen(true);
     }
-    console.log(response)
-    
+  };
 
 
-    setSnackbarSeverity('success');
-    setSnackbarMessage('Job application submitted successfully');
-  } catch (error) {
-    console.error('Error applying for the job:', error);
-    setSnackbarSeverity('error');
-    setSnackbarMessage('Error applying for the job');
-  } finally {
-    setSnackbarOpen(true);
-  }
-};
-
-  
   const handleViewJob = (jobId) => {
     console.log(jobId)
     navigate(`/job-details/${jobId}`);
@@ -338,41 +379,41 @@ const handleApply = async (jobId) => {
     else if (icon === 'FileUploadForm') {
       setFileUploadFormData({
         fullName: '',
-    aboutMe: '',
-    mobileNo: '',
-    email: '',
-    linkedinProfile: '',
-    githubProfile: '',
-    address: '',
-    highSchool: {
-      institute: '',
-      passoutYear: '',
-      percentage: '',
-    },
-    intermediate: {
-      institute: '',
-      passoutYear: '',
-      percentage: '',
+        aboutMe: '',
+        mobileNo: '',
+        email: '',
+        linkedinProfile: '',
+        githubProfile: '',
+        address: '',
+        highSchool: {
+          institute: '',
+          passoutYear: '',
+          percentage: '',
+        },
+        intermediate: {
+          institute: '',
+          passoutYear: '',
+          percentage: '',
 
-    },
-    ug: {
-      institute: '',
-      passoutYear: '',
-      percentage: '',
-    },
-    pg: {
-      institute: '',
-      passoutYear: '',
-      percentage: '',
+        },
+        ug: {
+          institute: '',
+          passoutYear: '',
+          percentage: '',
+        },
+        pg: {
+          institute: '',
+          passoutYear: '',
+          percentage: '',
 
-    },
-    skills: [],
-    achievements: '',
-    experienceLevel: 'fresher',
-    companyName: '',
-    workDetails: '',
-    fromYear: '',
-    toYear: '',
+        },
+        skills: [],
+        achievements: '',
+        experienceLevel: 'fresher',
+        companyName: '',
+        workDetails: '',
+        fromYear: '',
+        toYear: '',
 
       });
       setSelectedIcon('fileUploadForm');
@@ -386,21 +427,22 @@ const handleApply = async (jobId) => {
       setSelectedIcon('ChangePassword');
     }
     else if (icon === 'faSuitcase') {
+      
       try {
-        
+
         const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/allJobs', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
         });
-  
+
         console.log(response)
         if (!response.ok) {
           console.error('Failed to fetch jobs. Status:', response.status);
           return;
         }
-  
+
         const jobsData = await response.json();
         console.log('Fetched Jobs Data:', jobsData);
         setSelectedIcon('faSuitcase');
@@ -408,6 +450,32 @@ const handleApply = async (jobId) => {
 
       } catch (error) {
         console.error('Error fetching jobs:', error);
+      }
+    }
+    else if (icon === 'faBarChart') {
+      try {
+        const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/allJobsByApplicant', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authData.token}`,
+          },
+        });
+
+        if (!response.ok) {
+          console.error('Failed to fetch all jobs by applicant. Status:', response.status);
+          return;
+        }
+
+        const jobsData = await response.json();
+        console.log('Fetched All Jobs By Applicant Data:', jobsData);
+
+
+        setAppliedJobs(jobsData.appliedJobs);
+
+        setSelectedIcon('faBarChart');
+      } catch (error) {
+        console.error('Error fetching all jobs by applicant:', error);
       }
     }
   };
@@ -472,13 +540,13 @@ const handleApply = async (jobId) => {
               <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '10px' }}>
                 <IconButton>
                   <FontAwesomeIcon icon={faSuitcase} size='xs' className='text-blue-900' title="Jobs"
-                   onClick={() => handleIconClick('faSuitcase')} />
+                    onClick={() => handleIconClick('faSuitcase')} />
                 </IconButton>
               </Grid>
               {/* Report */}
               <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '10px' }}>
                 <IconButton>
-                  <FontAwesomeIcon icon={faBarChart} size='xs' className='text-blue-900' title="Status" />
+                  <FontAwesomeIcon icon={faBarChart} size='xs' className='text-blue-900' title="Applied Job" onClick={() => handleIconClick('faBarChart')} />
                 </IconButton>
               </Grid>
 
@@ -547,51 +615,59 @@ const handleApply = async (jobId) => {
               />
             )}
             {selectedIcon === 'faSuitcase' && (
-               <div className="p-4 ">
-               {allJobDetails.map((job, index) => (
-                 <div className='shadow-md rounded-2xl shadow-slate-400  hover-card bg-slate-50  
+              <div className="p-4 ">
+                {allJobDetails.map((job, index) => (
+                  <div className='shadow-md rounded-2xl shadow-slate-400  hover-card bg-slate-50  
                   hover:h-36'>
-                   <div key={index} className=" flex rounded-lg mt-4 mb-4 justify-between">
-                     <div className='flex ml-10 '>
-                       <img src='https://proudlycanadians.ca/assets_new/img/company-logo.png' className="w-12 rounded-full border-gray-800" alt="logo-img" />
-                       <div className='ml-10 '>
-                         <p className='font-bold mt-3 text-gray-600'>
-                           {job.jobTitle}</p>
-                         <div className=' mb-2 mt-5'>
-     
-                           <div className='flex space-x-6 '>
-                             <p className=' text-xs '>
-                               <FontAwesomeIcon icon={faMapMarker} className="mr-2 text-gray-600" />{job.City}</p>
-                             <p className='text-xs flex items-center'>
-                               <FontAwesomeIcon icon={faTags} className="mr-2 text-gray-600" /> {job.jobType}
-                             </p>
-                           </div>
-                           <div className='flex space-x-6 mb-5'>
-                           <p className='  text-xs flex items-center'>
-                             <FontAwesomeIcon icon={faIndustry} className="mr-2 text-gray-600" />
-                             {job.jobCategory}</p>
-                           <p className=' text-xs '> <FontAwesomeIcon icon={faClock} className="mr-2 text-gray-600" />  
-                           {formatPostedDate(job.PostedDate)}
-                           </p>
-                           </div>
-                         </div>
-                       </div>
-     
-                     </div>
-                     <div className='flex mt-5 '>
-                       <button className='bg-blue-900
-                        text-white p-2 rounded-full w-20 h-10
-                         m-4 text-xs font-bold
-                          hover:bg-red-600' 
-                        onClick={() => handleApply(`${job._id}`)}>APPLY</button>
-                       <button className='bg-blue-900 hover:bg-red-600 text-white 
+                    <div key={index} className=" flex rounded-lg mt-4 mb-4 justify-between">
+                      <div className='flex ml-10 '>
+                        <img src='https://proudlycanadians.ca/assets_new/img/company-logo.png' className="w-12 rounded-full border-gray-800" alt="logo-img" />
+                        <div className='ml-10 '>
+                          <p className='font-bold mt-3 text-gray-600'>
+                            {job.jobTitle}</p>
+                          <div className=' mb-2 mt-5'>
+
+                            <div className='flex space-x-6 '>
+                              <p className=' text-xs '>
+                                <FontAwesomeIcon icon={faMapMarker} className="mr-2 text-gray-600" />{job.City}</p>
+                              <p className='text-xs flex items-center'>
+                                <FontAwesomeIcon icon={faTags} className="mr-2 text-gray-600" /> {job.jobType}
+                              </p>
+                            </div>
+                            <div className='flex space-x-6 mb-5'>
+                              <p className='  text-xs flex items-center'>
+                                <FontAwesomeIcon icon={faIndustry} className="mr-2 text-gray-600" />
+                                {job.jobCategory}</p>
+                              <p className=' text-xs '> <FontAwesomeIcon icon={faClock} className="mr-2 text-gray-600" />
+                                {formatPostedDate(job.PostedDate)}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div className='flex mt-5 '>
+                        <button
+                          className={`bg-blue-900 text-white p-2 rounded-full w-20 h-10 m-4 text-xs font-bold ${appliedJobIds.includes(job._id) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-600'
+                            }`}
+                          onClick={() => handleApply(`${job._id}`)}
+                          disabled={appliedJobIds.includes(job._id)}
+                        >
+                          APPLY
+                        </button>
+
+                        <button className='bg-blue-900 hover:bg-red-600 text-white 
                         rounded-full w-32  h-10 m-4 text-xs font-bold' onClick={() => handleViewJob(`${job._id}`)}>VIEW JOB</button>
-     
-                     </div>
-                   </div>
-                 </div>
-               ))}
-             </div>
+
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {selectedIcon === 'faBarChart' && (
+              <AppliedJobs appliedJobs={appliedJobs} />
             )}
           </Paper>
         </Grid>
