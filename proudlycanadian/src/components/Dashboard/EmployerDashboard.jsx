@@ -9,9 +9,9 @@ import {
   DialogActions,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-// import { hotJobs } from '../../Data/HotJobs';
+import pc from '../../images/pc.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock, faEye, faPen, faUser, faUpload, faPaperPlane, faImage, faEnvelope, faBuilding, faThLarge, faUserAlt, faMessage, faPerson, faAdd, faUserCircle, faUserPlus, faTasks, faTasksAlt, faFile, faLock, faSignOut, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock, faEye, faPen, faUser, faUpload, faPaperPlane, faImage, faEnvelope, faBuilding, faThLarge, faUserAlt, faMessage, faPerson, faAdd, faUserCircle, faUserPlus, faTasks, faTasksAlt, faFile, faLock, faSignOut, faEdit, faTrash, faBell, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../AuthContext/AuthContext.jsx'
 
 
@@ -41,9 +41,6 @@ function ProfileInformation({ handleClose, handleInputChange }) {
         if (response.ok) {
           const data = await response.json();
           console.log('Response data as object:', data);
-          // const jsonDataString = JSON.stringify(data);
-          // console.log('Response data as string:', jsonDataString);
-
           setFormData({
             firstName: data.result.firstName,
             lastName: data.result.lastName,
@@ -65,17 +62,24 @@ function ProfileInformation({ handleClose, handleInputChange }) {
     fetchProfileData();
   }, []);
 
+  const handleCancel = () => {
+    handleClose();
+  };
+
 
 
 
 
   return (
-    // <form onSubmit={handleSubmit}>
-    <form>
-      <Typography variant="h6" style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+
+    <form style={{
+      padding: '30px', borderRadius: '8px', width: '450px', margin: 'auto', height: '100%',
+      boxShadow: '1px 0px 0px rgba(0, 0, 0, 0.2), -2px 2px 10px rgba(0, 0, 0, 0.1)'
+    }}>
+      <div className='text-center text-lg mb-8 font-bold text-gray-500 border-b-2 p-2'>
         <FontAwesomeIcon icon={faUser} style={{ marginRight: '8px' }} />
         Personal Information
-      </Typography>
+      </div>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -85,11 +89,15 @@ function ProfileInformation({ handleClose, handleInputChange }) {
             value={`${formData.firstName} `}
             // onChange={handleInputChange}
             required
+            InputLabelProps={{
+              style: { fontSize: 'small' },
+            }}
+
             InputProps={{
               readOnly: true,
               style: {
-                fontSize: '12px', padding: '1px',
-                borderRadius: '10px'
+                fontSize: 'small', padding: '1px',
+                borderRadius: '10px', height: '42px',
               },
             }}
           />
@@ -106,13 +114,18 @@ function ProfileInformation({ handleClose, handleInputChange }) {
             InputProps={{
               readOnly: true,
               style: {
-                fontSize: '12px', padding: '1px',
+                height: '42px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
               },
+
             }}
+            InputLabelProps={{
+              style: { fontSize: 'small' },
+            }}
+
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <TextField
             label="Email"
             type="email"
@@ -124,18 +137,22 @@ function ProfileInformation({ handleClose, handleInputChange }) {
             InputProps={{
               readOnly: true,
               style: {
-                fontSize: '12px', padding: '1px',
+                height: '42px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
               },
+
+            }}
+            InputLabelProps={{
+              style: { fontSize: 'small' },
             }}
           />
         </Grid>
 
 
         <Grid item xs={12}>
-          <Typography variant="h6" component="div" gutterBottom>
+          <div className=' text-sm  font-bold text-gray-500 border-b-1 p-2'>
             Company Information
-          </Typography>
+          </div>
         </Grid>
 
         <Grid item xs={12} sm={6}>
@@ -147,10 +164,15 @@ function ProfileInformation({ handleClose, handleInputChange }) {
             onChange={handleInputChange}
             required
             InputProps={{
+
               style: {
-                fontSize: '12px', padding: '1px',
+                height: '42px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
               },
+
+            }}
+            InputLabelProps={{
+              style: { fontSize: 'small' },
             }}
           />
         </Grid>
@@ -163,44 +185,53 @@ function ProfileInformation({ handleClose, handleInputChange }) {
             onChange={handleInputChange}
             required
             InputProps={{
+
               style: {
-                fontSize: '12px', padding: '1px',
+                height: '42px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
               },
+
+            }}
+            InputLabelProps={{
+              style: { fontSize: 'smaller' },
             }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Organisation Type"
-            name="organizationType"
-            fullWidth
-            value={formData.organizationType}
-            onChange={handleInputChange}
-            required
-            InputProps={{
-              style: {
-                fontSize: '12px', padding: '1px',
+          <FormControl fullWidth required>
+            <InputLabel style={{ fontSize: 'smaller' }}>Organisation Type</InputLabel>
+            <Select
+              label="Organisation Type"
+              name="organizationType"
+              value={formData.organizationType}
+              onChange={handleInputChange}
+              style={{
+                height: '42px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
-              },
-            }}
-          />
+              }}
+            >
+              <MenuItem value="public" >Public</MenuItem>
+              <MenuItem value="private" >Private</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Country"
-            name="country"
-            fullWidth
-            value={formData.country}
-            onChange={handleInputChange}
-            required
-            InputProps={{
-              style: {
-                fontSize: '12px', padding: '1px',
+          <FormControl fullWidth required>
+            <InputLabel style={{ fontSize: 'smaller' }}>Country</InputLabel>
+            <Select
+              label="Country"
+              name="country"
+              value={formData.country}
+              onChange={handleInputChange}
+              style={{
+                height: '42px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
-              },
-            }}
-          />
+              }}
+            >
+              <MenuItem value="Canada">Canada</MenuItem>
+
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -211,10 +242,15 @@ function ProfileInformation({ handleClose, handleInputChange }) {
             onChange={handleInputChange}
             required
             InputProps={{
+
               style: {
-                fontSize: '12px', padding: '1px',
+                height: '42px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
               },
+
+            }}
+            InputLabelProps={{
+              style: { fontSize: 'small' },
             }}
           />
         </Grid>
@@ -227,10 +263,15 @@ function ProfileInformation({ handleClose, handleInputChange }) {
             onChange={handleInputChange}
             required
             InputProps={{
+
               style: {
-                fontSize: '12px', padding: '1px',
+                height: '42px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
               },
+
+            }}
+            InputLabelProps={{
+              style: { fontSize: 'small' },
             }}
           />
         </Grid>
@@ -243,10 +284,15 @@ function ProfileInformation({ handleClose, handleInputChange }) {
             onChange={handleInputChange}
             required
             InputProps={{
+
               style: {
-                fontSize: '12px', padding: '1px',
+                height: '42px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
               },
+
+            }}
+            InputLabelProps={{
+              style: { fontSize: 'small' },
             }}
           />
         </Grid>
@@ -259,10 +305,15 @@ function ProfileInformation({ handleClose, handleInputChange }) {
             onChange={handleInputChange}
             required
             InputProps={{
+
               style: {
-                fontSize: '12px', padding: '1px',
+                height: '42px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
               },
+
+            }}
+            InputLabelProps={{
+              style: { fontSize: 'small' },
             }}
           />
         </Grid>
@@ -277,9 +328,13 @@ function ProfileInformation({ handleClose, handleInputChange }) {
             InputProps={{
               readOnly: true,
               style: {
-                fontSize: '12px', padding: '1px',
+                height: '42px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
               },
+
+            }}
+            InputLabelProps={{
+              style: { fontSize: 'small' },
             }}
           />
         </Grid>
@@ -292,10 +347,15 @@ function ProfileInformation({ handleClose, handleInputChange }) {
             onChange={handleInputChange}
             required
             InputProps={{
+
               style: {
-                fontSize: '12px', padding: '1px',
+                height: '42px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
               },
+
+            }}
+            InputLabelProps={{
+              style: { fontSize: 'small' },
             }}
           />
         </Grid>
@@ -311,20 +371,36 @@ function ProfileInformation({ handleClose, handleInputChange }) {
             onChange={handleInputChange}
             required
             InputProps={{
+
               style: {
-                fontSize: '12px', padding: '1px',
+                height: '62px', fontSize: 'small', padding: '1px',
                 borderRadius: '10px'
               },
+
+            }}
+            InputLabelProps={{
+              style: { fontSize: 'small' },
             }}
           />
         </Grid>
 
 
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           <Button type="submit" variant="contained" color="primary"
-            fullWidth onClick={handleClose}>
+            fullWidth onClick={handleClose} style={{ marginTop: '10px' }}>
 
             Save
+          </Button>
+        </Grid>
+        <Grid item xs={6}>
+          <Button
+            type="submit" variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleCancel}
+            style={{ marginTop: '10px' }}
+          >
+            Cancel
           </Button>
         </Grid>
 
@@ -334,84 +410,6 @@ function ProfileInformation({ handleClose, handleInputChange }) {
   );
 }
 
-
-function CompanyProfileForm({ handleClose }) {
-  const handleCompanyLogoChange = (e) => {
-    const file = e.target.files[0];
-    console.log('Selected company logo:', file);
-  };
-
-  return (
-    <form>
-      <Typography variant="h6" style={{ marginTop: '10px', display: 'flex', alignItems: 'center' }}>
-        <FontAwesomeIcon icon={faBuilding} style={{ marginRight: '8px' }} />
-        Company Details
-      </Typography>
-
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <TextField label="Company Name" variant="outlined" fullWidth margin="normal" />
-        </Grid>
-        <Grid item xs={6}>
-          <input
-            accept="image/*"
-            style={{ display: 'none' }}
-            id="company-logo-upload"
-            type="file"
-            onChange={handleCompanyLogoChange}
-          />
-          <label htmlFor="company-logo-upload" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Button
-              variant="outlined"
-              component="span"
-              startIcon={<FontAwesomeIcon icon={faUpload} />}
-              style={{ marginTop: '15px' }}
-            >
-              Upload
-            </Button>
-          </label>
-        </Grid>
-
-        <Grid item xs={6}>
-          <TextField label="Email" variant="outlined" fullWidth margin="normal" />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField label="Organisation Type" variant="outlined" fullWidth margin="normal" />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField label="Founded Date" type="date" variant="outlined" fullWidth margin="normal" />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField label="Phone" variant="outlined" fullWidth margin="normal" />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField label="Website" variant="outlined" fullWidth margin="normal" />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField label="Category" variant="outlined" fullWidth margin="normal" />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField label="No. of Employees" type="number" variant="outlined" fullWidth margin="normal" />
-        </Grid>
-      </Grid>
-
-      <Button
-        type="button"
-        variant="contained"
-        color="primary"
-        onClick={handleClose}
-        style={{
-          backgroundColor: 'rgb(30 58 138)',
-          borderRadius: '20px',
-          marginTop: '25px',
-          boxShadow: '2px 2px 2px rgb(30 58 140)',
-        }}
-      >
-        Save
-      </Button>
-    </form>
-  );
-}
 
 
 function EmployerDashboard() {
@@ -426,7 +424,6 @@ function EmployerDashboard() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
-  const [selectedImage, setSelectedImage] = useState(null);
   const [passwordMatch, setPasswordMatch] = useState(true);
 
   const [displayContent, setDisplayContent] = useState(null);
@@ -474,18 +471,18 @@ function EmployerDashboard() {
     setDisplayContent(content);
   };
   //----------------------------------------------- 
-  const handleProfilePictureChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setSelectedImage(imageUrl);
-    }
-  }
+  // const handleProfilePictureChange = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const imageUrl = URL.createObjectURL(file);
+  //     setSelectedImage(imageUrl);
+  //   }
+  // }
 
-  const handleProfilePictureSubmit = (event) => {
-    event.preventDefault();
+  // const handleProfilePictureSubmit = (event) => {
+  //   event.preventDefault();
 
-  };
+  // };
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -564,11 +561,7 @@ function EmployerDashboard() {
           address: '',
         });
       }
-      // else {
-      //   console.error('Error adding candidate');
-      //   setSnackbarMessage('Error adding candidate');
-      //   setSnackbarOpen(true);
-      // }
+
     } catch (error) {
       console.error('Error adding candidate:', error.message);
       setSnackbarMessage('Error adding candidate');
@@ -769,7 +762,7 @@ function EmployerDashboard() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-           Authorization: `Bearer ${authData.token}`,
+          Authorization: `Bearer ${authData.token}`,
         },
         body: JSON.stringify(passwordFormData),
       });
@@ -973,6 +966,11 @@ function EmployerDashboard() {
     }
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+    return formattedDate;
+  };
   // ----------------------------------------------------------
   const StyledButton = styled(Button)({
     marginBottom: 8,
@@ -991,17 +989,48 @@ function EmployerDashboard() {
   });
 
   return (
-    <div>
-      <Navbar />
-      <div style={{ height: '120px' }}></div>
+    <div className='bg-gray-100'>
 
-      <Container>
+      <div className='rounded-lg bg-white p-6 flex
+       relative border-b-4 border-blue-900'>
+        <img src={pc} className="h-8" alt="logo-img" />
+        {/* Notification Icon */}
+        <div className='absolute top-2 right-5  '>
+          <IconButton >
+            <FontAwesomeIcon icon={faBell} className=' text-sm text-blue-900' title="Notification" />
+          </IconButton>
+        </div>
+
+        {/* Profile Icon in the top right corner */}
+        <div className='absolute top-2 right-8 '>
+          <IconButton>
+            <FontAwesomeIcon icon={faUserCircle} size='2x' className='text-zinc-600' title="Profile" onClick={() => handleIconClick('profileForm')} />
+          </IconButton>
+        </div>
+
+        {/* Search Input Box and Icon */}
+        <div className='absolute top-2 right-24 flex items-center p-4'>
+          <input
+            type="text"
+            placeholder="Search..."
+            className="px-1 py-1 border border-gray-300 rounded-2xl focus:outline-none focus:border-zinc-500"
+
+          />
+          <FontAwesomeIcon icon={faSearch} size='lg' className='text-zinc-500 p-2' title="Search" />
+
+        </div>
+
+
+
+      </div>
+
+      <Container className='mt-5'>
         <Grid container spacing={3}>
 
           <Grid item xs={12} sm={3} >
             <Paper style={{ padding: 16, height: '100%' }}>
 
-              <form onSubmit={handleProfilePictureSubmit} className='text-center'>
+              {/* <form onSubmit={handleProfilePictureSubmit} className='text-center'>
                 <div className="mb-4 " onClick={() => document.getElementById("profile-picture-upload").click()}>
                   <label htmlFor="profile-picture-upload" className="cursor-pointer">
                     <div
@@ -1030,9 +1059,16 @@ function EmployerDashboard() {
                     onChange={handleProfilePictureChange}
                   />
                 </div>
-              </form>
+              </form> */}
 
               <div className='mt-5 '>
+                <StyledButton onClick={() => handleButtonClick('Profile Picture')}>
+                  <FontAwesomeIcon icon={faUserCircle} className='mr-2' />
+                  Profile
+                </StyledButton>
+              </div>
+
+              <div >
                 <StyledButton onClick={() => handleButtonClick1('Manage Jobs')}>
                   <FontAwesomeIcon icon={faTasksAlt} className='mr-3' />
                   Manage Jobs
@@ -1050,18 +1086,7 @@ function EmployerDashboard() {
                   Messages
                 </StyledButton>
               </div>
-              <div>
-                <StyledButton onClick={() => handleButtonClick('Profile Picture')}>
-                  <FontAwesomeIcon icon={faUserCircle} className='mr-2' />
-                  Profile
-                </StyledButton>
-              </div>
-              <div>
-                <StyledButton onClick={() => handleButtonClick('Company Profile')}>
-                  <FontAwesomeIcon icon={faUser} className='mr-2' />
-                  Company Profile
-                </StyledButton>
-              </div>
+
               <div>
                 <StyledButton onClick={() => handleButtonClick('Post A New job')}>
                   <FontAwesomeIcon icon={faAdd} className='mr-2' />
@@ -1106,53 +1131,60 @@ function EmployerDashboard() {
                   handleInputChange={handleInputChange}
                 />
               )}
-              <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={2000}
-                onClose={handleSnackbarClose}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-              >
-                <Alert severity={snackbarSeverity} onClose={handleSnackbarClose}>
-                  {snackbarMessage}
-                </Alert>
-              </Snackbar>
-
-              {displayContent === 'Company Profile' && (
-                <CompanyProfileForm handleClose={() => setDisplayContent(null)} />
-              )}
               {displayContent === 'Manage Jobs' && (
                 <div className='mt-10'>
-                  <Typography variant="h6" style={{ marginTop: '10px' }}>Manage Jobs</Typography>
-                  <table className="min-w-full font-serif">
+                  <div className='mt-10'>
+                    <div className="mx-auto" style={{ maxWidth: '400px' }}>
+                      <CardContent className="text-center">
+                        <Typography variant="h6" style={{ marginTop: '10px', fontWeight: 'bold', color: '#4B5563' }}>Manage Jobs</Typography>
+                      </CardContent>
+                    </div>
+                  </div>
+                  <table className="min-w-full border border-collapse border-gray-300" style={{ borderTop: 'none' }}>
                     <thead>
                       <tr>
-                        <th className="text-center p-3 border-b ">Title</th>
-                        <th className="text-center p-3 border-b ">Application</th>
-                        <th className="text-center p-3 border-b ">Date</th>
-                        <th className="text-center p-3 border-b ">Status</th>
-                        <th className="text-center p-3 border-b ">Action</th>
+                        <th className="text-center p-3 
+                         border-l-2 border-r-2 text-gray-500">Title</th>
+                        <th className="text-center p-3
+                          border-r-2 text-gray-500">Application</th>
+                        <th className="text-center p-3 
+                         border-r-2 text-gray-500">Date</th>
+                        <th className="text-center p-3 
+                         border-r-2 text-gray-500">Status</th>
+                        <th className="text-center p-3 
+                         border-r-2 text-gray-500">Action</th>
+                      </tr>
+                      <tr>
+                        <td colSpan="5" className="border-b "></td>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='mt-10'>
                       {hotJobs.map((job) => (
-                        <tr key={`${job._id}`} className='mb-10 border-b'>
-                          <td className="text-center p-3">
-                            {job.jobTitle}</td>
-                          <td className="text-center p-3">
-                            {job.jobIndustry}</td>
-                          <td className="text-center p-3">
-                            {job.PostedDate}</td>
-                          <td className="text-center p-3  ">
-                            <button className='bg-blue-900 rounded-full text-white p-3 text-xs font-bold'>
-                              {job.status}</button>
+                        <tr key={`${job._id}`} className='mb-10 '>
+                          <td className="text-center p-3  border-l border-r text-gray-500">
+                            {job.jobTitle}
                           </td>
-                          <td className="text-center p-3 space-x-4"><FontAwesomeIcon icon={faEye} /> <FontAwesomeIcon icon={faPen} /></td>
+                          <td className="text-center p-3  border-r text-gray-500">
+                            {job.jobIndustry}
+                          </td>
+                          <td className="text-center p-3  border-r text-gray-500">
+                            {formatDate(job.PostedDate)}
+                          </td>
+                          <td className="text-center p-3  border-r text-gray-500">
+                            <button className='bg-blue-900 rounded-full text-white p-3 text-xs font-bold'>
+                              {job.status}
+                            </button>
+                          </td>
+                          <td className="text-center p-3  border-r space-x-4">
+                            <FontAwesomeIcon icon={faEye} /> <FontAwesomeIcon icon={faPen} />
+                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
               )}
+
               {/* Add Candidate Form */}
               {displayContent === 'Add Candidate' && (
                 <form className='p-10  '>
@@ -1446,16 +1478,27 @@ function EmployerDashboard() {
               {displayContent === 'Post A New job' && (
 
 
-                <form onSubmit={handlePostJobSubmit}>
+                <form onSubmit={handlePostJobSubmit} style={{
+                  padding: '30px', borderRadius: '8px', width: '600px', margin: 'auto',
+                  boxShadow: '1px 0px 0px rgba(0, 0, 0, 0.2), -2px 2px 10px rgba(0, 0, 0, 0.1)'
+                }}>
+                  <div className='text-center text-lg mb-8 font-bold text-gray-500 border-b-2 p-2'>
+                    Post New Job
+                  </div>
                   <Grid container spacing={2}>
+
                     <Grid item xs={12} sm={6}>
                       <TextField
+
                         label="Company"
                         name="company"
                         fullWidth
                         value={postJobFormData.company}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
 
                           style: {
@@ -1474,6 +1517,9 @@ function EmployerDashboard() {
 
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           // readOnly: true,
                           style: {
@@ -1492,6 +1538,9 @@ function EmployerDashboard() {
                         value={postJobFormData.companyName}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           // readOnly: true,
                           style: {
@@ -1511,6 +1560,9 @@ function EmployerDashboard() {
                         value={postJobFormData.NOC}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px', padding: '1px',
@@ -1520,20 +1572,19 @@ function EmployerDashboard() {
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <TextField
-                        label="Job Type"
-                        name="jobType"
-                        fullWidth
-                        value={postJobFormData.jobType}
-                        onChange={handlePostJobInputChange}
-                        required
-                        InputProps={{
-                          style: {
-                            fontSize: '12px', padding: '1px',
-                            borderRadius: '10px'
-                          },
-                        }}
-                      />
+                      <FormControl fullWidth required>
+                        <InputLabel style={{ fontSize: '12px' }}>Job Type</InputLabel>
+                        <Select
+                          label="Job Type"
+                          name="jobType"
+                          value={postJobFormData.jobType}
+                          onChange={handlePostJobInputChange}
+                          style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
+                        >
+                          <MenuItem value="Full-Time">Full-Time</MenuItem>
+                          <MenuItem value="Part-Time">Part-Time</MenuItem>
+                        </Select>
+                      </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -1543,6 +1594,9 @@ function EmployerDashboard() {
                         value={postJobFormData.jobCategory}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px', padding: '1px',
@@ -1556,6 +1610,9 @@ function EmployerDashboard() {
                         label="Job Industry"
                         name="jobIndustry"
                         fullWidth
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         value={postJobFormData.jobIndustry}
                         onChange={handlePostJobInputChange}
                         required
@@ -1575,6 +1632,9 @@ function EmployerDashboard() {
                         value={postJobFormData.positionAvailable}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px', padding: '1px',
@@ -1591,6 +1651,9 @@ function EmployerDashboard() {
                         value={postJobFormData.workingExperience.min}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px',
@@ -1608,6 +1671,9 @@ function EmployerDashboard() {
                         value={postJobFormData.workingExperience.max}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px',
@@ -1625,6 +1691,9 @@ function EmployerDashboard() {
                         value={postJobFormData.salary.min}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px',
@@ -1642,6 +1711,9 @@ function EmployerDashboard() {
                         value={postJobFormData.salary.max}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px',
@@ -1659,6 +1731,9 @@ function EmployerDashboard() {
                         value={postJobFormData.skills}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           // readOnly: true,
                           style: {
@@ -1681,6 +1756,9 @@ function EmployerDashboard() {
                         value={postJobFormData.salaryPeriod}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px', padding: '1px',
@@ -1698,6 +1776,9 @@ function EmployerDashboard() {
                         value={postJobFormData.jobDescription}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px', padding: '1px',
@@ -1709,21 +1790,20 @@ function EmployerDashboard() {
 
 
                     <Grid item xs={12} sm={6}>
-                      <TextField
-                        label="Employement Type"
-                        type="text"
-                        name="EmployementType"
-                        fullWidth
-                        value={postJobFormData.EmployementType}
-                        onChange={handlePostJobInputChange}
-                        required
-                        InputProps={{
-                          style: {
-                            fontSize: '12px', padding: '1px',
-                            borderRadius: '10px'
-                          },
-                        }}
-                      />
+                      <FormControl fullWidth required>
+                        <InputLabel style={{ fontSize: '12px' }}>Employment Type</InputLabel>
+                        <Select
+                          label="Employment Type"
+                          name="EmploymentType"
+                          value={postJobFormData.EmploymentType}
+                          onChange={handlePostJobInputChange}
+                          style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
+                        >
+                          <MenuItem value="Permanent">Permanent</MenuItem>
+                          <MenuItem value="Temporary">Temporary</MenuItem>
+                          <MenuItem value="Contractual">Contractual</MenuItem>
+                        </Select>
+                      </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -1734,6 +1814,9 @@ function EmployerDashboard() {
                         value={postJobFormData.education}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px', padding: '1px',
@@ -1751,6 +1834,9 @@ function EmployerDashboard() {
                         value={postJobFormData.country}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px', padding: '1px',
@@ -1768,6 +1854,9 @@ function EmployerDashboard() {
                         value={postJobFormData.Province}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px', padding: '1px',
@@ -1785,6 +1874,9 @@ function EmployerDashboard() {
                         value={postJobFormData.City}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px', padding: '1px',
@@ -1802,6 +1894,9 @@ function EmployerDashboard() {
                         value={postJobFormData.location}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px', padding: '1px',
@@ -1811,21 +1906,19 @@ function EmployerDashboard() {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        label="Status"
-                        type="text"
-                        name="status"
-                        fullWidth
-                        value={postJobFormData.status}
-                        onChange={handlePostJobInputChange}
-                        required
-                        InputProps={{
-                          style: {
-                            fontSize: '12px', padding: '1px',
-                            borderRadius: '10px'
-                          },
-                        }}
-                      />
+                      <FormControl fullWidth required>
+                        <InputLabel style={{ fontSize: '12px' }}>Status</InputLabel>
+                        <Select
+                          label="Status"
+                          name="status"
+                          value={postJobFormData.status}
+                          onChange={handlePostJobInputChange}
+                          style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
+                        >
+                          <MenuItem value="Active">Active</MenuItem>
+                          <MenuItem value="Expired">Expired</MenuItem>
+                        </Select>
+                      </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -1833,6 +1926,9 @@ function EmployerDashboard() {
                         type="date"
                         name="PostedDate"
                         fullWidth
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         value={postJobFormData.PostedDate}
                         onChange={handlePostJobInputChange}
                         required
@@ -1853,6 +1949,9 @@ function EmployerDashboard() {
                         value={postJobFormData.ExpiryDate}
                         onChange={handlePostJobInputChange}
                         required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
                         InputProps={{
                           style: {
                             fontSize: '12px', padding: '1px',
@@ -1958,6 +2057,16 @@ function EmployerDashboard() {
                   </Button>
                 </form>
               )}
+              <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={2000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              >
+                <Alert severity={snackbarSeverity} onClose={handleSnackbarClose}>
+                  {snackbarMessage}
+                </Alert>
+              </Snackbar>
 
             </Paper>
           </Grid>

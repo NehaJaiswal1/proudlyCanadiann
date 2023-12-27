@@ -23,16 +23,6 @@ function EmployerLogin() {
 
   const [loginMessage, setLoginMessage] = useState(null);
 
-  // useEffect(() => {
-  //   const storedToken = localStorage.getItem('employerToken');
-  //   const storedEmailId = localStorage.getItem('employerEmailId');
-
-  //   if (storedToken && storedEmailId) {
-  //     auth.saveAuthData({ token: storedToken, emailId: storedEmailId });
-     
-  //   }
-  // }, [auth, navigate]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -43,105 +33,94 @@ function EmployerLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-      
-      const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/signIn', 
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-  
+
+      const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/signIn',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        setErrorMessage("Please Check Your Credentials before logging");
+        setSuccessMessage(null);
       }
-  
+
       const responseData = await response.json();
       console.log('API Response:', responseData);
-  
+
       if (responseData.loggedInFrom == "Employee") {
         const comingToken = responseData.accessToken;
         const comingEmailId = responseData.email;
         auth.saveAuthData({ token: comingToken, emailId: comingEmailId });
-  
+
         localStorage.setItem('employerToken', comingToken);
         localStorage.setItem('employerEmailId', comingEmailId);
-  
+
         setSuccessMessage('Successfully Logged In!');
         navigate('/employers/job/listing');
         setErrorMessage(null);
 
       }
-      if(responseData.loggedInFrom == "Applicant") {
+      if (responseData.loggedInFrom == "Applicant") {
         const comingToken = responseData.accessToken;
         const comingEmailId = responseData.email;
         auth.saveAuthData({ token: comingToken, emailId: comingEmailId });
-  
+
         localStorage.setItem('employerToken', comingToken);
         localStorage.setItem('employerEmailId', comingEmailId);
         setSuccessMessage('Successfully Logged In!');
         navigate('/applicant/job');
         setErrorMessage(null);
       }
-      
-      // else {
-      //   setLoginMessage('Invalid login for employer.');
-      //   setSuccessMessage(null); 
-      //   setErrorMessage('Error logging in. Please check your credentials.');
-      // }
-  
+      if(response.status == 404 || response.error == 'Please Enter Valid Information {Email or password is incorrect}'){
+        setErrorMessage("Please check your credentials or try again later");
+        setSuccessMessage(null);
+      }
+
     } catch (error) {
-      setSuccessMessage(null); 
-      setErrorMessage('Error submitting the form. Please try again.');
+      setSuccessMessage(null);
+      setErrorMessage('Error submitting the form. Please try again later');
       console.error('Error submitting form:', error);
     }
   };
-  
-  
-  // useEffect(() => {
-  //   if (successMessage == 'Successfully Logged In !') {
-  //     const timer = setTimeout(() => {
-  //       navigate('/employers/job/listing');
-  //     }, 3000); 
-  
-  //     return () => clearTimeout(timer); 
-  //   }
-  // }, [successMessage, navigate]);
-  
+
   const register = () => {
     navigate("/employers/auth/registration");
   };
-  
- 
+
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
-      <div style={{ height: '100px' }}></div>
+      <div style={{ height: '150px' }}></div>
 
       <div>
         <div >
-          <Container className='shadow-lg shadow-blue-900 p-8' maxWidth="sm" style={{ marginTop: '20px' }}>
+          <Container style={{
+            padding: '30px', borderRadius: '8px', width: '450px', margin: 'auto', height: '90%',
+            boxShadow: '1px 0px 0px rgba(0, 0, 0, 0.2), -2px 2px 10px rgba(0, 0, 0, 0.1)'
+          }}>
             <form onSubmit={handleSubmit}>
-              <Typography variant="h5" component="div" gutterBottom>
-                Welcome Employer
+              {successMessage && (
+                <Alert >
 
-                {successMessage && (
-                  <Alert >
-                    
-                     <strong>{successMessage}</strong>
-                  </Alert>
-                )}
-                {errorMessage && (
-                  <Alert severity="error">
-                 
+                  <strong>{successMessage}</strong>
+                </Alert>
+              )}
+              {errorMessage && (
+                <Alert severity="error">
+
                   <strong>{errorMessage}</strong>
                 </Alert>
-                )}
-              </Typography>
-
+              )}
+              <div className='text-center text-lg mb-8 font-bold text-gray-500 border-b-2 p-2'>
+                Login To Your Account
+              </div>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
@@ -151,6 +130,7 @@ function EmployerLogin() {
                     fullWidth
                     value={formData.email}
                     onChange={handleChange}
+
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -175,7 +155,7 @@ function EmployerLogin() {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2" align="center">
-                  <Link href="/forgot_password">Forget Password?</Link>
+                    <Link href="/forgot_password">Forget Password?</Link>
                   </Typography>
                 </Grid>
               </Grid>
