@@ -61,12 +61,12 @@ function Home() {
 
   }
 
-  
-const formatDate = (dateString) => {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-  const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
-  return formattedDate;
-};
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+    return formattedDate;
+  };
 
 
   useEffect(() => {
@@ -91,10 +91,10 @@ const formatDate = (dateString) => {
     navigate(`/job-details/${jobId}`);
   };
 
-  const handleQuickApply = (jobId) => {
+  // const handleQuickApply = (jobId) => {
 
-    navigate(`/employers/auth/login`)
-  };
+  //   navigate(`/employers/auth/login`)
+  // };
 
 
   // const hotJobs = () => {
@@ -299,7 +299,7 @@ const formatDate = (dateString) => {
             .filter((job) => job.jobSelectedType === selectedJobType)
             .slice(0, 5)
             .map((job) => (
-              <div className='shadow-md rounded-2xl shadow-slate-400  hover-card bg-slate-50'
+              <div className='shadow-md rounded-2xl shadow-slate-400 hover:border-2 hover:border-blue-900 bg-slate-50'
                 style={{ fontFamily: 'Rubik', fontWeight: '600' }}>
                 <div key={job._id} className=" flex rounded-lg mt-4 mb-4 justify-between" >
                   <div className='flex ml-10 '>
@@ -308,26 +308,25 @@ const formatDate = (dateString) => {
 
 
                     <div className='ml-8 '>
-                    <p className='p-2 m-2 text-md rounded-md font-semibold w-3/6 bg-green-100 text-green-800 ' >{job.jobType}/
-                          {job.EmployementType}</p>
-                      <p className='mt-3 ml-5 text-gray-700 font-bold' style={{ fontFamily: 'Rubik', fontWeight: '600', textTransform: 'capitalize' }}>
-                        {job.jobCategory.charAt(0).toUpperCase() + job.jobCategory.slice(1)}
+                      <p className='p-2 m-2 text-md rounded-md font-semibold w-3/6 bg-green-100 text-green-800 ' >{job.jobType}/
+                        {job.EmployementType}</p>
+                      <p className='mt-3 ml-5 text-gray-700 text-xl' style={{ fontFamily: 'Rubik', fontWeight: '600', textTransform: 'capitalize' }}>
+                        {job.jobTitle.charAt(0).toUpperCase() + job.jobTitle.slice(1)}
                       </p>
                       <div className='flex mt-3 mb-3'>
-                        <p className='p-2 m-2 text-xs font-semibold  text-gray-600'>
-                        <FontAwesomeIcon icon={faUser} className='mr-1' />
-                        {job._id}</p>
-                       
-                        <p className='p-2 m-2  text-xs font-semibold  text-gray-600'>
-                        <FontAwesomeIcon icon={faBookmark} className='mr-1' />
-                          {job.NOC}</p>
-                        <p className='p-2 m-2 text-xs font-semibold  text-gray-600'>
-                        <FontAwesomeIcon icon={faMapMarker} className='mr-1  text-gray-600' />
-                          {job.Province},{job.country
-                          }</p>
-                        <p className='p-2 m-2 text-xs font-semibold  text-gray-600'>
-                        <FontAwesomeIcon icon={faClock} className='mr-1' />
-                        {formatDate(job.PostedDate)}</p>
+                        <p className=' m-2 text-md font-semibold  text-gray-600'>
+                          <FontAwesomeIcon icon={faUser} className='mr-1 text-red-500' />
+                          ID-{job.jobId}</p>
+
+                        <p className=' m-2 text-md font-semibold  text-gray-600'>
+                          <FontAwesomeIcon icon={faBookmark} className='mr-1 text-red-500' />
+                          NOC-{job.NOC}</p>
+                        <p className=' m-2 text-md font-semibold  text-gray-600'>
+                          <FontAwesomeIcon icon={faMapMarker} className='mr-1  text-red-500' />
+                          {job.location},  {job.Province}</p>
+                        <p className=' m-2 text-md font-semibold  text-gray-600'>
+                          <FontAwesomeIcon icon={faClock} className='mr-1 text-red-500' />
+                          {formatDate(job.PostedDate)}</p>
                       </div>
                     </div>
 
@@ -335,7 +334,7 @@ const formatDate = (dateString) => {
                   <div className='flex mt-3'>
 
                     <button
-                      className='bg-blue-900 text-white p-2 rounded-2xl w-20 h-10 m-4 text-xs font-bold hover:bg-red-600'
+                      className='bg-blue-900 text-white p-2 rounded-2xl w-20 h-10 m-4 text-sm font-bold hover:bg-red-600'
                       onClick={() => handleApply(`${job._id}`)}
                     >
 
@@ -345,7 +344,7 @@ const formatDate = (dateString) => {
 
 
 
-                    <button className='bg-blue-900 hover:bg-red-600 text-white  rounded-2xl w-32  h-10 m-4 text-xs font-bold' onClick={() => handleQuickApply(job._id)}>QUICK APPLY</button>
+                    {/* <button className='bg-blue-900 hover:bg-red-600 text-white  rounded-2xl w-32  h-10 m-4 text-sm font-bold' onClick={() => handleQuickApply(job._id)}>QUICK APPLY</button> */}
 
                   </div>
                 </div>

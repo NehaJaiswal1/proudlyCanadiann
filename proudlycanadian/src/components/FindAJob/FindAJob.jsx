@@ -12,14 +12,16 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { hotJobs } from '../../Data/HotJobs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock, faSuitcase } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router';
+// import {dl} from '../../images/dl.jpeg';
+import cl from '../../images/dl.jpeg'
 
 
 
 const FindAJob = () => {
   useEffect(() => {
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
   }, []);
   const navigate = useNavigate();
   const [jobTitle, setJobTitle] = useState('');
@@ -60,16 +62,16 @@ const FindAJob = () => {
     const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
     return formattedDate;
   };
- 
+
   const handleApply = (jobId) => {
     console.log(jobId)
     navigate(`/job-details/${jobId}`);
   };
-  
-  const handleQuickApply = (jobId) => {
 
-    console.log(`Quick applying for job with ID ${jobId}`);
-  };
+  // const handleQuickApply = (jobId) => {
+
+  //   console.log(`Quick applying for job with ID ${jobId}`);
+  // };
 
 
   useEffect(() => {
@@ -149,7 +151,7 @@ const FindAJob = () => {
                 color="primary"
                 fullWidth
                 onClick={handleFindJob}
-                style={{ marginTop: '16px', height: '52px' }}
+                style={{ marginTop: '16px', height: '52px',backgroundColor:'#1e3a8a' }}
               >
                 Find Job
               </Button>
@@ -159,7 +161,7 @@ const FindAJob = () => {
       </div>
       <div className='flex p-10 space-x-5 '>
         <div className='shadow-md shadow-blue-900 
-        p-5 h-3/6 w-1/3 mt-8'>
+        p-5 h-3/6 w-1/4 mt-8'>
           <Grid className='' container spacing={1} justifyContent="center">
             <Grid item xs={12}>
               <FormControl fullWidth variant="outlined" margin="normal">
@@ -251,49 +253,59 @@ const FindAJob = () => {
                 color="primary"
                 fullWidth
                 onClick={handleSearch}
-                style={{ marginTop: '16px' }}
+                style={{ marginTop: '16px' , backgroundColor:'#1e3a8a'}}
               >
                 Search
               </Button>
             </Grid>
           </Grid>
         </div>
-        <div className="p-4 w-2/3 ">
+        <div className="p-4 w-3/4 ">
           {data.map((job, index) => (
-            <div className='shadow-md rounded-2xl shadow-slate-400  hover-card bg-slate-50  
-             hover:h-36'>
+            <div className='shadow-md rounded-2xl  shadow-slate-400 hover:border-2 hover:border-blue-900 bg-slate-50  
+             hover:h-46'>
               <div key={index} className=" flex rounded-lg mt-4 mb-4 justify-between">
-                <div className='flex ml-10 '>
-                  <img src='https://proudlycanadians.ca/assets_new/img/company-logo.png' className="w-12 rounded-full border-gray-800" alt="logo-img" />
-                   
-                  <div className='ml-10 text-gray-600'  style={{ fontFamily: 'Rubik', fontWeight: '600', textTransform: 'capitalize' }}>
-                    <p className='font-bold mt-3'>
-                      {job.jobTitle}</p>
-                    <div className=' mb-2 mt-5'>
+                <div className='flex ml-2'>
+                <img src={cl} className="w-20 h-20 mt-10 rounded-full border-gray-800" alt="logo-img" />
 
-                      <div className='flex space-x-6'>
-                        <p className=' text-xs '>
+                  <div className='ml-10 text-gray-600' style={{ fontFamily: 'Rubik', fontWeight: '600', textTransform: 'capitalize' }}>
+                    <p className='font-bold mt-3 text-xl'>
+                      {job.jobTitle}</p>
+
+                    <div className=' mb-2 mt-5'>
+                      <div className='flex space-x-5'>
+                        <p className='text-md'>
+                          <FontAwesomeIcon icon={faTag} className="mr-2 text-red-600" />
+                          ID-{job.jobId}</p>
+                          <p className='text-md'>
+                          <FontAwesomeIcon icon={faTag} className="mr-2 text-red-600" />
+                          NOC-{job.NOC}</p>
+                          <p className=' text-md '>
                           <FontAwesomeIcon icon={faMapMarker} className="mr-2 text-red-600" />{job.City}</p>
-                        <p className='text-xs flex items-center'>
-                          <FontAwesomeIcon icon={faTags} className="mr-2 text-red-600" /> {job.jobType}/
+                          <p className=' text-md '> <FontAwesomeIcon icon={faClock} className="mr-2 text-red-600" />{formatDate(job.PostedDate)}
+                        </p>
+                      </div>
+                      <div className='flex space-x-6'>
+                       
+                        <p className='text-md flex items-center'>
+                          <FontAwesomeIcon icon={faSuitcase} className="mr-2 text-red-600" /> {job.jobType}/
                           {job.EmployementType}
                         </p>
                       </div>
-                      <div className='flex space-x-6 mb-5'>
-                      <p className='  text-xs flex items-center'>
-                        <FontAwesomeIcon icon={faIndustry} className="mr-2 text-red-600" />
-                        {job.jobCategory}</p>
-                      <p className=' text-xs '> <FontAwesomeIcon icon={faClock} className="mr-2 text-red-600" />{formatDate(job.PostedDate)}
-                      </p>
+                      <div className='flex space-x-2 mb-5'>
+                        <p className='  text-md flex items-center'>
+                          <FontAwesomeIcon icon={faIndustry} className="mr-2 text-red-600" />
+                          {job.jobCategory}</p>
+                        
                       </div>
                     </div>
                   </div>
 
                 </div>
-                <div className='flex mt-5 '>
-                  <button className='bg-blue-900 text-white p-2 rounded-2xl w-20 h-10 m-4 text-xs font-bold hover:bg-red-600' 
-                   onClick={() => handleApply(`${job._id}`)}>APPLY</button>
-                  <button className='bg-blue-900 hover:bg-red-600 text-white  rounded-2xl w-32  h-10 m-4 text-xs font-bold' onClick={() => handleQuickApply(job.id)}>QUICK APPLY</button>
+                <div className='flex mt-5  '>
+                  <button className='bg-blue-900 text-white p-2 rounded-full w-28 h-10 m-4 text-sm font-bold hover:bg-red-600'
+                    onClick={() => handleApply(`${job._id}`)}>APPLY</button>
+                  {/* <button className='bg-blue-900 hover:bg-red-600 text-white  rounded-2xl w-32  h-10 m-4 text-xs font-bold' onClick={() => handleQuickApply(job.id)}>QUICK APPLY</button> */}
 
                 </div>
               </div>
