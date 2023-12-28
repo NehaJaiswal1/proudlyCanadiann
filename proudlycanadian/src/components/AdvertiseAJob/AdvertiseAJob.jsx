@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
@@ -8,8 +9,10 @@ import { cardInfo } from '../../Data/Data';
 import { useNavigate } from 'react-router-dom';
 import './AdvertiseAjob.css';
 import axios from 'axios';
+import { useAuth } from '../AuthContext/AuthContext.jsx'
 
 function AdvertiseAJob() {
+  const {  authData } = useAuth();
   useEffect(() => {
     window.scrollTo(0, 0); 
   }, []);
@@ -72,12 +75,33 @@ console.log(sortedCardInfo)
     });
   };
 
-  const handleBuyNow = (card) => {
-    setSelectedCard(card);
-    // console.log(card);
-    // navigate('/employers/auth/login');
-    navigate('/employers/job/listing')
+  const handleBuyNow = async (card) => {
+    try {
+     
+      const headers = {
+        Authorization: `Bearer ${authData.token}`,
+      };
+
+     
+      const response = await axios.post(
+        'https://job-portal-website-by5i.onrender.com/job-Portal/Employee/buy-Package/658d47354102117291211158',
+        {
+          cardId: card._id,
+          
+        },
+        {
+          headers: headers,
+        }
+      );
+
+      
+      console.log('API response:', response.data);
+      navigate('/employers/job/listing');
+    } catch (error) {
+      console.error('Error making API request:', error);
+    }
   };
+  
 
   return (
     <div>
@@ -128,6 +152,11 @@ console.log(sortedCardInfo)
               </Box>
             </Card>
           ))}
+           {/* <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleAlertClose}>
+        <Alert onClose={handleAlertClose} severity={alertSeverity}>
+          {alertMessage}
+        </Alert>
+      </Snackbar> */}
           {currentPage > 1 && (
             <FontAwesomeIcon icon={faBackward} style={{ fontSize: '24px', color: 'grey', cursor: 'pointer', position: 'absolute', left: '-40px', top: '50%' }} onClick={handlePrevPage} />
           )}
