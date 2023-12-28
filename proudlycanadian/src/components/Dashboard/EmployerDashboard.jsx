@@ -417,7 +417,7 @@ function ProfileInformation({ handleClose, handleInputChange }) {
 
 function EmployerDashboard() {
 
- 
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -435,6 +435,7 @@ function EmployerDashboard() {
   //   navigate('/employers');
   // };
   // 
+  const [packageDetails, setPackageDetails] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -743,6 +744,33 @@ function EmployerDashboard() {
       console.error('Error deleting applicant:', error);
     }
   };
+  // ----------------My Package----------------
+  const fetchPackageDetails = async () => {
+    try {
+      const headers = {
+        Authorization: `Bearer ${authData.token}`,
+      };
+
+      const response = await fetch(
+        'https://job-portal-website-by5i.onrender.com/job-Portal/Employee/my-Packages',
+        {
+          method: 'GET',
+          headers: headers,
+        }
+      );
+
+      if (!response.ok) {
+        console.error('Error fetching package details:', response.statusText);
+        return;
+      }
+
+      const responseData = await response.json();
+      console.log('Package details:', responseData);
+      setPackageDetails(responseData);
+    } catch (error) {
+      console.error('Error fetching package details:', error);
+    }
+  };
 
 
 
@@ -815,21 +843,19 @@ function EmployerDashboard() {
 
 
 
-  const handleButtonClick = (content) => {
+  const handleButtonClick = async (content) => {
     setDisplayContent(content);
+
     if (content === 'Profile Picture') {
       setIsProfileOpen(true);
     } else if (content === 'Messages') {
       fetchData();
       setIsProfileOpen(false);
     }
-    else if (content === 'Post A New job'){
-      if(count === 0){
-        count++
-        navigate('/employers')
-      }
-    }
-    else {
+    else if (content === 'My Packages') {
+      await fetchPackageDetails();
+      setIsProfileOpen(false);
+    } else {
       setIsProfileOpen(false);
     }
   };
@@ -1009,6 +1035,7 @@ function EmployerDashboard() {
     const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
     return formattedDate;
   };
+
   // ----------------------------------------------------------
   const StyledButton = styled(Button)({
     marginBottom: 8,
@@ -1517,517 +1544,541 @@ function EmployerDashboard() {
 
 
               {displayContent === 'Post A New job' && (
-                
-
-                  <form onSubmit={handlePostJobSubmit} style={{
-                    padding: '30px', borderRadius: '8px', width: '100%', maxWidth: '600px', margin: 'auto',
-                    boxShadow: '1px 0px 0px rgba(0, 0, 0, 0.2), -2px 2px 10px rgba(0, 0, 0, 0.1)'
-                  }}>
-                    <div className='text-center text-lg mb-8 font-bold text-gray-500 border-b-2 p-2'>
-                      Post New Job
-                    </div>
-                    <Grid container spacing={2}>
-
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-
-                          label="Company"
-                          name="company"
-                          fullWidth
-                          value={postJobFormData.company}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Job Title"
-                          name="jobTitle"
-                          fullWidth
-                          value={postJobFormData.jobTitle}
-
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            // readOnly: true,
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={6} sm={6}>
-                        <TextField
-                          label="Company Name"
-                          // type="companyName"
-                          name="companyName"
-                          fullWidth
-                          value={postJobFormData.companyName}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            // readOnly: true,
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
 
 
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="NOC"
-                          name="NOC"
-                          fullWidth
-                          value={postJobFormData.NOC}
+                <form onSubmit={handlePostJobSubmit} style={{
+                  padding: '30px', borderRadius: '8px', width: '100%', maxWidth: '600px', margin: 'auto',
+                  boxShadow: '1px 0px 0px rgba(0, 0, 0, 0.2), -2px 2px 10px rgba(0, 0, 0, 0.1)'
+                }}>
+                  <div className='text-center text-lg mb-8 font-bold text-gray-500 border-b-2 p-2'>
+                    Post New Job
+                  </div>
+                  <Grid container spacing={2}>
+
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+
+                        label="Company"
+                        name="company"
+                        fullWidth
+                        value={postJobFormData.company}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Job Title"
+                        name="jobTitle"
+                        fullWidth
+                        value={postJobFormData.jobTitle}
+
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          // readOnly: true,
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6}>
+                      <TextField
+                        label="Company Name"
+                        // type="companyName"
+                        name="companyName"
+                        fullWidth
+                        value={postJobFormData.companyName}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          // readOnly: true,
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
+                    </Grid>
+
+
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="NOC"
+                        name="NOC"
+                        fullWidth
+                        value={postJobFormData.NOC}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth required>
+                        <InputLabel style={{ fontSize: '12px' }}>Job Type</InputLabel>
+                        <Select
+                          label="Job Type"
+                          name="jobType"
+                          value={postJobFormData.jobType}
                           onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth required>
-                          <InputLabel style={{ fontSize: '12px' }}>Job Type</InputLabel>
-                          <Select
-                            label="Job Type"
-                            name="jobType"
-                            value={postJobFormData.jobType}
-                            onChange={handlePostJobInputChange}
-                            style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
-                          >
-                            <MenuItem value="Full-Time">Full-Time</MenuItem>
-                            <MenuItem value="Part-Time">Part-Time</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Job Category"
-                          name="jobCategory"
-                          fullWidth
-                          value={postJobFormData.jobCategory}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Job Industry"
-                          name="jobIndustry"
-                          fullWidth
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          value={postJobFormData.jobIndustry}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputProps={{
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Position Available"
-                          name="positionAvailable"
-                          fullWidth
-                          value={postJobFormData.positionAvailable}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Minimum Working Experience"
-                          name="workingExperience.min"
-                          fullWidth
-                          value={postJobFormData.workingExperience.min}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            style: {
-                              fontSize: '12px',
-                              padding: '1px',
-                              borderRadius: '10px',
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Maximum Working Experience"
-                          name="workingExperience.max"
-                          fullWidth
-                          value={postJobFormData.workingExperience.max}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            style: {
-                              fontSize: '12px',
-                              padding: '1px',
-                              borderRadius: '10px',
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Minimum Salary"
-                          name="salary.min"
-                          fullWidth
-                          value={postJobFormData.salary.min}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            style: {
-                              fontSize: '12px',
-                              padding: '1px',
-                              borderRadius: '10px',
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Maximum Salary"
-                          name="salary.max"
-                          fullWidth
-                          value={postJobFormData.salary.max}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            style: {
-                              fontSize: '12px',
-                              padding: '1px',
-                              borderRadius: '10px',
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Skills"
-                          name="skills"
-                          fullWidth
-                          value={postJobFormData.skills}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            // readOnly: true,
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
-                      {/* <Typography variant="h7" style={{ marginTop: '10px', display: 'flex', alignItems: 'center', fontWeight: 'bold', color: 'rgb(117, 117, 117)' }} >
+                          style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
+                        >
+                          <MenuItem value="Full-Time">Full-Time</MenuItem>
+                          <MenuItem value="Part-Time">Part-Time</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Job Category"
+                        name="jobCategory"
+                        fullWidth
+                        value={postJobFormData.jobCategory}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Job Industry"
+                        name="jobIndustry"
+                        fullWidth
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        value={postJobFormData.jobIndustry}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputProps={{
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Position Available"
+                        name="positionAvailable"
+                        fullWidth
+                        value={postJobFormData.positionAvailable}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Minimum Working Experience"
+                        name="workingExperience.min"
+                        fullWidth
+                        value={postJobFormData.workingExperience.min}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          style: {
+                            fontSize: '12px',
+                            padding: '1px',
+                            borderRadius: '10px',
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Maximum Working Experience"
+                        name="workingExperience.max"
+                        fullWidth
+                        value={postJobFormData.workingExperience.max}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          style: {
+                            fontSize: '12px',
+                            padding: '1px',
+                            borderRadius: '10px',
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Minimum Salary"
+                        name="salary.min"
+                        fullWidth
+                        value={postJobFormData.salary.min}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          style: {
+                            fontSize: '12px',
+                            padding: '1px',
+                            borderRadius: '10px',
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Maximum Salary"
+                        name="salary.max"
+                        fullWidth
+                        value={postJobFormData.salary.max}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          style: {
+                            fontSize: '12px',
+                            padding: '1px',
+                            borderRadius: '10px',
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Skills"
+                        name="skills"
+                        fullWidth
+                        value={postJobFormData.skills}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          // readOnly: true,
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
+                    </Grid>
+                    {/* <Typography variant="h7" style={{ marginTop: '10px', display: 'flex', alignItems: 'center', fontWeight: 'bold', color: 'rgb(117, 117, 117)' }} >
 
                       Salary
                     </Typography> */}
 
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Salary Period"
-                          name="salaryPeriod"
-                          fullWidth
-                          value={postJobFormData.salaryPeriod}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Job Description"
-                          name="jobDescription"
-                          fullWidth
-                          value={postJobFormData.jobDescription}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
-
-
-                      <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth required>
-                          <InputLabel style={{ fontSize: '12px' }}>Employment Type</InputLabel>
-                          <Select
-                            label="Employment Type"
-                            name="EmployementType"
-                            value={postJobFormData.EmployementType}
-                            onChange={handlePostJobInputChange}
-                            style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
-                          >
-                            <MenuItem value="Permanent">Permanent</MenuItem>
-                            <MenuItem value="Temporary">Temporary</MenuItem>
-                            <MenuItem value="Contractual">Contractual</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Education"
-                          type="text"
-                          name="education"
-                          fullWidth
-                          value={postJobFormData.education}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth required>
-                          <InputLabel style={{ fontSize: '12px' }}>Country</InputLabel>
-                          <Select
-                            label="Country"
-                            name="country"
-                            value={postJobFormData.country}
-                            onChange={handlePostJobInputChange}
-                            style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
-
-                          >
-                            <MenuItem value="Canada">Canada</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth required>
-                          <InputLabel style={{ fontSize: '12px' }}>Province</InputLabel>
-                          <Select
-                            label="Province"
-                            name="province"
-                            value={postJobFormData.province}
-                            onChange={handlePostJobInputChange}
-                            style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
-                          >
-                            {provincesInCanada.map((province) => (
-                              <MenuItem key={province} value={province}>
-                                {province}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="City"
-                          type="text"
-                          name="City"
-                          fullWidth
-                          value={postJobFormData.City}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Location"
-                          type="text"
-                          name="location"
-                          fullWidth
-                          value={postJobFormData.location}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                          InputProps={{
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth required>
-                          <InputLabel style={{ fontSize: '12px' }}>Status</InputLabel>
-                          <Select
-                            label="Status"
-                            name="status"
-                            value={postJobFormData.status}
-                            onChange={handlePostJobInputChange}
-                            style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
-                          >
-                            <MenuItem value="Active">Active</MenuItem>
-                            <MenuItem value="Expired">Expired</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Posted Date"
-                          type="date"
-                          name="PostedDate"
-                          fullWidth
-                          value={postJobFormData.PostedDate}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputProps={{
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                          }}
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                        />
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          label="Expiry Date"
-                          type="date"
-                          name="ExpiryDate"
-                          fullWidth
-                          value={postJobFormData.ExpiryDate}
-                          onChange={handlePostJobInputChange}
-                          required
-                          InputProps={{
-                            style: {
-                              fontSize: '12px', padding: '1px',
-                              borderRadius: '10px'
-                            },
-                            min: getCurrentDate(),
-                          }}
-                          InputLabelProps={{
-                            style: { fontSize: '12px' },
-                          }}
-                        />
-                      </Grid>
-
-
-                      <Grid item xs={6} sm={6}>
-                        <Button type="submit" variant="contained"
-                          color="primary"
-
-                          onClick={handlePostJobSubmit}>
-
-                          Post Job
-                        </Button>
-                      </Grid>
-
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Salary Period"
+                        name="salaryPeriod"
+                        fullWidth
+                        value={postJobFormData.salaryPeriod}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
                     </Grid>
 
-                  </form>
-                
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Job Description"
+                        name="jobDescription"
+                        fullWidth
+                        value={postJobFormData.jobDescription}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
+                    </Grid>
+
+
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth required>
+                        <InputLabel style={{ fontSize: '12px' }}>Employment Type</InputLabel>
+                        <Select
+                          label="Employment Type"
+                          name="EmployementType"
+                          value={postJobFormData.EmployementType}
+                          onChange={handlePostJobInputChange}
+                          style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
+                        >
+                          <MenuItem value="Permanent">Permanent</MenuItem>
+                          <MenuItem value="Temporary">Temporary</MenuItem>
+                          <MenuItem value="Contractual">Contractual</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Education"
+                        type="text"
+                        name="education"
+                        fullWidth
+                        value={postJobFormData.education}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth required>
+                        <InputLabel style={{ fontSize: '12px' }}>Country</InputLabel>
+                        <Select
+                          label="Country"
+                          name="country"
+                          value={postJobFormData.country}
+                          onChange={handlePostJobInputChange}
+                          style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
+
+                        >
+                          <MenuItem value="Canada">Canada</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth required>
+                        <InputLabel style={{ fontSize: '12px' }}>Province</InputLabel>
+                        <Select
+                          label="Province"
+                          name="province"
+                          value={postJobFormData.province}
+                          onChange={handlePostJobInputChange}
+                          style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
+                        >
+                          {provincesInCanada.map((province) => (
+                            <MenuItem key={province} value={province}>
+                              {province}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="City"
+                        type="text"
+                        name="City"
+                        fullWidth
+                        value={postJobFormData.City}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Location"
+                        type="text"
+                        name="location"
+                        fullWidth
+                        value={postJobFormData.location}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                        InputProps={{
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <FormControl fullWidth required>
+                        <InputLabel style={{ fontSize: '12px' }}>Status</InputLabel>
+                        <Select
+                          label="Status"
+                          name="status"
+                          value={postJobFormData.status}
+                          onChange={handlePostJobInputChange}
+                          style={{ fontSize: '12px', padding: '1px', borderRadius: '10px' }}
+                        >
+                          <MenuItem value="Active">Active</MenuItem>
+                          <MenuItem value="Expired">Expired</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Posted Date"
+                        type="date"
+                        name="PostedDate"
+                        fullWidth
+                        value={postJobFormData.PostedDate}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputProps={{
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                        }}
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        label="Expiry Date"
+                        type="date"
+                        name="ExpiryDate"
+                        fullWidth
+                        value={postJobFormData.ExpiryDate}
+                        onChange={handlePostJobInputChange}
+                        required
+                        InputProps={{
+                          style: {
+                            fontSize: '12px', padding: '1px',
+                            borderRadius: '10px'
+                          },
+                          min: getCurrentDate(),
+                        }}
+                        InputLabelProps={{
+                          style: { fontSize: '12px' },
+                        }}
+                      />
+                    </Grid>
+
+
+                    <Grid item xs={6} sm={6}>
+                      <Button type="submit" variant="contained"
+                        color="primary"
+
+                        onClick={handlePostJobSubmit}>
+
+                        Post Job
+                      </Button>
+                    </Grid>
+
+                  </Grid>
+
+                </form>
+
 
               )}
-              {displayContent === 'My Packages' && (
-                <form className='p-10  text-center'>
-                  <Typography variant="h6" >
-                    Please Click Below To Buy A Job Posting Package
-                  </Typography>
-                  <Button type="submit" onClick={handlePackage}
-                    variant="contained"
-                    color="primary"
-                    style={{ backgroundColor: 'rgb(30 58 138)', borderRadius: '20px', marginTop: '25px', boxShadow: '2px 2px 2px rgb(30 58 140)' }}>
-                    Packages & Plans
-                  </Button>
-                </form>
+              {displayContent === 'My Packages' && packageDetails && (
+                <div>
+                  <form className='p-10 text-center'>
+                    <Typography variant="h6">
+                      Please Click Below To Buy A Job Posting Package
+                    </Typography>
+                    <Button
+                      type="submit"
+                      onClick={handlePackage}
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        backgroundColor: 'rgb(30 58 138)',
+                        borderRadius: '20px',
+                        marginTop: '25px',
+                        boxShadow: '2px 2px 2px rgb(30 58 140)',
+                      }}
+                    >
+                      Packages & Plans
+                    </Button>
+                  </form>
+
+                  {/* Display package details in a card */}
+                  {packageDetails.Packages.map((packageDetail) => (
+                    <Card key={packageDetail._id}>
+                      <CardContent>
+                        <Typography variant="h6">Package Details</Typography>
+                        <Typography>Price: {packageDetail.Price}</Typography>
+                        <Typography>Expiry Date: {packageDetail.expiryDate}</Typography>
+                        <Typography>Number of Days: {packageDetail.noOfDays}</Typography>
+                        <Typography>Number of Posts: {packageDetail.noOfPosts}</Typography>
+                        {/* Add more package details as needed */}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               )}
 
               {displayContent === 'Change Password' && (
