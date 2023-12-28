@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faBars, faHomeAlt, faHomeUser, faHomeLg } from '@fortawesome/free-solid-svg-icons';
 import pc from '../images/pc.png';
 
 const Navbar = () => {
@@ -19,80 +19,87 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-lg fixed w-full z-10">
-      <div className="bg-white shadow-lg h-15 border-b-4 border-blue-900">
+      <div className="bg-white shadow-lg h-15
+       border-b-4 border-blue-900">
         <div className="mx-auto ">
-          <div className="flex justify-between items-center py-2">
+          <div className="flex justify-between items-center ">
             <div className="lg:flex items-center hidden md:flex">
-              <Link to="/" title="Proudly Canadians" rel="home">
-                <img src={pc} className="h-15 p-2" alt="logo-img" />
+              <Link to="/" title="Proudly Canadians">
+                <img src={pc} className="h-20 ml-10 p-4" alt="logo-img" />
               </Link>
             </div>
-            <div className="lg:flex items-center space-x-3 hidden md:flex">
+            <div className="lg:flex items-center space-x-2 hidden md:flex">
               {/* Navigation links for large screens */}
               <Link
                 to="/"
-                className="text-xl text-blue-900 hover:text-black"
+                className="font-semibold p-2 text-red-700   hover:bg-blue-900 hover:text-white hover:rounded-lg"
               >
-                <FontAwesomeIcon icon={faHome} />
+                <FontAwesomeIcon icon={faHomeLg} size='xl' />
               </Link>
               <Link
-                to="/aboutus"
-                className="font-bold text-blue-900 text-sm hover:text-black"
+                to="/aboutus" style={{  fontFamily: 'Rubik',fontWeight: '600' }} 
+                className=" p-2 text-blue-900   hover:bg-blue-900 hover:text-white hover:rounded-lg"
               >
-                ABOUT US
+                About Us
               </Link>
               <Link
-                to="/jobs"
-                className="font-bold text-blue-900 text-sm hover:text-black"
+                to="/jobs" style={{  fontFamily: 'Rubik',fontWeight: '600' }}
+                className="font-semibold p-2 text-blue-900   hover:bg-blue-900 hover:text-white hover:rounded-lg"
               >
-                FIND A JOB
+                Find A Job
               </Link>
               <Link
                 to="/job-fair"
-                className="font-bold text-blue-900 text-sm hover:text-black"
+                style={{  fontFamily: 'Rubik',fontWeight: '600' }}
+                className="font-semibold p-2 text-blue-900   hover:bg-blue-900 hover:text-white hover:rounded-lg"
               >
-                JOB FAIRS
+                Job Fairs
               </Link>
               <Link
                 to="/virtualjob"
-                className="font-bold text-blue-900 text-sm hover:text-black"
+                style={{  fontFamily: 'Rubik',fontWeight: '600' }}
+                className="font-semibold p-2 text-blue-900   hover:bg-blue-900 hover:text-white hover:rounded-lg"
               >
-                VIRTUAL JOBS
+                Virtual Jobs
               </Link>
               <Link
                 to="/contact"
-                className="font-bold text-blue-900 text-sm hover:text-black"
+                style={{  fontFamily: 'Rubik',fontWeight: '600' }}
+                className="font-semibold p-2 text-blue-900   hover:bg-blue-900 hover:text-white hover:rounded-lg"
               >
-                CONTACT US
+                Contact
               </Link>
               <Link
                 to="/employers"
-                className="text-white font-bold text-sm bg-black px-4 py-2 rounded-lg hover:bg-red-500"
+                style={{  fontFamily: 'Rubik',fontWeight: '600' }}
+                className="text-white font-semibold 
+                 bg-gray-500 px-4 py-2 rounded-lg hover:bg-red-500"
               >
-                ADVERTISE A JOB
+                Advertise A Job
               </Link>
               <div className="group">
-                <button className="text-white bg-blue-900 px-4 py-2 text-sm font-bold rounded-lg hover:bg-red-500 mr-4">
-                  PROFILE
+                <button style={{  fontFamily: 'Rubik',fontWeight: '600' }}className="text-white bg-blue-900 px-4 py-2  rounded-lg hover:bg-red-500 mr-4">
+                  Login/Register
                 </button>
-                <ul className="absolute hidden bg-white shadow-lg space-y-2 py-2 px-4 right-0 rounded-xl group-hover:block">
-                  <li className="hover:text-white hover:bg-blue-900 hover:rounded-lg p-1 text-sm font-bold">
+                <ul  style={{  fontFamily: 'Rubik',fontWeight: '600' }} className="absolute hidden bg-white shadow-lg text-gray-600 space-y-3  py-5 px-6 right-4 rounded-lg group-hover:block">
+                  <li className="hover:text-white hover:bg-blue-900 
+                  hover:rounded-lg 
+                   px-2 py-2">
                     <Link to="/employers/auth/registration">
-                      EMPLOYER REGISTRATION
+                      Employer 
                     </Link>
                   </li>
-                  <li className="hover:text-white hover:bg-blue-900 hover:rounded-lg p-1 text-sm font-bold">
-                    <Link to="/employers/auth/login">EMPLOYER LOGIN</Link>
+                  <li className="hover:text-white hover:bg-blue-900 
+                  hover:rounded-lg px-2 py-2 ">
+                    <Link to="/auth/registration">Applicant </Link>
                   </li>
-                  <li className="hover:text-white hover:bg-blue-900 hover:rounded-lg p-1 text-sm font-bold">
-                    <Link to="/auth/registration">APPLICANT REGISTRATION</Link>
+                  <li className="hover:text-white hover:bg-blue-900 
+                  hover:rounded-lg px-2 py-2 ">
+                    <Link to="/employers/auth/login">Login</Link>
                   </li>
-                  <li className="hover:text-white hover:bg-blue-900 hover:rounded-lg p-1 text-sm font-bold">
-                    <Link to="/auth/login">APPLICANT LOGIN</Link>
-                  </li>
-                  <li className="hover:text-white hover:bg-blue-900 hover:rounded-lg p-1 text-sm font-bold">
-                    <Link to="/forgot_password">PASSWORD RESET</Link>
-                  </li>
+                 
+                 
+                  
                 </ul>
               </div>
             </div>

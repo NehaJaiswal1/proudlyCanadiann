@@ -55,6 +55,11 @@ const FindAJob = () => {
     console.log('Searching for a job...');
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+    return formattedDate;
+  };
  
   const handleApply = (jobId) => {
     console.log(jobId)
@@ -260,23 +265,25 @@ const FindAJob = () => {
               <div key={index} className=" flex rounded-lg mt-4 mb-4 justify-between">
                 <div className='flex ml-10 '>
                   <img src='https://proudlycanadians.ca/assets_new/img/company-logo.png' className="w-12 rounded-full border-gray-800" alt="logo-img" />
-                  <div className='ml-10 '>
+                   
+                  <div className='ml-10 text-gray-600'  style={{ fontFamily: 'Rubik', fontWeight: '600', textTransform: 'capitalize' }}>
                     <p className='font-bold mt-3'>
                       {job.jobTitle}</p>
                     <div className=' mb-2 mt-5'>
 
                       <div className='flex space-x-6'>
                         <p className=' text-xs '>
-                          <FontAwesomeIcon icon={faMapMarker} className="mr-2" />{job.City}</p>
+                          <FontAwesomeIcon icon={faMapMarker} className="mr-2 text-red-600" />{job.City}</p>
                         <p className='text-xs flex items-center'>
-                          <FontAwesomeIcon icon={faTags} className="mr-2" /> {job.jobType}
+                          <FontAwesomeIcon icon={faTags} className="mr-2 text-red-600" /> {job.jobType}/
+                          {job.EmployementType}
                         </p>
                       </div>
                       <div className='flex space-x-6 mb-5'>
                       <p className='  text-xs flex items-center'>
-                        <FontAwesomeIcon icon={faIndustry} className="mr-2" />
+                        <FontAwesomeIcon icon={faIndustry} className="mr-2 text-red-600" />
                         {job.jobCategory}</p>
-                      <p className=' text-xs '> <FontAwesomeIcon icon={faClock} className="mr-2" /> {job.postedDate}
+                      <p className=' text-xs '> <FontAwesomeIcon icon={faClock} className="mr-2 text-red-600" />{formatDate(job.PostedDate)}
                       </p>
                       </div>
                     </div>
