@@ -7,14 +7,13 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Box
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import pc from '../../images/pc.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock, faEye, faPen, faUser, faUpload, faPaperPlane, faImage, faEnvelope, faBuilding, faThLarge, faUserAlt, faMessage, faPerson, faAdd, faUserCircle, faUserPlus, faTasks, faTasksAlt, faFile, faLock, faSignOut, faEdit, faTrash, faBell, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock, faEye, faPen, faUser, faUpload, faPaperPlane, faImage, faEnvelope, faBuilding, faThLarge, faUserAlt, faMessage, faPerson, faAdd, faUserCircle, faUserPlus, faTasks, faTasksAlt, faFile, faLock, faSignOut, faEdit, faTrash, faBell, faSearch, faCircle, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../AuthContext/AuthContext.jsx'
-import { Bar, Line } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
 
 let count = 0;
 
@@ -41,7 +40,7 @@ function ProfileInformation({ handleClose, handleInputChange }) {
           headers: {
             Authorization: `Bearer ${authData.token}`,
           },
-        }); 
+        });
         console.log(response)
         if (response.ok) {
           const data = await response.json();
@@ -424,6 +423,10 @@ function EmployerDashboard() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const [sortedCardInfo, setSortedCardInfo] = useState([]);
+  const cardsPerPage = 3;
+  const [currentPage, setCurrentPage] = useState(1);
   const { logout, authData } = useAuth();
   const navigate = useNavigate();
   // ----------------------------fake navigation--------------------------------
@@ -442,9 +445,8 @@ function EmployerDashboard() {
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const [passwordMatch, setPasswordMatch] = useState(true);
-  
 
-  const [displayContent, setDisplayContent] = useState('');
+  const [displayContent, setDisplayContent] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [displayCandidates, setDisplayCandidates] = useState(false);
@@ -453,63 +455,6 @@ function EmployerDashboard() {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-
-  //----------------------------------------------------------------------------------------------
-  //        MY DASHBOARD 
-
-  // useEffect(() => {
-  //   const script = document.createElement('script');
-  //   script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-  //   script.async = true;
-  //   document.head.appendChild(script);
-
-  //   script.onload = () => {
-  //     // Chart is now defined
-  //     const chartData = {
-  //       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  //       datasets: [
-  //         {
-  //           label: 'Monthly Sales',
-  //           data: [12, 19, 3, 5, 2, 3, 7],
-  //           backgroundColor: 'rgba(75,192,192,0.2)',
-  //           borderColor: 'rgba(75,192,192,1)',
-  //           borderWidth: 1,
-  //         },
-  //       ],
-  //     };
-
-  //     Chart.register(...Chart.registerables);
-
-  //     const canvas = document.createElement('canvas');
-  //     document.body.appendChild(canvas);
-  //     new Chart(canvas.getContext('2d'), {
-  //       type: 'bar',
-  //       data: chartData,
-  //     });
-  //   };
-
-  //   return () => {
-  //     // Cleanup if needed
-  //     document.head.removeChild(script);
-  //   };
-  // }, []);
-
-  const chartData = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        label: 'Your Profile Views',
-        data: [9, 19, 3, 5, 12, 13, 17],
-        backgroundColor: 'rgba(75,192,192,0.2)',
-        borderColor: 'rgba(75,192,192,1)',
-        borderWidth: 1,
-        fill: false,
-      },
-    ],
-  };
-
-
-
   // --------------------------------------------------------------
   // Manage jobs
 
@@ -826,9 +771,40 @@ function EmployerDashboard() {
       const responseData = await response.json();
       console.log('Package details:', responseData);
       setPackageDetails(responseData);
+      const sortedData = responseData.sort((a, b) => {
+        const priceA = a && a.Price ? parseFloat(a.Price.replace('$', '')) : 0;
+        const priceB = b && b.Price ? parseFloat(b.Price.replace('$', '')) : 0;
+        return priceB - priceA;
+      });
+      setSortedCardInfo(sortedData);
     } catch (error) {
       console.error('Error fetching package details:', error);
     }
+  };
+
+  console.log(sortedCardInfo)
+  const totalCards = sortedCardInfo.length;
+  const totalPages = Math.ceil(totalCards / cardsPerPage);
+
+  const startIdx = (currentPage - 1) * cardsPerPage;
+  const endIdx = Math.min(currentPage * cardsPerPage, totalCards);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => {
+      if (prevPage < totalPages) {
+        return prevPage + 1;
+      }
+      return prevPage;
+    });
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => {
+      if (prevPage > 1) {
+        return prevPage - 1;
+      }
+      return prevPage;
+    });
   };
 
 
@@ -907,19 +883,7 @@ function EmployerDashboard() {
 
     if (content === 'Profile Picture') {
       setIsProfileOpen(true);
-    }
-    else if (content === 'Dashboard') {
-      fetchJobs();
-      fetchData();
-      setIsProfileOpen(false);
-    }
-    else if (content === 'Manage Jobs') {
-
-      fetchJobs();
-      setIsProfileOpen(false);
-
-    }
-    else if (content === 'Messages') {
+    } else if (content === 'Messages') {
       fetchData();
       setIsProfileOpen(false);
     }
@@ -1029,7 +993,7 @@ function EmployerDashboard() {
 
   const handlePostJobSubmit = async (e) => {
     e.preventDefault();
-
+    // https://job-portal-website-by5i.onrender.com/Job-Portal/Employee/jobsPosted-By-Employee/658416ccc805ca8bf852570f
     try {
       const response = await fetch(
         'https://job-portal-website-by5i.onrender.com/Job-Portal/Employee/postJob',
@@ -1161,10 +1125,11 @@ function EmployerDashboard() {
       </div>
 
       <Container className='mt-5'>
-          <Grid container spacing={3}>
-      <Grid item xs={12} sm={3}>
-        {/* Left side of the grid */}
-        <Paper style={{ padding: 16, height: '100%' }}>
+        <Grid container spacing={3}>
+
+          <Grid item xs={12} sm={3} >
+            <Paper style={{ padding: 16, height: '100%' }}>
+
               {/* <form onSubmit={handleProfilePictureSubmit} className='text-center'>
                 <div className="mb-4 " onClick={() => document.getElementById("profile-picture-upload").click()}>
                   <label htmlFor="profile-picture-upload" className="cursor-pointer">
@@ -1197,13 +1162,6 @@ function EmployerDashboard() {
               </form> */}
 
               <div className='mt-5 '>
-                <StyledButton onClick={() => handleButtonClick('Dashboard')}>
-                  <FontAwesomeIcon className='mr-2' />
-                  Dashboard
-                </StyledButton>
-              </div>
-
-              <div >
                 <StyledButton onClick={() => handleButtonClick('Profile Picture')}>
                   <FontAwesomeIcon icon={faUserCircle} className='mr-2' />
                   Profile
@@ -1211,7 +1169,7 @@ function EmployerDashboard() {
               </div>
 
               <div >
-                <StyledButton onClick={() => handleButtonClick('Manage Jobs')}>
+                <StyledButton onClick={() => handleButtonClick1('Manage Jobs')}>
                   <FontAwesomeIcon icon={faTasksAlt} className='mr-3' />
                   Manage Jobs
                 </StyledButton>
@@ -1273,9 +1231,6 @@ function EmployerDashboard() {
                   handleInputChange={handleInputChange}
                 />
               )}
-
-
-
               {displayContent === 'Manage Jobs' && (
                 <div className='mt-10'>
                   <div className='mt-10'>
@@ -1327,36 +1282,6 @@ function EmployerDashboard() {
                       ))}
                     </tbody>
                   </table>
-                </div>
-              )}
-
-              {displayContent === 'Dashboard' && (
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                  <h2 className="text-3xl font-bold mb-6">Dashboard Overview</h2>
-
-                  <div className="grid grid-cols-3 gap-6">
-                    <div className="bg-blue-500 text-white p-6 rounded-md flex flex-col justify-center items-center">
-                      <p className="text-lg font-semibold mb-2">Posted Jobs</p>
-                      <p className="text-4xl">{hotJobs.length}</p>
-                    </div>
-                    <div className="bg-green-500 text-white p-6 rounded-md flex flex-col justify-center items-center">
-                      <p className="text-lg font-semibold mb-2">Candidates Applied</p>
-                      <p className="text-4xl">{applicantList.length}</p>
-                    </div>
-                    <div className="bg-yellow-500 text-white p-6 rounded-md flex flex-col justify-center items-center">
-                      <p className="text-lg font-semibold mb-2">Candidates Shortlisted</p>
-                      <p className="text-4xl">1</p>
-                    </div>
-                  </div>
-
-                  <div className="mt-8">
-                    <div className="bg-gray-200 p-6 rounded-md">
-                      <h3 className="text-xl font-bold mb-4">Monthly Activity</h3>
-                      <div className="h-60">
-                        <Line data={chartData}  />
-                      </div>
-                    </div>
-                  </div>
                 </div>
               )}
 
@@ -1921,10 +1846,6 @@ function EmployerDashboard() {
                         }}
                       />
                     </Grid>
-                    {/* <Typography variant="h7" style={{ marginTop: '10px', display: 'flex', alignItems: 'center', fontWeight: 'bold', color: 'rgb(117, 117, 117)' }} >
-
-                      Salary
-                    </Typography> */}
 
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -2154,7 +2075,7 @@ function EmployerDashboard() {
 
               )}
               {displayContent === 'My Packages' && packageDetails && (
-                <div>
+                <div >
                   <form className='p-10 text-center'>
                     <Typography variant="h6">
                       Please Click Below To Buy A Job Posting Package
@@ -2176,20 +2097,64 @@ function EmployerDashboard() {
                   </form>
 
                   {/* Display package details in a card */}
-                  {packageDetails.Packages.map((packageDetail) => (
-                    <Card key={packageDetail._id}>
-                      <CardContent>
-                        <Typography variant="h6">Package Details</Typography>
-                        <Typography>Price: {packageDetail.Price}</Typography>
-                        <Typography>Expiry Date: {packageDetail.expiryDate}</Typography>
-                        <Typography>Number of Days: {packageDetail.noOfDays}</Typography>
-                        <Typography>Number of Posts: {packageDetail.noOfPosts}</Typography>
-                        {/* Add more package details as needed */}
-                      </CardContent>
-                    </Card>
-                  ))}
+
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    {packageDetails.Packages.map((packageDetail) => (
+                      <Card
+                        key={packageDetail._id}
+                        className="hover-card"
+                        style={{
+                          flex: 1,
+                          maxWidth: '300px',
+                          height: '420px',
+                          margin: '10px',
+                          borderRadius: '15px',
+                          boxShadow: '0px 4px 8px rgba(0, 0, 255, 0.7)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          position: 'relative',
+                        }}
+                      >
+                        <Box p={2} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'space-between' }}>
+                          <div className='rounded-full bg-blue-200 font-semibold text-blue-950 shadow-lg shadow-blue-200 mt-5 '
+                            style={{
+                              padding: '25px',
+                              fontSize: '25px',
+                            }}
+                          >
+                            ₹ {packageDetail.Price}
+                          </div>
+                          <Typography variant="body2" color="text.secondary" className='text-center font-bold'>
+                            Membership: {packageDetail.packageTitle}
+                          </Typography>
+                          <Typography variant="h7" className='text-center font-semibold text-blue-950'>
+                            {packageDetail.noOfPosts} posts for {packageDetail.noOfDays} days
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary" className='text-center font-bold'>
+                            Expires on: {packageDetail.expiryDate}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary" className='text-center font-bold'>
+                            {packageDetail.packageDetails}
+                          </Typography>
+                          {packageDetail.status === 'Active' ? (
+                            <Typography>
+                              <FontAwesomeIcon icon={faCircleCheck} className='text-green-600' /> Active
+                            </Typography>
+                          ) : (
+                            <Typography>
+                              <FontAwesomeIcon icon={faCircle} className='text-red-600' /> Expire
+                            </Typography>
+                          )}
+                        </Box>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
               )}
+
+
+
 
               {displayContent === 'Change Password' && (
                 <form onSubmit={handleUpdate} className='p-10  '>

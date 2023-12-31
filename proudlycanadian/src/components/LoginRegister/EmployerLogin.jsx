@@ -8,7 +8,7 @@ import { TextField, Button, Container, Grid, Typography, Link, Alert, AlertTitle
 import { useNavigate } from 'react-router';
 import { useAuth } from '../AuthContext/AuthContext';
 
-function EmployerLogin() {
+const EmployerLogin = ({ onClose }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -77,7 +77,7 @@ function EmployerLogin() {
         navigate('/applicant/job');
         setErrorMessage(null);
       }
-      if(response.status == 404 || response.error == 'Please Enter Valid Information {Email or password is incorrect}'){
+      if (response.status == 404 || response.error == 'Please Enter Valid Information {Email or password is incorrect}') {
         setErrorMessage("Please check your credentials or try again later");
         setSuccessMessage(null);
       }
@@ -87,39 +87,34 @@ function EmployerLogin() {
       setErrorMessage('Error submitting the form. Please try again later');
       console.error('Error submitting form:', error);
     }
+    onClose();
   };
 
   const register = () => {
     navigate("/employers/auth/registration");
   };
 
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Navbar />
-      <div style={{ height: '150px' }}></div>
-
+    <div >
       <div>
-        <div >
+        <div>
           <Container style={{
-            padding: '30px', borderRadius: '8px', width: '450px', margin: 'auto', height: '90%',
+            padding: '30px', borderRadius: '8px', width: '400px', margin: 'auto', height: '90%',
             boxShadow: '1px 0px 0px rgba(0, 0, 0, 0.2), -2px 2px 10px rgba(0, 0, 0, 0.1)'
           }}>
             <form onSubmit={handleSubmit}>
               {successMessage && (
                 <Alert >
-
                   <strong>{successMessage}</strong>
                 </Alert>
               )}
               {errorMessage && (
                 <Alert severity="error">
-
                   <strong>{errorMessage}</strong>
                 </Alert>
               )}
               <div className='text-center text-lg mb-8 font-bold text-gray-500 border-b-2 p-2'>
-                Login To Your Account
+                Login To Proudly Canadian
               </div>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -130,7 +125,6 @@ function EmployerLogin() {
                     fullWidth
                     value={formData.email}
                     onChange={handleChange}
-
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -143,27 +137,30 @@ function EmployerLogin() {
                     onChange={handleChange}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Button className='shadow-lg shadow-blue-700' type="submit" variant="contained" color="primary" fullWidth>
-                    SignIn
-                  </Button>
+                <Grid item xs={12} container justifyContent="flex-end">
+                  <Typography variant="body2" align="center">
+                    <span style={{ cursor: 'pointer', color: 'blue' }} onClick={() => navigate('/forgot_password')}>
+                      Forget Password?
+                    </span>
+                  </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Button className='shadow-lg shadow-blue-700' type="button" variant="contained" color="primary" fullWidth onClick={register}>
-                    Register
+                <Grid item xs={12}>
+                  <Button className='shadow-lg shadow-blue-700' type="submit" variant="contained" color="primary" fullWidth>
+                    Log In
                   </Button>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" align="center">
-                    <Link href="/forgot_password">Forget Password?</Link>
-                  </Typography>
+                  <div>
+                    Don't have an account?
+                    <Link onClick={register}> Signup</Link>
+                  </div>
                 </Grid>
               </Grid>
             </form>
           </Container>
         </div>
       </div>
-      <Footer />
+
     </div>
   );
 }

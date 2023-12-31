@@ -46,9 +46,7 @@ const ViewJobDetail = () => {
 
     return (
         <div className='bg-gray-100'>
-            <Navbar />
-
-            <div style={{ height: '100px' }}></div>
+           
             <div className='flex print-content '>
                 <button
                     className="absolute  right-10 mt-2 text-gray-500 cursor-pointer"

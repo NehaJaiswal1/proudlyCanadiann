@@ -49,6 +49,7 @@ import AppliedJobs from './AppliedJobs.jsx';
 
 function ApplicantDashboard() {
   const { logout, authData } = useAuth();
+  console.log("neha", authData)
   const navigate = useNavigate();
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -56,6 +57,7 @@ function ApplicantDashboard() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [allJobDetails, setAllJobDetails] = useState([]);
   const [appliedJobs, setAppliedJobs] = useState([]);
+  console.log("some",appliedJobs)
   const [appliedJobIds, setAppliedJobIds] = useState([]);
   
   const [isApplied, setIsApplied] = useState(false)
@@ -153,7 +155,7 @@ function ApplicantDashboard() {
 
   const handleChangePasswordUpdate = async () => {
     try {
-
+      
       const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/change-Password-Applicant', {
         method: 'PUT',
         headers: {
@@ -354,7 +356,7 @@ function ApplicantDashboard() {
           console.error('Failed to fetch data. Status:', response.status);
           return;
         }
-
+        
         const data = await response.json();
         // console.log('Fetched Data:', data.result);
 
@@ -452,6 +454,7 @@ function ApplicantDashboard() {
         console.error('Error fetching jobs:', error);
       }
     }
+
     else if (icon === 'faBarChart') {
       try {
         const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/allJobsByApplicant', {
@@ -461,23 +464,27 @@ function ApplicantDashboard() {
             Authorization: `Bearer ${authData.token}`,
           },
         });
-
         if (!response.ok) {
           console.error('Failed to fetch all jobs by applicant. Status:', response.status);
           return;
         }
-
         const jobsData = await response.json();
         console.log('Fetched All Jobs By Applicant Data:', jobsData);
+        let newJobsData=[]
+        for(let i=0; i<jobsData.appliedJobs.length; i++) {
+          if(jobsData.appliedJobs[i] != null) newJobsData.push(jobsData.appliedJobs[i]); 
+        }
 
-
-        setAppliedJobs(jobsData.appliedJobs);
+        setAppliedJobs(newJobsData);
 
         setSelectedIcon('faBarChart');
       } catch (error) {
         console.error('Error fetching all jobs by applicant:', error);
       }
     }
+
+    
+    
   };
   console.log('Selected Icon:', selectedIcon);
 

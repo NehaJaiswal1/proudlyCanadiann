@@ -22,10 +22,11 @@ import UpdatePassword from './components/LoginRegister/UpdatePassword';
 import Thankyou from './components/Thankyou';
 import { AuthProvider } from './components/AuthContext/AuthContext';
 
+
 import JobDetails from './components/JobDetails/JobDetails';
 
 const App = () => {
- 
+  
 
   return (
     <Router>
@@ -51,6 +52,9 @@ const App = () => {
             <Route path="/updatepassword" element={<UpdatePassword />} />
 
             <Route path="/applicant/job" element={<ApplicantDashboard />} />
+
+            
+    
             <Route path="/auth/login" element={<ApplicantLogin />} />
 
             <Route path="/forgot_password" element={<PasswordReset />} />

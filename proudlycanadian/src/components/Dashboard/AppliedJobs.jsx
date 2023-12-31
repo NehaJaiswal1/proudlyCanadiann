@@ -1,26 +1,36 @@
 
 import React from 'react';
-import { Card, CardContent, Typography, CardActions, Button } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 
 const AppliedJobs = ({ appliedJobs }) => {
-  return (
-    <div>
-      {appliedJobs.map((job, index) => (
-        <Card key={index} style={{ marginBottom: '1rem', borderRadius: '1rem', boxShadow: '2px 2px 10px #888888', marginTop: '0.5rem' }}>
+  console.log(appliedJobs);
 
-          <CardContent>
-            <Typography variant="h7" component="div" className="text-gray-600 font-bold">
-              {job.jobTitle}
-            </Typography>
-            <Typography component="div" className="text-gray-500 text-sm"> {job.jobDescription}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="extrasmall" className="text-xs">View Details</Button>
-          </CardActions>
-        </Card>
-      ))}
-    </div>
+  return (
+    <TableContainer component={Paper}>
+      <div>My Applied Jobs</div>
+      <Table>
+        
+        <TableHead>
+          <TableRow>
+            <TableCell>Job Title</TableCell>
+            <TableCell>Date Applied</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Action</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {appliedJobs.map((job, index) => (
+            <TableRow key={job._id}>
+              <TableCell>{job.jobTitle}</TableCell>
+              <TableCell>{job.status}</TableCell>
+              <TableCell>
+                <Button size="small" className="text-xs">View Details</Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 
