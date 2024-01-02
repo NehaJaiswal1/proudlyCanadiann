@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 import pagetitle from '../../images/page-title.jpg';
-import { TextField, Alert, AlertTitle, Button, Container, Grid, Typography, Checkbox, FormControlLabel, Link } from '@mui/material';
+import { TextField, Alert, AlertTitle, Button, Container, Grid,
+     Typography, Checkbox, FormControlLabel, Link } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 
@@ -55,7 +56,8 @@ function EmployerRegistration() {
         }
         
         try {
-            const response = await fetch('https://job-portal-website-by5i.onrender.com/job-Portal/Employee/signUp', {
+            const response = await
+             fetch('https://job-portal-website-by5i.onrender.com/job-Portal/Employee/signUp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

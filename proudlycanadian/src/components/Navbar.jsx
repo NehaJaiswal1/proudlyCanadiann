@@ -32,7 +32,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className='fixed w-full z-10 md:wfull'>
+      className='fixed w-full z-10 md:wfull '>
       <div className={` h-15 p-3 ${
         scrolled ? 'bg-blue-900' : 'bg-transparent'
       }`}>

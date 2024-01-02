@@ -26,6 +26,9 @@ import wp from '../images/home/web-programming.png';
 import speaker from '../images/home/speaker.png';
 import design from '../images/home/creative.jpg';
 import meet from '../images/home/meet.webp';
+import ap1 from '../images/home/applicant-1.webp';
+import ap2 from '../images/home/applicant-2.webp';
+import ap3 from '../images/home/applicant-3.webp';
 
 
 
@@ -41,6 +44,8 @@ function Home() {
     const [data, setData] = useState([]);
     const [selectedJobType, setSelectedJobType] =
         useState('Youth and new comers');
+
+
 
     const handleHotJobs = () => {
         setSelectedJobType('Youth and new comers');
@@ -59,6 +64,20 @@ function Home() {
         setSelectedJobType(`LMIA Jobs For TFW's`);
 
     }
+    // const [showBanner, setShowBanner] = useState(true);
+
+    // useEffect(() => {
+
+    //   const handleResize = () => {
+    //     setShowBanner(window.innerWidth > 768); 
+    //   };
+    //   handleResize();
+    //   window.addEventListener('resize', handleResize);
+    //   return () => {
+    //     window.removeEventListener('resize', handleResize);
+    //   };
+    // }, []);
+
 
 
     const formatDate = (dateString) => {
@@ -91,37 +110,37 @@ function Home() {
     }, []);
     console.log('Data:', data);
 
-    const elementRef = useRef(null);
+    // const elementRef = useRef(null);
 
-    useEffect(() => {
-        const options = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.5,
-        };
+    // useEffect(() => {
+    //     const options = {
+    //         root: null,
+    //         rootMargin: '0px',
+    //         threshold: 0.5,
+    //     };
 
-        const handleIntersection = (entries, observer) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    // The element is in the viewport
-                    entry.target.classList.add('fade-up');
-                    observer.unobserve(entry.target); // Stop observing after the transition is applied
-                }
-            });
-        };
+    //     const handleIntersection = (entries, observer) => {
+    //         entries.forEach((entry) => {
+    //             if (entry.isIntersecting) {
+    //                 // The element is in the viewport
+    //                 entry.target.classList.add('fade-up');
+    //                 observer.unobserve(entry.target); // Stop observing after the transition is applied
+    //             }
+    //         });
+    //     };
 
-        const observer = new IntersectionObserver(handleIntersection, options);
+    //     const observer = new IntersectionObserver(handleIntersection, options);
 
-        if (elementRef.current) {
-            observer.observe(elementRef.current);
-        }
+    //     if (elementRef.current) {
+    //         observer.observe(elementRef.current);
+    //     }
 
-        return () => {
-            if (elementRef.current) {
-                observer.unobserve(elementRef.current);
-            }
-        };
-    }, []);
+    //     return () => {
+    //         if (elementRef.current) {
+    //             observer.unobserve(elementRef.current);
+    //         }
+    //     };
+    // }, []);
 
     const handleFindJob = () => {
 
@@ -172,7 +191,7 @@ function Home() {
 
 
     return (
-        <div className='bg-slate-200 w-full'>
+        <div className='bg-slate-200 w-full min-h-screen'>
             <Navbar />
 
             <div style={{
@@ -182,22 +201,22 @@ function Home() {
                 position: 'relative',
                 backgroundImage: `url(${banner})`,
                 backgroundSize: 'cover',
-            }} className='bg-slate-200'>
-                <div className='mx-auto mt-36 w-10/12'>
-                    <p className="text-white text-center text-5xl font-bold  mb-10">
+            }} className='bg-slate-200 min-h-screen'>
+                <div className='mx-auto mt-36 w-10/12 '>
+                    <p className="text-white text-center text-5xl font-bold  mb-10 ">
                         The Easiest Way to Get Your New Job
                     </p>
 
                     <div className='flex bg-white rounded-full mx-auto  p-4 '>
 
-                        <div className="relative flex items-center w-4/12">
+                        <div className="relative flex items-center w-4/12 ">
                             <FontAwesomeIcon icon={faSearch} className="absolute left-4 text-gray-400" />
                             <input
                                 placeholder='Jobs, title'
                                 className='rounded-lg pl-10 w-full border-none focus:outline-none'
                             />
                         </div>
-                        <div className="relative flex items-center w-3/12">
+                        <div className="relative flex items-center w-3/12 ">
                             <FontAwesomeIcon icon={faMapMarker} className="absolute left-4 text-gray-400" />
                             <input
                                 placeholder='City or Postal Code'
@@ -511,10 +530,10 @@ function Home() {
 
             </div>
             <div className='bg-white mt-20 flex h-full'>
-                <div className='mt-20 mb-40 ml-10 w-full h-full'>
+                <div className='mt-20 mb-40 ml-10 w-full h-full '>
                     <img src={meet} className='rounded-2xl' />
                 </div>
-                <div className='p-10 mt-20'>
+                <div className='p-10 mt-20 relative'>
                     <p className='p-2 text-gray-800 
                     text-5xl font-semibold  text-left'>
                         Get applications from the
@@ -530,10 +549,45 @@ function Home() {
                     rounded-lg'>
                         Post a job
                     </button>
+                    <div className='absolute  left-30 bottom-10 font-semibold p-2 w-2/4'>
+                        <p className='p-2 bg-blue-800 text-xl text-white font-semibold '>Applicants List</p>
+                        <div className='flex p-2'>
+                            <img src={ap1} className='rounded-full' />
+                            <div className=''>
+                                <p>Brooklyn</p>
+                                <p>Web Devloper</p>
+                            </div>
+                        </div>
+                        <div className='flex p-2'>
+                            <img src={ap2} className='rounded-full' />
+                            <div>
+                                <p>Courtney Henry</p>
+                                <p>Web Devloper</p>
+                            </div>
+                        </div>
+                        <div className='flex p-2'>
+                            <img src={ap3}
+                                className='rounded-full' />
+                            <div>
+                                <p>Marvin McKinney</p>
+                                <p>Web Devloper</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-   
 
+
+
+            </div>
+
+            <div>
+                <div>
+                    <p>Recent News Articles</p>
+                    <p>Fresh job related news content posted each day.</p>
+                </div>
+                <div>
+
+                </div>
             </div>
 
 

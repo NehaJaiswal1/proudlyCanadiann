@@ -37,7 +37,7 @@ function Thankyou() {
                 variant="contained"
                 color="primary"
                 component={Link}
-                to="/employers/auth/login"
+                to="/"
               >
                 Login
               </Button>
