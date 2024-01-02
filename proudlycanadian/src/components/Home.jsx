@@ -26,7 +26,7 @@ import wp from '../images/home/web-programming.png';
 import speaker from '../images/home/speaker.png';
 import design from '../images/home/creative.jpg';
 import meet from '../images/home/meet.webp';
-import Fade from 'react-reveal/Fade';
+
 
 
 function Home() {
