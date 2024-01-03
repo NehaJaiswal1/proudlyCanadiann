@@ -7,18 +7,24 @@ export const testimonialDetail = [
     name:'Brooklyn Simmons',
     desgination:'Web Developer',
     title: 'Unique Design!',
-    des: "A job ravenously while Far much that one rank beheld after outside...."
+    des: `Without JobHunt i’d be homeless, they found me a job and got me
+    sorted out quickly with everything! Can’t quite… The Mitech team
+    works really hard to ensure high level of quality`
   },
   {
     name:'Ashley Jenkins',
     desgination:'Designer',
     title: 'Awesome Design!',
-    des: "A job ravenously while Far much that one rank beheld after outside...."
+    des: `Without JobHunt i’d be homeless, they found me a job and got me
+    sorted out quickly with everything! Can’t quite… The Mitech team
+    works really hard to ensure high level of quality`
   },
   {
     name:'Emma Watson',
     desgination:'UI Developer',
     title: 'Great Quality!',
-    des: "A job ravenously while Far much that one rank beheld after outside...."
+    des: `Without JobHunt i’d be homeless, they found me a job and got me
+    sorted out quickly with everything! Can’t quite… The Mitech team
+    works really hard to ensure high level of quality`
   }
 ];

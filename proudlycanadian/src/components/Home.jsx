@@ -9,7 +9,7 @@ import './Home.css';
 import manage from '../images/manage-common.jpg'
 import employer from '../images/employer.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLineChart, faGlobe, faBarChart, faBullseye, faCalculator, faLaptop, faSearch, faMapMarkedAlt, faSuitcase, faMapLocation, faForward, faBackward } from '@fortawesome/free-solid-svg-icons';
+import { faLineChart, faGlobe, faBarChart, faBullseye, faCalculator, faLaptop, faSearch, faMapMarkedAlt, faSuitcase, faMapLocation, faForward, faBackward, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { faUser, faBookmark, faMapMarker, faClock } from '@fortawesome/free-solid-svg-icons';
 import Footer from './Footer';
 import cl from '../images/company-logo.png'
@@ -106,7 +106,7 @@ function Home() {
         setCurrentCardIndex((prevIndex) => (prevIndex - 1 + testimonialDetail.length) % testimonialDetail.length);
     };
 
-    useEffect(() => {
+    // useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/allJobs');
@@ -118,8 +118,8 @@ function Home() {
             }
         };
 
-        fetchData();
-    }, []);
+        // fetchData();
+    // }, []);
     console.log('Data:', data);
 
     // const elementRef = useRef(null);
@@ -272,7 +272,7 @@ function Home() {
                 <p className="text-gray-600 mb-4 text-center">Know your worth and find the job that qualifies your life</p>
                 <div className="flex justify-center space-x-2 ">
 
-                    <button
+                    {/* <button
                         className={`p-1 mt-5 w-1/5 text-sm rounded-lg text-white bg-gray-400
             hover:border-2 hover:border-gray-100
              hover:bg-white hover:text-black
@@ -295,17 +295,16 @@ function Home() {
                         onClick={handleJobsLMIA}>LMIA JOBS FOR TFW'S</button>
 
                     <button className='p-1 mt-5 w-1/5 text-sm rounded-lg bg-gray-400 text-white hover:border-2 hover:border-gray-100
-             hover:bg-white hover:text-black' onClick={handleJobsForCanadians}>JOB'S FOR CANADIANS</button>
+             hover:bg-white hover:text-black' onClick={handleJobsForCanadians}>
+                        JOB'S FOR CANADIANS
+                    </button> */}
                 </div>
             </div>
             <div className='p-10'>
 
                 <div className=" space-y-10 ">
                     <div className="grid grid-cols-2 gap-4">
-                        {data
-                            .filter((job) => job.jobSelectedType === selectedJobType)
-                            .slice(0, 4)
-                            .map((job) => (
+                    {data.slice(0, 6).map((job) => (
                                 <div className='shadow-slate-400 
                                     bg-slate-50 
                                     border-2
@@ -343,36 +342,22 @@ function Home() {
                                                     <p className='p-2 m-2 text-xs rounded-full font-semibold w-2/6 bg-yellow-100
                          text-yellow-600 text-center'>
                                                         {job.jobType}</p>
-                                                    {/* <p className='p-2 m-2 text-xs rounded-full font-semibold w-3/6 bg-yellow-100
-                         text-yellow-800  text-center'>
-                            {job.jobType}</p> */}
+                                                   
                                                 </div>
                                             </div>
 
                                         </div>
                                         <div className='flex mt-3'>
 
-                                            {/* <button
-                        className='bg-blue-900 text-white p-2 rounded-2xl w-20 h-10 m-4 text-sm font-bold hover:bg-red-600'
-                        onClick={() => handleApply(`${job._id}`)}
-                      >
-
-                        APPLY
-                      </button> */}
-
-
-
-
-                                            {/* <button className='bg-blue-900 hover:bg-red-600 text-white  rounded-2xl w-32  h-10 m-4 text-sm font-bold' onClick={() => handleQuickApply(job._id)}>QUICK APPLY</button> */}
-
+                
                                         </div>
                                     </div>
                                 </div>
                             ))}
                     </div>
                     <div className='flex justify-center'>
-                        <button className='font-semibold p-4 mt-3 bg-blue-900  rounded-md text-slate-200' onClick={jobs}>
-                            BROWSE ALL JOB
+                        <button className='font-semibold p-4 mt-3 bg-blue-700  rounded-md text-slate-100' onClick={jobs}>
+                            Load More Listing
                         </button>
                     </div>
                 </div>
@@ -551,9 +536,35 @@ function Home() {
 
 
             </div>
-            <div className='bg-white mt-20 flex h-full'>
-                <div className='mt-20 mb-40 ml-10 w-full h-full '>
+            <div className='bg-white mt-20 flex h-full relative'>
+                <div className='mt-20 mb-40 ml-10 w-full h-full relative'>
                     <img src={meet} className='rounded-2xl' />
+                    <div className='absolute right-0 bottom-0 font-semibold p-2 w-2/4 -mr-10 -mb-24' style={{ borderRadius: '20px' }}>
+                        <p className='p-2 bg-blue-700 text-md text-center text-white font-semibold '>Applicants List</p>
+                        <div className='flex p-2 bg-white'>
+                            <img src={ap1} className='rounded-full' />
+                            <div className=''>
+                                <p className='text-center text-gray-600 '>Brooklyn</p>
+                                <p className='text-center text-gray-300'>Web Devloper</p>
+                            </div>
+                        </div>
+                        <div className='flex p-2 bg-white'>
+                            <img src={ap2} className='rounded-full' />
+                            <div>
+                                <p className='text-center text-gray-600 '>Courtney Henry</p>
+                                <p className='text-gray-300 text-center'>Web Devloper</p>
+                            </div>
+                        </div>
+                        <div className='flex p-2 bg-white'>
+                            <img src={ap3}
+                                className='rounded-full' />
+                            <div className='text-center'>
+                                <p className='
+                                text-gray-600 text-center'>Marvin McKinney</p>
+                                <p className='text-center text-gray-300'>Web Devloper</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div className='p-10 mt-20 relative'>
                     <p className='p-2 text-gray-800 
@@ -571,100 +582,101 @@ function Home() {
                     rounded-lg'>
                         Post a job
                     </button>
-                    <div className='absolute  left-30 bottom-10 font-semibold p-2 w-2/4'>
-                        <p className='p-2 bg-blue-800 text-xl text-white font-semibold '>Applicants List</p>
-                        <div className='flex p-2'>
-                            <img src={ap1} className='rounded-full' />
-                            <div className=''>
-                                <p>Brooklyn</p>
-                                <p>Web Devloper</p>
-                            </div>
-                        </div>
-                        <div className='flex p-2'>
-                            <img src={ap2} className='rounded-full' />
-                            <div>
-                                <p>Courtney Henry</p>
-                                <p>Web Devloper</p>
-                            </div>
-                        </div>
-                        <div className='flex p-2'>
-                            <img src={ap3}
-                                className='rounded-full' />
-                            <div>
-                                <p>Marvin McKinney</p>
-                                <p>Web Devloper</p>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
 
 
 
             </div>
 
-            <div>
-                <div>
-                    <p>Recent News Articles</p>
-                    <p>Fresh job related news content posted each day.</p>
+            <div className='bg-slate-200'>
+                <div className='p-5'>
+                    <p className='text-center text-gray-700 text-3xl font-semibold'>Recent News Articles</p>
+                    <p className='text-center text-gray-400 text-sm mt-2'>Fresh job related news content posted each day.</p>
                 </div>
-                <div className="h-96 overflow-hidden flex  mt-10 px-8">
+                <div className=" min-h-screen overflow-hidden flex  mt-10 px-8 rounded-2xl ">
                     {cardInfo.map((card, index) => (
-                        <Card key={index} sx={{ width: '350px', height: '300px' }} style={{ margin: '15px' }}>
-                            <div style={{ height: '60%' }}>
-                                <img src={card.img} alt="Card" />
-                            </div>
-                            <div className='flex space-x-2 mt-2'>
+                        <div key={index} sx={{ width: '350px', height: '400px', border: 'none' }}
+                            style={{
+                                width: '350px',
+                                height: '400px',
+                                margin: '15px',
+                                backgroundColor: '#e2e8f0',
+                                transition: 'transform 0.3s ease-in-out',
+                            }}>
+
+                            <img
+                                src={card.img}
+                                alt="Card"
+                                className='h-60 rounded-2xl transform scale-100 hover:scale-105 transition-transform duration-300'
+                            />
+
+
+
+                            <div className='flex space-x-2 mt-5 bg-slate-200 text-gray-400'>
                                 <p>{card.date}</p>
-                                <p>{card.comment}</p>
+                                <p>{card.comment} Comment</p>
                             </div>
-                            <CardContent>
-                                <h2 className='text-red-700'>{card.title}</h2>
-                                <p className='text-slate-700'>{card.des}</p>
-                            </CardContent>
-                        </Card>
+                            <div className='
+                            mt-2 bg-slate-200'>
+                                <h2 className='text-gray-800 font-semibold'>{card.title}</h2>
+                                <p className='text-sm text-slate-700 mt-2'>{card.des}</p>
+                                <p className='text-blue-600 mt-5'>Read More <FontAwesomeIcon icon={faChevronRight} /></p>
+                            </div>
+                        </div>
                     ))}
                 </div>
             </div>
             <div className='bg-white h-full'>
-                <div className='text-center '>
-                    <p>Testimonials From Our Customers</p>
-                    <p>Lorem ipsum dolor sit amet elit, sed do eiusmod tempor</p>
+                <div className='text-center p-5'>
+                    <p className='text-3xl mt-10 text-gray-700 font-bold'>
+                        Testimonials From Our Customers
+
+                    </p>
+                    <p className='text-sm text-gray-400'>Lorem ipsum dolor sit amet elit, sed do eiusmod tempor</p>
                 </div>
 
                 <div className="h-full overflow-hidden flex mt-10 px-8 ">
                     <div className='w-4/6 p-5 '>
                         <img src={t} className='mb-10  w-4/6 ' />
                     </div>
-                    <div className='1/6 '>
+                    <div className='w-2/6 mr-10'>
                         <div key={currentCardIndex} >
                             <div className=' mt-2'>
-                                <h2 className='text-red-700'>{testimonialDetail[currentCardIndex].title}</h2>
-                                <p className='text-slate-700'>{testimonialDetail[currentCardIndex].des}</p>
+                                <h2 className='
+                                text-blue-600'>{testimonialDetail[currentCardIndex].title}</h2>
+                                <p className='text-slate-600 mt-10'>{testimonialDetail[currentCardIndex].des}</p>
                             </div>
 
-                            <h2 className='text-red-700'>{testimonialDetail[currentCardIndex].name}</h2>
-                            <p className='text-slate-700'>{testimonialDetail[currentCardIndex].desgination}</p>
+                            <h2 className='text-gray-800 font-semibold mt-10 '>{testimonialDetail[currentCardIndex].name}</h2>
+                            <p className='text-gray-400 text-sm'>{testimonialDetail[currentCardIndex].desgination}</p>
 
                         </div>
-
-                        <FontAwesomeIcon icon={faBackward}
-                            onClick={handlePrevCard} />
-                        <FontAwesomeIcon icon={faForward} onClick={handleNextCard} />
+                        <div className='flex flex-row  space-x-4  mt-10'>
+                            <div className='bg-blue-200 rounded-lg text-gray-500 p-4' >
+                                <FontAwesomeIcon icon={faBackward}
+                                    onClick={handlePrevCard} />
+                            </div>
+                            <div className='bg-blue-200 rounded-lg text-gray-500 p-4'>
+                                <FontAwesomeIcon icon={faForward} onClick={handleNextCard} />
+                            </div>
+                        </div>
 
                     </div>
                 </div>
 
             </div>
-
-            <div className='flex w-full bg-white'>
-                <img src={one} className='w-1/12' />
-                <img src={two} className='w-1/12' />
-                <img src={one} className='w-1/12' />
-                <img src={three} className='w-1/12' />
-                <img src={two} className='w-1/12' />
-                <img src={four} className='w-1/12' />
-
+            <div className='h-56 bg-white flex items-center'>
+                <div className='flex w-full space-x-20 justify-center'>
+                    <img src={one} className='w-1/12' />
+                    <img src={two} className='w-1/12' />
+                    <img src={one} className='w-1/12' />
+                    <img src={three} className='w-1/12' />
+                    <img src={two} className='w-1/12' />
+                    <img src={four} className='w-1/12' />
+                </div>
             </div>
+
             <div className="bg-white p-2">
                 <p className='text-gray-800 text-3xl
                  p-4 font-bold'>Top Company Registered</p>
@@ -672,7 +684,7 @@ function Home() {
                 <div className='p-7 relative px-4 '>
                     <Slider {...settings}>
                         {registerCompany.map((company, index) => (
-                              <div key={index} className='sm:w-full md:w-1/2 lg:w-1/4'>
+                            <div key={index} className='sm:w-full md:w-1/2 lg:w-1/4'>
                                 <Card key={index} sx={{ width: '250px', height: '300px' }} style={{ margin: '15px' }}>
                                     <div className='grid place-items-center mt-5'>
                                         <img src={company.logo} alt={company.comapnyName} className='rounded-full' />
