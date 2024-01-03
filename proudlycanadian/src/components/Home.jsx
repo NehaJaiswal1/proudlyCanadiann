@@ -106,7 +106,7 @@ function Home() {
         setCurrentCardIndex((prevIndex) => (prevIndex - 1 + testimonialDetail.length) % testimonialDetail.length);
     };
 
-    // useEffect(() => {
+    useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/allJobs');
@@ -118,8 +118,8 @@ function Home() {
             }
         };
 
-        // fetchData();
-    // }, []);
+        fetchData();
+    }, []);
     console.log('Data:', data);
 
     // const elementRef = useRef(null);
