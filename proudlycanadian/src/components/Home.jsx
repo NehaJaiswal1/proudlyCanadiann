@@ -656,18 +656,19 @@ function Home() {
 
             </div>
 
-            <div className='flex space-x-6 bg-white'>
-                <img src={one} className='w-1/10' />
-                <img src={two} className='w-1/10' />
-                <img src={one} className='w-1/10' />
-                <img src={three} className='w-1/10' />
-                <img src={two} className='w-1/10' />
-                <img src={four} className='w-1/10' />
+            <div className='flex w-full bg-white'>
+                <img src={one} className='w-1/12' />
+                <img src={two} className='w-1/12' />
+                <img src={one} className='w-1/12' />
+                <img src={three} className='w-1/12' />
+                <img src={two} className='w-1/12' />
+                <img src={four} className='w-1/12' />
 
             </div>
             <div className="bg-white p-2">
-                <p>Top Company Registered</p>
-                <p>Some of the companies we have helped recruit excellent applicants over the years.</p>
+                <p className='text-gray-800 text-3xl
+                 p-4 font-bold'>Top Company Registered</p>
+                <p className='text-gray-400 text-sm p-4'>Some of the companies we have helped recruit excellent applicants over the years.</p>
                 <div className='p-7 relative px-4 '>
                     <Slider {...settings}>
                         {registerCompany.map((company, index) => (
@@ -691,11 +692,6 @@ function Home() {
                     </Slider>
                 </div>
             </div>
-
-
-
-
-
 
             <Footer />
 
