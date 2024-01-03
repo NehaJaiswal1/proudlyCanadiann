@@ -25,3 +25,6 @@
 .fade-up:not(.fade-up-active) {
   transform: translateY(50px);
 }
+.slick-dots li:nth-child(n+4) {
+  display: none;
+}

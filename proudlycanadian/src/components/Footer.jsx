@@ -12,8 +12,12 @@ const Footer = () => {
     return (
         <footer className="bg-white text-white mt-8">
             <div className=" ">
-                <div className="bg-blue-900 flex items-center justify-between ">
-                    <p className='text-white text-2xl p-28 font-bold text-center'>Want Latest Updates About Jobs</p>
+                <div className="bg-blue-100 flex items-center justify-between ">
+                    <div className='items-center justify-between'>
+                        <p className='text-gray-800 text-xl  font-bold text-center'>Subscribe Our Newsletter</p>
+                        <p className='text-gray-800 text-sm  text-center'>Advertise your jobs to millions of monthly users and search 15.8 million
+                            CVs in our database.</p>
+                    </div>
                     <div className='flex items-center'>
                         <input className='rounded-lg p-4 h-10' placeholder='Enter Your Email' type='email' />
                         <button className='p-2 bg-black rounded-lg text-white mr-20'>Subscribe</button>
@@ -21,26 +25,26 @@ const Footer = () => {
                 </div>
                 <div className="flex flex-wrap justify-between p-8">
                     <div className=" md:w-1/4 mb-8 ">
-                    <h3 className="text-xl font-bold text-blue-900">PROUDLY CANADIANS</h3>
+                        <h3 className="text-xl font-bold text-blue-900">PROUDLY CANADIANS</h3>
                         <p className='text-black mt-2 text-sm mr-12'>
                             At Proudly Canadians, our mission is to help people get jobs. We have a team of dedicated professionals passionately pursuing...
                         </p>
                     </div>
-                  
+
                     <div className="md:w-1/4 mb-8">
-                            <h2 className="text-xl font-bold text-blue-900">USEFUL LINKS</h2>
-                            <ul>
-                                <li className='text-black   mt-2 text-sm'>&gt; <Link to="/">Home</Link></li>
-                                <li className='text-black mt-2 text-sm '>&gt; <Link to="/aboutus">About Us</Link></li>
-                                <li className='text-black mt-2 text-sm'>&gt; <Link to="/jobs/search">Find Job</Link></li>
-                                <li className='text-black mt-2 text-sm'>&gt; <Link to="/job-fair">Job Fair</Link></li>
-                                <li className='text-black mt-2 text-sm'>&gt; <Link to="/virtualjob">Virtual Job</Link></li>
-                                <li className='text-black mt-2 text-sm'>&gt; <Link to="/contact">Contact Us</Link></li>
-                                <li className='text-black mt-2 text-sm'>&gt; <Link to="/terms">Terms & Condition</Link></li>
-                            </ul>
+                        <h2 className="text-xl font-bold text-blue-900">USEFUL LINKS</h2>
+                        <ul>
+                            <li className='text-black   mt-2 text-sm'>&gt; <Link to="/">Home</Link></li>
+                            <li className='text-black mt-2 text-sm '>&gt; <Link to="/aboutus">About Us</Link></li>
+                            <li className='text-black mt-2 text-sm'>&gt; <Link to="/jobs/search">Find Job</Link></li>
+                            <li className='text-black mt-2 text-sm'>&gt; <Link to="/job-fair">Job Fair</Link></li>
+                            <li className='text-black mt-2 text-sm'>&gt; <Link to="/virtualjob">Virtual Job</Link></li>
+                            <li className='text-black mt-2 text-sm'>&gt; <Link to="/contact">Contact Us</Link></li>
+                            <li className='text-black mt-2 text-sm'>&gt; <Link to="/terms">Terms & Condition</Link></li>
+                        </ul>
                     </div>
 
-                  
+
 
                     <div className=" md:w-1/4 mb-8">
                         <h3 className="text-xl font-bold text-blue-900">CONNECT WITH US</h3>

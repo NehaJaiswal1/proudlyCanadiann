@@ -9,26 +9,28 @@ import './Home.css';
 import manage from '../images/manage-common.jpg'
 import employer from '../images/employer.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLineChart, faGlobe, faBarChart, faBullseye, faCalculator, faLaptop, faSearch, faMapMarkedAlt, faSuitcase, faMapLocation } from '@fortawesome/free-solid-svg-icons';
+import { faLineChart, faGlobe, faBarChart, faBullseye, faCalculator, faLaptop, faSearch, faMapMarkedAlt, faSuitcase, faMapLocation, faForward, faBackward } from '@fortawesome/free-solid-svg-icons';
 import { faUser, faBookmark, faMapMarker, faClock } from '@fortawesome/free-solid-svg-icons';
 import Footer from './Footer';
 import cl from '../images/company-logo.png'
-import { TextField, Button, InputAdornment, Card, CardContent, Typography } from '@mui/material';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import car from '../images/home/car.png';
+import { TextField, Button, InputAdornment, Card, CardContent, Typography, CardHeader } from '@mui/material';
+import Slider from 'react-slick';
 import coin from '../images/home/coin.png';
-import first from '../images/home/first-aid-kit.png';
-import jobsearch from '../images/home/job-search.png';
-import marketing from '../images/home/marketing.png';
-import rocket from '../images/home/rocket.png';
-import vector from '../images/home/vector.png';
-import wp from '../images/home/web-programming.png';
 import speaker from '../images/home/speaker.png';
 import design from '../images/home/creative.jpg';
 import meet from '../images/home/meet.webp';
 import ap1 from '../images/home/applicant-1.webp';
 import ap2 from '../images/home/applicant-2.webp';
 import ap3 from '../images/home/applicant-3.webp';
+
+import { cardInfo } from '../Data/cardDetail.jsx';
+import t from '../images/home/testimonial.webp'
+import { testimonialDetail } from '../Data/testimonial.jsx';
+import one from '../images/home/1-1.webp';
+import two from '../images/home/1-4.webp';
+import three from '../images/home/1-5.webp';
+import four from '../images/home/1-6.webp';
+import { registerCompany } from '../Data/registerCompany.jsx';
 
 
 
@@ -42,6 +44,8 @@ function Home() {
     const [selectedLocation, setSelectedLocation] = useState('');
     const [selectedSalary, setSelectedSalary] = useState('');
     const [data, setData] = useState([]);
+    const [currentCardIndex, setCurrentCardIndex] = useState(0);
+
     const [selectedJobType, setSelectedJobType] =
         useState('Youth and new comers');
 
@@ -94,6 +98,14 @@ function Home() {
         return str;
     }
 
+    const handleNextCard = () => {
+        setCurrentCardIndex((prevIndex) => (prevIndex + 1) % testimonialDetail.length);
+    };
+
+    const handlePrevCard = () => {
+        setCurrentCardIndex((prevIndex) => (prevIndex - 1 + testimonialDetail.length) % testimonialDetail.length);
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -141,6 +153,16 @@ function Home() {
     //         }
     //     };
     // }, []);
+
+
+    const settings = {
+        dots: true,
+        dotsClass: "slick-dots custom-dots",
+        infinite: true,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+    };
 
     const handleFindJob = () => {
 
@@ -585,10 +607,91 @@ function Home() {
                     <p>Recent News Articles</p>
                     <p>Fresh job related news content posted each day.</p>
                 </div>
-                <div>
-
+                <div className="h-96 overflow-hidden flex  mt-10 px-8">
+                    {cardInfo.map((card, index) => (
+                        <Card key={index} sx={{ width: '350px', height: '300px' }} style={{ margin: '15px' }}>
+                            <div style={{ height: '60%' }}>
+                                <img src={card.img} alt="Card" />
+                            </div>
+                            <div className='flex space-x-2 mt-2'>
+                                <p>{card.date}</p>
+                                <p>{card.comment}</p>
+                            </div>
+                            <CardContent>
+                                <h2 className='text-red-700'>{card.title}</h2>
+                                <p className='text-slate-700'>{card.des}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
                 </div>
             </div>
+            <div className='bg-white h-full'>
+                <div className='text-center '>
+                    <p>Testimonials From Our Customers</p>
+                    <p>Lorem ipsum dolor sit amet elit, sed do eiusmod tempor</p>
+                </div>
+
+                <div className="h-full overflow-hidden flex mt-10 px-8 ">
+                    <div className='w-4/6 p-5 '>
+                        <img src={t} className='mb-10  w-4/6 ' />
+                    </div>
+                    <div className='1/6 '>
+                        <div key={currentCardIndex} >
+                            <div className=' mt-2'>
+                                <h2 className='text-red-700'>{testimonialDetail[currentCardIndex].title}</h2>
+                                <p className='text-slate-700'>{testimonialDetail[currentCardIndex].des}</p>
+                            </div>
+
+                            <h2 className='text-red-700'>{testimonialDetail[currentCardIndex].name}</h2>
+                            <p className='text-slate-700'>{testimonialDetail[currentCardIndex].desgination}</p>
+
+                        </div>
+
+                        <FontAwesomeIcon icon={faBackward}
+                            onClick={handlePrevCard} />
+                        <FontAwesomeIcon icon={faForward} onClick={handleNextCard} />
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div className='flex space-x-6 bg-white'>
+                <img src={one} className='w-1/10' />
+                <img src={two} className='w-1/10' />
+                <img src={one} className='w-1/10' />
+                <img src={three} className='w-1/10' />
+                <img src={two} className='w-1/10' />
+                <img src={four} className='w-1/10' />
+
+            </div>
+            <div className="bg-white p-2">
+                <p>Top Company Registered</p>
+                <p>Some of the companies we have helped recruit excellent applicants over the years.</p>
+                <div className='p-7 relative px-4 '>
+                    <Slider {...settings}>
+                        {registerCompany.map((company, index) => (
+                              <div key={index} className='sm:w-full md:w-1/2 lg:w-1/4'>
+                                <Card key={index} sx={{ width: '250px', height: '300px' }} style={{ margin: '15px' }}>
+                                    <div className='grid place-items-center mt-5'>
+                                        <img src={company.logo} alt={company.comapnyName} className='rounded-full' />
+                                    </div>
+                                    <div className='p-5 items-center'>
+                                        <h2 className='text-blue-700 mt-2 text-center'>{company.comapnyName}</h2>
+                                        <div className='mt-2 text-gray-400 text-center'>
+                                            <FontAwesomeIcon icon={faMapMarker} /> {company.location}
+                                        </div>
+                                        <div className='text-blue-700 p-3 bg-blue-100 rounded-lg mt-8 text-center'>
+                                            <p>{company.availablePositions} Open Positions</p>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </div>
+                        ))}
+                    </Slider>
+                </div>
+            </div>
+
 
 
 
