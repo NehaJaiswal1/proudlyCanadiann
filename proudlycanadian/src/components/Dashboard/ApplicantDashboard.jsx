@@ -6,20 +6,13 @@ import Footer from '../Footer.jsx';
 import { Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
+import { Bar, Line } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
 import { useAuth } from '../AuthContext/AuthContext.jsx'
 import {
   Grid,
   Paper,
   Typography,
-  Button,
-  styled,
-  Card,
-  CardContent,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   IconButton,
   Avatar, Container, Link
 } from '@mui/material';
@@ -39,7 +32,7 @@ import {
   faCog,
   faBarChart,
   faSearch,
-  faMapMarker, faTags, faIndustry, faClock
+  faMapMarker, faTags, faIndustry, faClock, faTag, faFileAlt, faBellSlash, faBellConcierge
 } from '@fortawesome/free-solid-svg-icons';
 import ProfileForm from './ProfileForm.jsx';
 import FileUploadForm from './FileUploadForm.jsx';
@@ -57,10 +50,11 @@ function ApplicantDashboard() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [allJobDetails, setAllJobDetails] = useState([]);
   const [appliedJobs, setAppliedJobs] = useState([]);
-  console.log("some",appliedJobs)
+  console.log("some", appliedJobs)
   const [appliedJobIds, setAppliedJobIds] = useState([]);
-  
+
   const [isApplied, setIsApplied] = useState(false)
+  const [appliedJobsCount, setAppliedJobsCount] = useState(0);
 
 
 
@@ -68,6 +62,22 @@ function ApplicantDashboard() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // ---------------------------Dashboard------------------------
+
+  const chartData = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+      {
+        label: 'Your Profile Views',
+        data: [9, 19, 3, 5, 12, 13, 17],
+        backgroundColor: 'rgba(75,192,192,0.2)',
+        borderColor: 'rgba(75,192,192,1)',
+        borderWidth: 1,
+        fill: false,
+      },
+    ],
+  };
 
   //--------------------------Profile Form----------------------
 
@@ -155,7 +165,7 @@ function ApplicantDashboard() {
 
   const handleChangePasswordUpdate = async () => {
     try {
-      
+
       const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/change-Password-Applicant', {
         method: 'PUT',
         headers: {
@@ -296,7 +306,7 @@ function ApplicantDashboard() {
     return formattedDate;
   };
 
-// -------------------------------------------------------------------
+  // -------------------------------------------------------------------
 
 
   const handleApply = async (jobId) => {
@@ -337,6 +347,84 @@ function ApplicantDashboard() {
     navigate(`/job-details/${jobId}`);
   };
 
+  // ------------------------------Dashboard data show---------
+
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch('https://job-portal-website-by5i.onrender.com/job-Portal/applicantProfile', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authData.token}`,
+          },
+        });
+
+        if (!response.ok) {
+          console.error('Failed to fetch data. Status:', response.status);
+          return;
+        }
+
+        const data = await response.json();
+        console.log(data)
+        const firstName = data.result.firstName || '';
+        setFormData({
+          firstName: firstName,
+          lastName: data.result.lastName || '',
+          mobileno: data.result.mobileno || '',
+          email: data.result.email || '',
+          applicantId: data.result.applicantId || '',
+          address: data.result.address || '',
+          state: data.result.state || '',
+          country: data.result.country || '',
+          category: data.result.category || '',
+        });
+
+
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    if (selectedIcon === 'faTasksAlt' || selectedIcon == null) {
+      fetchProfileData();
+    }
+  }, [selectedIcon, authData.token]);
+
+  useEffect(() => {
+    const fetchAppliedJob = async () => {
+      try {
+        const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/allJobsByApplicant', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authData.token}`,
+          },
+        });
+
+        if (!response.ok) {
+          console.error('Failed to fetch data. Status:', response.status);
+          return;
+        }
+
+        const data = await response.json();
+        console.log(data.appliedJobs)
+        setAppliedJobsCount(data.appliedJobs.length)
+
+
+
+      } catch (error) {
+        console.error('Error fetching data:', error)``
+      }
+    };
+
+    if (selectedIcon === 'faTasksAlt' || selectedIcon == null) {
+      fetchAppliedJob();
+    }
+  }, [selectedIcon, authData.token]);
+
 
 
   const handleIconClick = async (icon) => {
@@ -356,7 +444,7 @@ function ApplicantDashboard() {
           console.error('Failed to fetch data. Status:', response.status);
           return;
         }
-        
+
         const data = await response.json();
         // console.log('Fetched Data:', data.result);
 
@@ -429,7 +517,7 @@ function ApplicantDashboard() {
       setSelectedIcon('ChangePassword');
     }
     else if (icon === 'faSuitcase') {
-      
+
       try {
 
         const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/allJobs', {
@@ -457,6 +545,7 @@ function ApplicantDashboard() {
 
     else if (icon === 'faBarChart') {
       try {
+        console.log(authData.token)
         const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/allJobsByApplicant', {
           method: 'GET',
           headers: {
@@ -470,9 +559,9 @@ function ApplicantDashboard() {
         }
         const jobsData = await response.json();
         console.log('Fetched All Jobs By Applicant Data:', jobsData);
-        let newJobsData=[]
-        for(let i=0; i<jobsData.appliedJobs.length; i++) {
-          if(jobsData.appliedJobs[i] != null) newJobsData.push(jobsData.appliedJobs[i]); 
+        let newJobsData = []
+        for (let i = 0; i < jobsData.appliedJobs.length; i++) {
+          if (jobsData.appliedJobs[i] != null) newJobsData.push(jobsData.appliedJobs[i]);
         }
 
         setAppliedJobs(newJobsData);
@@ -483,16 +572,28 @@ function ApplicantDashboard() {
       }
     }
 
-    
-    
+    else if (icon === 'faTasksAlt' || icon == null) {
+      console.log('Before setting appliedJobsCount:', appliedJobs.length);
+
+      setSelectedIcon('faTasksAlt');
+      setAppliedJobsCount(appliedJobs.length);
+    }
+
+
+
   };
   console.log('Selected Icon:', selectedIcon);
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+    return formattedDate;
+  };
 
 
   return (
     <div className='bg-slate-100'>
-      {/* <Navbar />
-      <div style={{ height: '90px' }}></div> */}
+
       <div className='rounded-lg bg-white p-6 flex
        relative border-b-4 border-blue-900'>
         <img src={pc} className="h-8" alt="logo-img" />
@@ -532,53 +633,52 @@ function ApplicantDashboard() {
 
       <Grid container spacing={2}>
         {/* Left card with 1/3 width */}
-        <Grid item xs={10} sm={1} style={{ marginTop: '20px' }}>
-          <Paper style={{ padding: '16px', height: '500px', borderBottom: '2px solid #ddd', width: '80px', borderRadius: '15px', boxShadow: '0px 0px 10px #172554' }}>
+        <Grid item xs={10} sm={2} style={{ marginTop: '20px' }}>
+          <Paper style={{ padding: '16px', height: '500px', borderBottom: '2px solid #ddd', width: '120px', borderRadius: '15px', boxShadow: '0px 0px 10px #172554' }}>
             <Grid container direction="column" spacing={2}>
 
               {/* Status Icon */}
-              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '20px' }}>
+              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <IconButton>
-                  <FontAwesomeIcon icon={faTasksAlt} size='xs' className='text-blue-900' title="Dashboard" />
+                  <FontAwesomeIcon icon={faTasksAlt} size='xs' className='text-blue-900 ' title="Dashboard" onClick={() => handleIconClick('faTasksAlt')} />
                 </IconButton>
               </Grid>
 
-
-              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '10px' }}>
+              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <IconButton>
                   <FontAwesomeIcon icon={faSuitcase} size='xs' className='text-blue-900' title="Jobs"
                     onClick={() => handleIconClick('faSuitcase')} />
                 </IconButton>
               </Grid>
               {/* Report */}
-              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '10px' }}>
+              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <IconButton>
                   <FontAwesomeIcon icon={faBarChart} size='xs' className='text-blue-900' title="Applied Job" onClick={() => handleIconClick('faBarChart')} />
                 </IconButton>
               </Grid>
 
               {/* Upload File Icon */}
-              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '10px' }}>
+              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <IconButton>
                   <FontAwesomeIcon icon={faFileUpload} size='xs' className='text-blue-900' title="Resume upload" onClick={() => handleIconClick('FileUploadForm')} />
                 </IconButton>
               </Grid>
 
               {/* // Password Icon */}
-              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '10px' }}>
+              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <IconButton>
                   <FontAwesomeIcon icon={faLock} size='xs' className='text-blue-900' title="Change Password" onClick={() => handleIconClick('ChangePassword')} />
                 </IconButton>
               </Grid>
 
               {/* Signout Icon */}
-              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '10px' }}>
+              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <IconButton onClick={handleLogout}>
                   <FontAwesomeIcon icon={faSignOutAlt} size='xs' className='text-blue-900' title="LogOut" />
                 </IconButton>
               </Grid>
               {/* Setting Icon */}
-              <Grid item style={{ marginTop: '10px' }}>
+              <Grid item style={{ borderBottom: '1px solid #ddd', marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <IconButton onClick={handleLogout}>
                   <FontAwesomeIcon icon={faCog} size='xs' className='text-blue-900' title="Setting" />
                 </IconButton>
@@ -589,13 +689,60 @@ function ApplicantDashboard() {
         </Grid>
 
         {/* Right card with 2/3 width */}
-        <Grid item xs={10} sm={8} style={{ marginTop: '20px' }} >
+        <Grid item xs={10} sm={9} style={{ marginTop: '20px' }} >
 
           <Paper style={{ padding: '16px', height: '100%', borderBottom: '2px solid #ddd', marginLeft: '30px', borderRadius: '15px', boxShadow: '0px 0px 10px #172554' }}>
-            {selectedIcon == null && (
+
+            {(selectedIcon === 'faTasksAlt' || selectedIcon == null) && (
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h2 className="text-3xl font-semibold ">Howdy, {formData.firstName} !!</h2>
+                <p className='text-gray-500 mb-6'>Ready to jump back in ?</p>
+
+                <div className="grid grid-cols-3 gap-6">
+                  <div className="bg-blue-50 text-blue-800 p-6 border  border-blue-500 rounded-full flex flex-col">
+                    <FontAwesomeIcon icon={faSuitcase} size='2xl'  />
+
+                    <div className="bg-blue-50  text-blue-800 p-6 rounded-full flex flex-row justify-center items-center space-x-5">
+
+                      <p className="text-lg font-semibold  text-center">Applied Jobs :</p>
+                      <p className="text-lg text-center">{appliedJobsCount}</p>
+                    </div>
+                  </div>
+                  <div className="bg-yellow-50 text-yellow-400 p-5 border border-yellow-400 rounded-full flex flex-col">
+                    <FontAwesomeIcon icon={faBell} size='2xl' />
+
+                    <div className="text-yellow-800 p-6 rounded-full flex flex-row justify-center items-center space-x-5">
+
+                      <p className="text-lg font-semibold  text-center">Notification :</p>
+                      <p className="text-lg text-center">{appliedJobsCount}</p>
+                    </div>
+                  </div>
+                  <div className="bg-green-50 text-green-800 p-6 border  border-green-500 rounded-full flex flex-col">
+                    <FontAwesomeIcon icon={faFileUpload} size='2xl'  />
+
+                    <div className="bg-green-50  text-green-800 p-6 rounded-full flex flex-row justify-center items-center space-x-5">
+
+                      <p className="text-lg font-semibold  text-center">ResumeShortlist:</p>
+                      <p className="text-lg text-center">{appliedJobsCount}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-8">
+                  <div className="bg-white w-full p-6 rounded-md">
+                    <h3 className="text-xl font-semibold mb-4">Your Profile Views</h3>
+                    <div className="h-60">
+                      <Line data={chartData} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* {selectedIcon == null && (
               <Typography variant='h6'>
                 Welcome to Your Dashboard</Typography>
-            )}
+            )} */}
             {console.log('formData:', formData)}
             {selectedIcon === 'profileForm' && (
               <ProfileForm
@@ -624,30 +771,51 @@ function ApplicantDashboard() {
             {selectedIcon === 'faSuitcase' && (
               <div className="p-4 ">
                 {allJobDetails.map((job, index) => (
-                  <div className='shadow-md rounded-2xl shadow-slate-400  hover-card bg-slate-50  
-                  hover:h-36'>
-                    <div key={index} className=" flex rounded-lg mt-4 mb-4 justify-between">
-                      <div className='flex ml-10 '>
-                        <img src='https://proudlycanadians.ca/assets_new/img/company-logo.png' className="w-12 rounded-full border-gray-800" alt="logo-img" />
+                  <div className='shadow-slate-400 
+                  bg-slate-50 
+                  border-2
+                   border-slate-100 rounded-2xl ' style={{ fontFamily: 'Rubik', fontWeight: '600', marginBottom: '20px' }}>
+                    <div key={index} className=" flex rounded-lg mt-4 mb-4 justify-between " >
+                      <div className='flex ml-2'>
+                        <img src='https://proudlycanadians.ca/assets_new/img/company-logo.png' className="w-16 h-16 border-2 border-gray-200 ml-5 rounded-2xl" alt="logo-img" />
                         <div className='ml-10 '>
-                          <p className='font-bold mt-3 text-gray-600'>
-                            {job.jobTitle}</p>
+                          <p
+                            onClick={() => navigate(`/job-details/${job._id}`)}
+                            className='text-gray-700 font-bold mt-3 text-lg cursor-pointer  hover:text-blue-500'
+
+                          >
+                            {job.jobTitle}
+                          </p>
                           <div className=' mb-2 mt-5'>
 
-                            <div className='flex space-x-6 '>
-                              <p className=' text-xs '>
-                                <FontAwesomeIcon icon={faMapMarker} className="mr-2 text-gray-600" />{job.City}</p>
-                              <p className='text-xs flex items-center'>
-                                <FontAwesomeIcon icon={faTags} className="mr-2 text-gray-600" /> {job.jobType}
+                            <div className='flex space-x-5'>
+                              <p className='text-md'>
+                                <FontAwesomeIcon icon={faTag} className="mr-2 text-red-600" />
+                                ID-{job.jobId}</p>
+                              <p className='text-md'>
+                                <FontAwesomeIcon icon={faTag} className="mr-2 text-red-600" />
+                                NOC-{job.NOC}</p>
+                              <p className=' text-md '>
+                                <FontAwesomeIcon icon={faMapMarker} className="mr-2 text-red-600" />
+                                {job.City}</p>
+                              <p className=' text-md '> <FontAwesomeIcon icon={faClock} className="mr-2 text-red-600" />{formatDate(job.PostedDate)}
                               </p>
                             </div>
-                            <div className='flex space-x-6 mb-5'>
-                              <p className='  text-xs flex items-center'>
-                                <FontAwesomeIcon icon={faIndustry} className="mr-2 text-gray-600" />
-                                {job.jobCategory}</p>
-                              <p className=' text-xs '> <FontAwesomeIcon icon={faClock} className="mr-2 text-gray-600" />
-                                {formatPostedDate(job.PostedDate)}
+                            <div className='flex'>
+                              <p className='p-2 m-2 text-xs rounded-full font-semibold w-2/6 h-2/4
+                                                 bg-blue-100
+                         text-blue-600 text-center'>
+
+                                {job.EmployementType}</p>
+                              <p className='p-2 m-2 text-xs rounded-full font-semibold w-2/6 h-2/4 bg-yellow-100
+                         text-yellow-600 text-center'>
+                                {job.jobType
+                                  && job.jobType.split(' ').slice(0, 2).join(' ')}
                               </p>
+                              <p className='p-2 m-2 text-xs rounded-full font-semibold w-2/6 h-2/4 bg-green-100
+                         text-green-600 text-center'>
+
+                                {job.jobCategory}</p>
                             </div>
                           </div>
                         </div>
@@ -663,8 +831,8 @@ function ApplicantDashboard() {
                           APPLY
                         </button>
 
-                        <button className='bg-blue-900 hover:bg-red-600 text-white 
-                        rounded-full w-32  h-10 m-4 text-xs font-bold' onClick={() => handleViewJob(`${job._id}`)}>VIEW JOB</button>
+                        {/* <button className='bg-blue-900 hover:bg-red-600 text-white 
+                        rounded-full w-32  h-10 m-4 text-xs font-bold' onClick={() => handleViewJob(`${job._id}`)}>VIEW JOB</button> */}
 
                       </div>
                     </div>
@@ -673,18 +841,19 @@ function ApplicantDashboard() {
               </div>
             )}
 
+
             {selectedIcon === 'faBarChart' && (
               <AppliedJobs appliedJobs={appliedJobs} />
             )}
           </Paper>
         </Grid>
 
-        <Grid item xs={10} sm={2} style={{ marginTop: '20px' }} >
+        {/* <Grid item xs={10} sm={2} style={{ marginTop: '20px' }} >
           <Paper style={{ height: '500px', borderBottom: '2px solid #ddd', width: '100%', marginLeft: '30px', borderRadius: '15px', boxShadow: '0px 0px 10px #172554' }}>
           </Paper>
 
 
-        </Grid>
+        </Grid> */}
 
 
 

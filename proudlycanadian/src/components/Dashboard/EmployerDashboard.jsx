@@ -11,7 +11,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import pc from '../../images/pc.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock, faEye, faPen, faUser, faUpload, faPaperPlane, faImage, faEnvelope, faBuilding, faThLarge, faUserAlt, faMessage, faPerson, faAdd, faUserCircle, faUserPlus, faTasks, faTasksAlt, faFile, faLock, faSignOut, faEdit, faTrash, faBell, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock, faEye, faPen, faUser, faUpload, faPaperPlane, faImage, faEnvelope, faBuilding, faThLarge, faUserAlt, faMessage, faPerson, faAdd, faUserCircle, faUserPlus, faTasks, faTasksAlt, faFile, faLock, faSignOut, faEdit, faTrash, faBell, faSearch, faHome } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../AuthContext/AuthContext.jsx'
 import { Bar, Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
@@ -41,7 +41,7 @@ function ProfileInformation({ handleClose, handleInputChange }) {
           headers: {
             Authorization: `Bearer ${authData.token}`,
           },
-        }); 
+        });
         console.log(response)
         if (response.ok) {
           const data = await response.json();
@@ -442,7 +442,7 @@ function EmployerDashboard() {
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const [passwordMatch, setPasswordMatch] = useState(true);
-  
+
 
   const [displayContent, setDisplayContent] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -454,45 +454,6 @@ function EmployerDashboard() {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  //----------------------------------------------------------------------------------------------
-  //        MY DASHBOARD 
-
-  // useEffect(() => {
-  //   const script = document.createElement('script');
-  //   script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-  //   script.async = true;
-  //   document.head.appendChild(script);
-
-  //   script.onload = () => {
-  //     // Chart is now defined
-  //     const chartData = {
-  //       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  //       datasets: [
-  //         {
-  //           label: 'Monthly Sales',
-  //           data: [12, 19, 3, 5, 2, 3, 7],
-  //           backgroundColor: 'rgba(75,192,192,0.2)',
-  //           borderColor: 'rgba(75,192,192,1)',
-  //           borderWidth: 1,
-  //         },
-  //       ],
-  //     };
-
-  //     Chart.register(...Chart.registerables);
-
-  //     const canvas = document.createElement('canvas');
-  //     document.body.appendChild(canvas);
-  //     new Chart(canvas.getContext('2d'), {
-  //       type: 'bar',
-  //       data: chartData,
-  //     });
-  //   };
-
-  //   return () => {
-  //     // Cleanup if needed
-  //     document.head.removeChild(script);
-  //   };
-  // }, []);
 
   const chartData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -908,7 +869,7 @@ function EmployerDashboard() {
     if (content === 'Profile Picture') {
       setIsProfileOpen(true);
     }
-    else if (content === 'Dashboard') {
+    else if (content === 'Dashboard' || content === '') {
       fetchJobs();
       fetchData();
       setIsProfileOpen(false);
@@ -1127,78 +1088,19 @@ function EmployerDashboard() {
   return (
     <div className='bg-gray-100'>
 
-      <div className='rounded-lg bg-white p-6 flex
-       relative border-b-4 border-blue-900'>
-        <img src={pc} className="h-8" alt="logo-img" />
-        {/* Notification Icon */}
-        <div className='absolute top-2 right-5  '>
-          <IconButton >
-            <FontAwesomeIcon icon={faBell} className=' text-sm text-blue-900' title="Notification" />
-          </IconButton>
-        </div>
-
-        {/* Profile Icon in the top right corner */}
-        <div className='absolute top-2 right-8 '>
-          <IconButton>
-            <FontAwesomeIcon icon={faUserCircle} size='2x' className='text-zinc-600' title="Profile" />
-          </IconButton>
-        </div>
-
-        {/* Search Input Box and Icon */}
-        <div className='absolute top-2 right-24 flex items-center p-4'>
-          <input
-            type="text"
-            placeholder="Search..."
-            className="px-1 py-1 border border-gray-300 rounded-2xl focus:outline-none focus:border-zinc-500"
-
-          />
-          <FontAwesomeIcon icon={faSearch} size='lg' className='text-zinc-500 p-2' title="Search" />
-
-        </div>
-
-
-
-      </div>
+      <Navbar />
+      <div style={{ height: '70px' }}></div>
 
       <Container className='mt-5'>
-          <Grid container spacing={3}>
-      <Grid item xs={12} sm={3}>
-        {/* Left side of the grid */}
-        <Paper style={{ padding: 16, height: '100%' }}>
-              {/* <form onSubmit={handleProfilePictureSubmit} className='text-center'>
-                <div className="mb-4 " onClick={() => document.getElementById("profile-picture-upload").click()}>
-                  <label htmlFor="profile-picture-upload" className="cursor-pointer">
-                    <div
-                      className="rounded-full overflow-hidden bg-gray-200 p-2 text-center"
-                      style={{
-                        backgroundImage: `url(${selectedImage})`,
-                        backgroundSize: 'cover',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'center center',
-                        height: '120px',
-                        width: '120px',
-                        justifyContent: 'center',
-                        margin: '0 auto'
-                      }}
-                    >
-                      {!selectedImage && (
-                        <FontAwesomeIcon icon={faUpload} size="2x" color="#3182ce" className='text-slate-500' />
-                      )}
-                    </div>
-                  </label>
-                  <input
-                    accept="image/*"
-                    style={{ display: 'none' }}
-                    id="profile-picture-upload"
-                    type="file"
-                    onChange={handleProfilePictureChange}
-                  />
-                </div>
-              </form> */}
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={3}>
+            {/* Left side of the grid */}
+            <Paper style={{ padding: 16, height: '100%' }}>
+
 
               <div className='mt-5 '>
                 <StyledButton onClick={() => handleButtonClick('Dashboard')}>
-                  <FontAwesomeIcon className='mr-2' />
+                  <FontAwesomeIcon icon={faHome} className='mr-2' />
                   Dashboard
                 </StyledButton>
               </div>
@@ -1330,9 +1232,9 @@ function EmployerDashboard() {
                 </div>
               )}
 
-              {displayContent === 'Dashboard' && (
+              {(displayContent === 'Dashboard' || displayContent === null) && (
                 <div className="bg-white p-6 rounded-lg shadow-md">
-                  <h2 className="text-3xl font-bold mb-6">Dashboard Overview</h2>
+                  <h2 className="text-3xl font-bold mb-6">Dashboard Home !!!</h2>
 
                   <div className="grid grid-cols-3 gap-6">
                     <div className="bg-blue-500 text-white p-6 rounded-md flex flex-col justify-center items-center">
@@ -1353,7 +1255,7 @@ function EmployerDashboard() {
                     <div className="bg-gray-200 p-6 rounded-md">
                       <h3 className="text-xl font-bold mb-4">Monthly Activity</h3>
                       <div className="h-60">
-                        <Line data={chartData}  />
+                        <Line data={chartData} />
                       </div>
                     </div>
                   </div>
@@ -2154,6 +2056,10 @@ function EmployerDashboard() {
 
               )}
               {displayContent === 'My Packages' && packageDetails && (
+
+
+
+
                 <div>
                   <form className='p-10 text-center'>
                     <Typography variant="h6">
@@ -2174,20 +2080,43 @@ function EmployerDashboard() {
                       Packages & Plans
                     </Button>
                   </form>
+                  <TableContainer component={Paper}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell style={{ textAlign: 'left', color: '#2d3748', fontSize: '1rem', backgroundColor: '#e2e8f0' }}>Detail</TableCell>
+                          <TableCell style={{ textAlign: 'left', color: '#2d3748', fontSize: '1rem', backgroundColor: '#e2e8f0' }}>Price</TableCell>
+                          <TableCell style={{ textAlign: 'left', color: '#2d3748', fontSize: '1rem', backgroundColor: '#e2e8f0' }}>Expired On</TableCell>
+                          <TableCell style={{ textAlign: 'left', color: '#2d3748', fontSize: '1rem', backgroundColor: '#e2e8f0' }}>Purchase On</TableCell>
+                          <TableCell style={{ textAlign: 'left', color: '#2d3748', fontSize: '1rem', backgroundColor: '#e2e8f0' }}>No. of Posts</TableCell>
+                          <TableCell style={{ textAlign: 'left', color: '#2d3748', fontSize: '1rem', backgroundColor: '#e2e8f0' }}>Status</TableCell>
+                          <TableCell style={{ textAlign: 'left', color: '#2d3748', fontSize: '1rem', backgroundColor: '#e2e8f0' }}>Action</TableCell>
 
-                  {/* Display package details in a card */}
-                  {packageDetails.Packages.map((packageDetail) => (
-                    <Card key={packageDetail._id}>
-                      <CardContent>
-                        <Typography variant="h6">Package Details</Typography>
-                        <Typography>Price: {packageDetail.Price}</Typography>
-                        <Typography>Expiry Date: {packageDetail.expiryDate}</Typography>
-                        <Typography>Number of Days: {packageDetail.noOfDays}</Typography>
-                        <Typography>Number of Posts: {packageDetail.noOfPosts}</Typography>
-                        {/* Add more package details as needed */}
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {packageDetails.Packages.map((packageDetail,index) => (
+                          <TableRow key={packageDetail._id} style={{ backgroundColor: index % 2 === 0 ? '#fff' : '#e2e8f0' }}>
+                            <TableCell tyle={{ textAlign: 'left', borderBottom: '1px solid #ccc' }}>
+                              {packageDetail.packageTitle}
+                            </TableCell>
+                            <TableCell tyle={{ textAlign: 'left', borderBottom: '1px solid #ccc' }}>{packageDetail.Price}</TableCell>
+                            <TableCell tyle={{ textAlign: 'left', borderBottom: '1px solid #ccc' }}>{packageDetail.expiryDate}</TableCell>
+                            <TableCell tyle={{ textAlign: 'left', borderBottom: '1px solid #ccc' }}>{packageDetail.postedDate}</TableCell>
+                            <TableCell tyle={{ textAlign: 'left', borderBottom: '1px solid #ccc' }}>{packageDetail.noOfPosts}</TableCell>
+                            <TableCell tyle={{ textAlign: 'left', borderBottom: '1px solid #ccc' }}>{packageDetail.status}</TableCell>
+                            <TableCell style={{ textAlign: 'left', borderBottom: '1px solid #ccc' }}>
+                              <Button style={{ fontSize: '12px' }} onClick={() => handleViewDetails(job._id)}>
+                                <FontAwesomeIcon icon={faEye} />
+                              </Button>
+                            </TableCell>
+
+
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
                 </div>
               )}
 

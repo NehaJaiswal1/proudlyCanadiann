@@ -197,7 +197,7 @@ const FindAJob = () => {
       <Navbar />
       <div className=''>
         <div style={{ height: '70px' }}></div>
-        <div className='text-3xl text-gray-800 bg-slate-200 text-center h-36  p-10'>Find Jobs</div>
+        <div className='text-3xl text-gray-800 bg-slate-200 text-center h-36 p-10'>Find Jobs</div>
 
       </div>
       <div className='flex p-10 space-x-5'>
@@ -375,7 +375,7 @@ const FindAJob = () => {
             </Grid>
           </Grid>
         </div>
-        <div className="p-4 w-3/4 ">
+        <div className="p-4 w-3/4 mt-5">
           {jobsData.length > 0 ? (
 
             jobsData.map((job, index) => (
@@ -491,7 +491,8 @@ const FindAJob = () => {
 
                   </div>
                   <div className='flex mt-5  '>
-                    <button className='bg-blue-900 text-white p-2 rounded-full w-28 h-10 m-4 text-sm font-bold hover:bg-red-600'
+                    <button className='bg-blue-900
+                     text-white p-2 rounded-full w-28 h-10 m-4 text-sm font-bold hover:bg-red-600'
                       onClick={() => handleApply(`${job._id}`)}>APPLY</button>
                     {/* <button className='bg-blue-900 hover:bg-red-600 text-white  rounded-2xl w-32  h-10 m-4 text-xs font-bold' onClick={() => handleQuickApply(job.id)}>QUICK APPLY</button> */}
 
