@@ -104,7 +104,8 @@ const Navbar = () => {
                 to="/employers"
                 className="p-2  hover:bg-blue-900  
                 text-blue-800 hover:text-white
-                 hover:border-2 hover:border-white bg-white rounded-full"
+                 hover:border-2 hover:border-white
+                  bg-white rounded-full"
               >
                 Advertise Jobs
               </Link>

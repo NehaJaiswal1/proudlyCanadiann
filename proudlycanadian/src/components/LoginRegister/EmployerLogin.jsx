@@ -93,6 +93,9 @@ const EmployerLogin = ({ onClose }) => {
   const register = () => {
     navigate("/employers/auth/registration");
   };
+  const registerApplicant =()=>{
+    navigate('/auth/registration')
+  };
 
   return (
     <div >
@@ -152,7 +155,8 @@ const EmployerLogin = ({ onClose }) => {
                 <Grid item xs={12}>
                   <div>
                     Don't have an account?
-                    <Link onClick={register}> Signup</Link>
+                    <Link onClick={register} className='text-xs'> Employer</Link>
+                    <Link onClick={registerApplicant} className='text-xs'> Applicant</Link>
                   </div>
                 </Grid>
               </Grid>

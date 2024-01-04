@@ -40,14 +40,33 @@ function Home() {
     }, []);
     const navigate = useNavigate();
     const [jobTitle, setJobTitle] = useState('');
-    const [selectedNOC, setSelectedNOC] = useState('');
-    const [selectedLocation, setSelectedLocation] = useState('');
-    const [selectedSalary, setSelectedSalary] = useState('');
+    const [city, setCity] = useState('');
+    const [jobCategory, setJobCategory] = useState('');
+    const [jobNOC, setJobNOC] = useState('');
     const [data, setData] = useState([]);
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
-
+    const [selectResult, setSelectResult] = useState([]);
     const [selectedJobType, setSelectedJobType] =
         useState('Youth and new comers');
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        switch (name) {
+            case 'jobTitle':
+                setJobTitle(value);
+                break;
+            case 'NOC':
+                setJobNOC(value);
+                break;
+            case 'city':
+                setCity(value);
+                break;
+            default:
+                break;
+        }
+
+    };
+
 
 
 
@@ -122,37 +141,6 @@ function Home() {
     }, []);
     console.log('Data:', data);
 
-    // const elementRef = useRef(null);
-
-    // useEffect(() => {
-    //     const options = {
-    //         root: null,
-    //         rootMargin: '0px',
-    //         threshold: 0.5,
-    //     };
-
-    //     const handleIntersection = (entries, observer) => {
-    //         entries.forEach((entry) => {
-    //             if (entry.isIntersecting) {
-    //                 // The element is in the viewport
-    //                 entry.target.classList.add('fade-up');
-    //                 observer.unobserve(entry.target); // Stop observing after the transition is applied
-    //             }
-    //         });
-    //     };
-
-    //     const observer = new IntersectionObserver(handleIntersection, options);
-
-    //     if (elementRef.current) {
-    //         observer.observe(elementRef.current);
-    //     }
-
-    //     return () => {
-    //         if (elementRef.current) {
-    //             observer.unobserve(elementRef.current);
-    //         }
-    //     };
-    // }, []);
 
 
     const settings = {
@@ -164,30 +152,37 @@ function Home() {
         slidesToScroll: 1,
     };
 
-    const handleFindJob = () => {
+    const handleFindJobs = async () => {
+        try {
+            console.log("1", jobTitle, jobNOC, city);
+            const apiUrl = `https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/searchJobByQuery/${city}/${jobNOC}/${jobTitle}`;
 
-        fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/jobSearch', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                jobTitle,
-                location: selectedLocation,
-
-            }),
-        })
-            .then(response => response.json())
-            .then(data => {
-
-                console.log('API Response:', data);
-
-            })
-            .catch(error => {
-                console.error('Error:', error);
-
+            const response = await fetch(apiUrl, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
             });
+
+            if (response.ok) {
+                const data = await response.json();
+                navigate('/jobs', {
+                    state: {
+                        jobsData:
+                            data.jobsList
+                    }
+                })
+                console.log("Jobs found:", data);
+            } else {
+                console.error("Failed to fetch jobs:", response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error("Error during API call:", error.message);
+        }
     };
+
+
+
 
 
 
@@ -234,31 +229,39 @@ function Home() {
                         <div className="relative flex items-center w-4/12 ">
                             <FontAwesomeIcon icon={faSearch} className="absolute left-4 text-gray-400" />
                             <input
-                                placeholder='Jobs, title'
+
+                                name="jobTitle"
+                                placeholder='Job Title'
                                 className='rounded-lg pl-10 w-full border-none focus:outline-none'
+                                value={jobTitle} onChange={handleInputChange}
                             />
                         </div>
                         <div className="relative flex items-center w-3/12 ">
                             <FontAwesomeIcon icon={faMapMarker} className="absolute left-4 text-gray-400" />
                             <input
-                                placeholder='City or Postal Code'
+                                placeholder='City'
                                 className='rounded-lg pl-10 w-full border-none focus:outline-none'
+                                name="city"
+                                value={city} onChange={handleInputChange}
                             />
                         </div>
                         <div className="relative flex items-center w-3/12">
                             <FontAwesomeIcon icon={faSuitcase} className="absolute left-4 text-gray-400" />
                             <input
-                                placeholder='City or Postal Code'
+                                placeholder='NOC'
+                                name="NOC"
                                 className='rounded-lg pl-10 w-full p-4 border-none focus:outline-none'
+                                value={jobNOC} onChange={handleInputChange}
                             />
                         </div>
-                        <button className='bg-blue-600 rounded-full w-2/12 text-white'>
+                        <button className='bg-blue-600 rounded-full w-2/12 text-white'
+                            onClick={handleFindJobs}>
                             Find Jobs
                         </button>
 
                     </div>
                     <p className="text-white text-center text-sm font-semibold  mt-5">
-                        Popular Searches : Designer, Developer, Web, IOS, PHP, Senior, Engineer
+                        Popular Searches : Designer, Developer, Driver, IT Professional, Chef, Nurse
                     </p>
                 </div>
 
@@ -271,89 +274,74 @@ function Home() {
                 <p className="text-2xl font-bold text-gray-700 mb-4 text-center">Most Popular Jobs</p>
                 <p className="text-gray-600 mb-4 text-center">Know your worth and find the job that qualifies your life</p>
                 <div className="flex justify-center space-x-2 ">
-
-                    {/* <button
-                        className={`p-1 mt-5 w-1/5 text-sm rounded-lg text-white bg-gray-400
-            hover:border-2 hover:border-gray-100
-             hover:bg-white hover:text-black
-              ${selectedJobType === 'Youth and new comers' ? 'bg-gray-600' : ''}`}
-                        onClick={handleHotJobs}
-                    >
-                        Youth and New Comers
-                    </button>
-                    <button
-                        className={`p-1 mt-5 w-1/5 rounded-lg text-sm text-white
-             hover:border-2 bg-gray-400 hover:border-gray-100
-            hover:bg-white
-             hover:text-black ${selectedJobType === 'LatestJob' ? 'bg-gray-400' : ''}`}
-                        onClick={handleLatestJobs}
-                    >
-                        LATEST JOBS
-                    </button>
-                    <button className='p-1 mt-5 text-sm w-1/5 rounded-lg bg-gray-400 text-white hover:border-2 hover:border-gray-100
-             hover:bg-white hover:text-black'
-                        onClick={handleJobsLMIA}>LMIA JOBS FOR TFW'S</button>
-
-                    <button className='p-1 mt-5 w-1/5 text-sm rounded-lg bg-gray-400 text-white hover:border-2 hover:border-gray-100
-             hover:bg-white hover:text-black' onClick={handleJobsForCanadians}>
-                        JOB'S FOR CANADIANS
-                    </button> */}
                 </div>
             </div>
             <div className='p-10'>
 
                 <div className=" space-y-10 ">
                     <div className="grid grid-cols-2 gap-4">
-                    {data.slice(0, 6).map((job) => (
-                                <div className='shadow-slate-400 
+                        {data.slice(0, 6).map((job) => (
+                            <div className='shadow-slate-400 
                                     bg-slate-50 
                                     border-2
                                      border-slate-100 rounded-2xl'
-                                    style={{ fontFamily: 'Rubik', fontWeight: '600' }}>
-                                    <div key={job._id} className=" flex rounded-lg mt-4 mb-4 justify-between" >
-                                        <div className='flex '>
+                                style={{ fontFamily: 'Rubik', fontWeight: '600' }}>
+                                <div key={job._id} className=" flex rounded-lg mt-4 mb-4 justify-between" >
+                                    <div className='flex '>
 
-                                            <img src={cl} alt="logo-img" className="w-16 h-16 border-2 border-gray-100 ml-5 rounded-2xl" />
-                                            <div className='ml-2 '>
+                                        <img src={cl} alt="logo-img" className="w-16 h-16 border-2 border-gray-100 ml-5 rounded-2xl" />
+                                        <div className='ml-2 '>
 
-                                                <p className='mt- text-gray-700 text-lg' style={{ textTransform: 'capitalize' }}>
-                                                    {truncateWords(job.jobTitle, 5)}
-                                                </p>
-                                                <div className='flex mt-3 mb-3'>
-                                                    <p className=' m-1 text-xs   text-gray-600'>
-                                                        <FontAwesomeIcon icon={faUser} className='mr-1 text-red-500' />
-                                                        ID-{job.jobId}</p>
+                                            <Link
+                                                to={`/job-details/${job._id}`}
+                                                className='mt- text-gray-700 text-lg cursor-pointer hover:underline'
+                                                style={{ textTransform: 'capitalize' }}
+                                            >
+                                                {truncateWords(job.jobTitle, 5)}
+                                            </Link>
+                                            <div className='flex mt-3 mb-3'>
+                                                <p className=' m-1 text-sm   text-gray-600'>
+                                                    <FontAwesomeIcon icon={faUser} className='mr-1 text-red-500' />
+                                                    ID-{job.jobId}</p>
 
-                                                    <p className='m-1 text-xs   text-gray-600'>
-                                                        <FontAwesomeIcon icon={faBookmark} className='mr-1 text-red-500' />
-                                                        NOC-{job.NOC}</p>
-                                                    <p className='m-1 text-xs   text-gray-600'>
-                                                        <FontAwesomeIcon icon={faMapMarker} className='mr-1  text-red-500' />
-                                                        {job.location},  {job.Province}</p>
-                                                    <p className='m-1 text-xs   text-gray-600'>
-                                                        <FontAwesomeIcon icon={faClock} className='mr-1 text-red-500' />
-                                                        {formatDate(job.PostedDate)}</p>
+                                                <p className='m-1 text-sm   text-gray-600'>
+                                                    <FontAwesomeIcon icon={faBookmark} className='mr-1 text-red-500' />
+                                                    NOC-{job.NOC}</p>
+                                                <p className='m-1 text-sm   text-gray-600'>
+                                                    <FontAwesomeIcon icon={faMapMarker} className='mr-1  text-red-500' />
+                                                    {job.location.split(' ')[0]},  {job.Province.split(' ')[0]}</p>
+                                                <p className='m-1 text-sm   text-gray-600'>
+                                                    <FontAwesomeIcon icon={faClock} className='mr-1 text-red-500' />
+                                                    {formatDate(job.PostedDate)}</p>
 
-                                                </div>
-                                                <div className='flex'>
-                                                    <p className='p-2 m-2 text-xs rounded-full font-semibold w-2/6 bg-blue-100
-                         text-blue-600 text-center'>
-                                                        {job.EmployementType}</p>
-                                                    <p className='p-2 m-2 text-xs rounded-full font-semibold w-2/6 bg-yellow-100
-                         text-yellow-600 text-center'>
-                                                        {job.jobType}</p>
-                                                   
-                                                </div>
                                             </div>
+                                            <div className='flex'>
+                                                <p className='p-2 m-2 text-sm rounded-full font-semibold w-3/6 h-2/4
+                                                 bg-blue-100
+                         text-blue-600 text-center'>
 
-                                        </div>
-                                        <div className='flex mt-3'>
+                                                    {job.EmployementType}</p>
+                                                <p className='p-2 m-2 text-sm rounded-full font-semibold w-3/6 h-2/4 bg-yellow-100
+                         text-yellow-600 text-center'>
+                                                      {job.jobType
+                                                        && job.jobType.split(' ').slice(0, 2).join(' ')}
+                                                </p>
+                                                {/* <button className='p-2 m-2 text-sm rounded-full font-semibold w-1/3 bg-blue-900
+                         text-white text-center'>
+                                                        Apply
+                                                    </button> */}
 
-                
+                                            </div>
                                         </div>
+
+                                    </div>
+                                    <div className='flex mt-3'>
+
+
                                     </div>
                                 </div>
-                            ))}
+                            </div>
+                        ))}
                     </div>
                     <div className='flex justify-center'>
                         <button className='font-semibold p-4 mt-3 bg-blue-700  rounded-md text-slate-100' onClick={jobs}>
@@ -543,25 +531,25 @@ function Home() {
                         <p className='p-2 bg-blue-700 text-md text-center text-white font-semibold '>Applicants List</p>
                         <div className='flex p-2 bg-white'>
                             <img src={ap1} className='rounded-full' />
-                            <div className=''>
-                                <p className='text-center text-gray-600 '>Brooklyn</p>
-                                <p className='text-center text-gray-300'>Web Devloper</p>
+                            <div className='ml-3'>
+                                <p className='text-left text-gray-600 '>Brooklyn</p>
+                                <p className='text-center text-gray-300'>Marketing Manager</p>
                             </div>
                         </div>
                         <div className='flex p-2 bg-white'>
                             <img src={ap2} className='rounded-full' />
-                            <div>
+                            <div className='ml-3'>
                                 <p className='text-center text-gray-600 '>Courtney Henry</p>
-                                <p className='text-gray-300 text-center'>Web Devloper</p>
+                                <p className='text-gray-300 text-left'>Designer</p>
                             </div>
                         </div>
                         <div className='flex p-2 bg-white'>
                             <img src={ap3}
                                 className='rounded-full' />
-                            <div className='text-center'>
+                            <div className='ml-3'>
                                 <p className='
                                 text-gray-600 text-center'>Marvin McKinney</p>
-                                <p className='text-center text-gray-300'>Web Devloper</p>
+                                <p className='text-left text-gray-300'>Chef</p>
                             </div>
                         </div>
                     </div>
