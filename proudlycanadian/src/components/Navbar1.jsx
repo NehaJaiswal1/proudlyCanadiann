@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import pc from '../images/pc.png';
@@ -33,7 +34,9 @@ const Navbar = () => {
   return (
     <nav
       className='fixed w-full z-10 md:wfull '>
-      <div className={` h-15 p-3 bg-blue-900 `}>
+      <div className={` h-15 p-3 ${
+        scrolled ? 'bg-blue-900' : 'bg-transparent'
+      }`}>
         <div className="mx-auto ">
           <div className="flex justify-between items-center ">
             <div className="lg:flex items-center hidden md:flex">

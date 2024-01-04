@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
+import Navbar from './Navbar1.jsx';
 import banner from '../images/banner.png';
 import './Home.css';
 import manage from '../images/manage-common.jpg'
