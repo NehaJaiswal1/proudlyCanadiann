@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
@@ -24,7 +23,7 @@ import { AuthProvider } from './components/AuthContext/AuthContext';
 
 
 import JobDetails from './components/JobDetails/JobDetails';
-
+import PaymentForm from './components/AdvertiseAJob/PaymentForm';
 const App = () => {
   
 
@@ -61,6 +60,7 @@ const App = () => {
             <Route path="/business-benefits-of-hiring-disabled-people" element={<DisabledPeople />} />
             <Route path="/the-importance-of-a-great-cover-letter" element={<CoverLetter />} />
             <Route path="/disabled-workers-have-much-to-offer" element={<DisabledWorker />} />
+          <Route path='/payment' element={<PaymentForm />}/>
           </Routes>
          
         </AuthProvider>

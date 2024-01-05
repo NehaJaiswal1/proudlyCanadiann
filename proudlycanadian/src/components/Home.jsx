@@ -227,7 +227,7 @@ function Home() {
                     <div className='flex bg-white rounded-full mx-auto  p-4 '>
 
                         <div className="relative flex items-center w-4/12 ">
-                            <FontAwesomeIcon icon={faSearch} className="absolute left-4 text-gray-400" />
+                            <FontAwesomeIcon icon={faSearch} className="absolute left-4 text-blue-500" />
                             <input
 
                                 name="jobTitle"
@@ -237,7 +237,7 @@ function Home() {
                             />
                         </div>
                         <div className="relative flex items-center w-3/12 ">
-                            <FontAwesomeIcon icon={faMapMarker} className="absolute left-4 text-gray-400" />
+                            <FontAwesomeIcon icon={faMapMarker} className="absolute left-4 text-blue-500" />
                             <input
                                 placeholder='City'
                                 className='rounded-lg pl-10 w-full border-none focus:outline-none'
@@ -246,7 +246,7 @@ function Home() {
                             />
                         </div>
                         <div className="relative flex items-center w-3/12">
-                            <FontAwesomeIcon icon={faSuitcase} className="absolute left-4 text-gray-400" />
+                            <FontAwesomeIcon icon={faSuitcase} className="absolute left-4 text-blue-500" />
                             <input
                                 placeholder='NOC'
                                 name="NOC"

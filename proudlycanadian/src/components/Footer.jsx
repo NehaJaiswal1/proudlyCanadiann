@@ -10,7 +10,7 @@ import { faFacebook, faTwitter, faInstagram, faLinkedin } from '@fortawesome/fre
 
 const Footer = () => {
     return (
-        <footer className="bg-white ">
+        <footer className="bg-white">
             <div className=" ">
             <div className="bg-blue-100  flex p-6 py-20 space-x-10">
                     <div className='w-2/4 '>

@@ -1,24 +1,97 @@
+
 import React,{useState, useEffect} from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import {Alert, Snackbar, IconButton} from '@mui/material';
+
 
 
 export default function ContactUs() {
+
   useEffect(() => {
     window.scrollTo(0, 0); 
   }, []);
 
+ 
     const navigate = useNavigate();
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  
     const [buttonColor, setButtonColor] = useState('bg-blue-900');
   
+   
+
+    const [formData, setFormData] = useState({
+      name: '',
+      email: '',
+      subject: '',
+      message: '',
+    });
+
+    const handleSnackbarClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      setSnackbarOpen(false);
+    };
+    
+
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({ ...formData, [name]: value });
+    };
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+    
+      try {
+        const response = await fetch('https://job-portal-website-by5i.onrender.com/job-Portal/Contact-Route/addContact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+    
+        if (response.ok) {
+         console.log(response)
+         setSnackbarSeverity('success');
+          setSnackbarMessage('Message Sent Sucessfully !!!');
+          setSnackbarOpen(true);
+
+          setFormData({
+            name: '',
+            email: '',
+            subject: '',
+            message: '',
+          });
+          
+         
+      } else {
+        const data = await response.json();
+        setSnackbarSeverity('error');
+        setSnackbarMessage('Failed to send message. Please check your credentials');
+        setSnackbarOpen(true);
+      }
+    } catch (error) {
+      console.error('An error occurred while sending the message:', error);
+      setSnackbarSeverity('error');
+      setSnackbarMessage('An error occurred. Please try again.');
+      setSnackbarOpen(true);
+      
+    }
+  };
+    
     const handleSearchJobsClick = () => {
-      // Change the button color
+     
       setButtonColor('bg-red-700');
       
-      // Navigate to /jobs
+      
       navigate('/jobs');
     };
     const handlePostNewJobClick = () => {
@@ -70,13 +143,17 @@ export default function ContactUs() {
                 contact@proudlycanadians.ca</p>
             </div>
           </div>
+          
+         
         </div>
 
         {/* Right Side - Contact Form */}
         <div className=" w-full md:w-2/3 p-4">
+       
+
         <div className='font-bold text-center text-white bg-slate-800 px-5 py-4 rounded-lg '>Contact Form</div>
             
-          <form className=" mx-auto px-5 py-5 shadow-2xl shadow-slate-300 rounded-2xl">
+          <form className=" mx-auto px-5 py-5 shadow-2xl shadow-slate-300 rounded-2xl" onSubmit={handleSubmit}>
           
             <div className="mb-4 ">
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2 ">
@@ -86,6 +163,8 @@ export default function ContactUs() {
                 type="text"
                 id="name"
                 name="name"
+                value={formData.name}
+                onChange={handleInputChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Your Name"
               />
@@ -99,6 +178,8 @@ export default function ContactUs() {
                 type="email"
                 id="email"
                 name="email"
+                value={formData.email}
+                onChange={handleInputChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Your Email"
               />
@@ -112,6 +193,8 @@ export default function ContactUs() {
                 type="text"
                 id="subject"
                 name="subject"
+                value={formData.subject}
+                onChange={handleInputChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Subject"
               />
@@ -125,6 +208,8 @@ export default function ContactUs() {
                 id="message"
                 name="message"
                 rows="4"
+                value={formData.message}
+                onChange={handleInputChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Your Message"
               ></textarea>
@@ -137,10 +222,41 @@ export default function ContactUs() {
             >
               Send Message
             </button>
+           
           </form>
+          {/* {successAlert && (
+        <Alert
+          severity="success"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => setSuccessAlert(false)}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+        >
+          Your message has been sent successfully!
+        </Alert>
+      )} */}
+<Snackbar
+                open={snackbarOpen}
+                autoHideDuration={2000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              >
+                <Alert severity={snackbarSeverity} onClose={handleSnackbarClose}>
+                  {snackbarMessage}
+                </Alert>
+              </Snackbar>
           
         </div>
+        
       </div>
+     
+
       <Footer />
     </div>
   );

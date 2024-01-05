@@ -1055,7 +1055,6 @@ function EmployerDashboard() {
     } catch (error) {
       console.error('An error occurred while posting the job', error);
 
-      // Show error Snackbar
       setSnackbarSeverity('error');
       setSnackbarMessage('An error occurred. Please try again.');
       setSnackbarOpen(true);

@@ -53,10 +53,13 @@ const FindAJob = () => {
   const [jobTitle, setJobTitle] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedExperience, setSelectedExperience] = useState('');
   const [selectedEmploymentType, setSelectedEmploymentType] = useState('');
-
+  const [selectedJobType, setSelectedJobType] = useState('');
   const [categoryList, setCategoryList] = useState([]);
+  const [minExperience, setMinExperience] = useState(0);
+  const [maxExperience, setMaxExperience] = useState(20);
+  const [employmentTypes, setEmploymentTypes] = useState([]);
+
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -90,9 +93,48 @@ const FindAJob = () => {
   }, []);
   console.log('Data:', data);
 
-  const handleFindJob = () => {
-    console.log('Searching for a job...');
+
+  const formData = {
+    jobTitle,
+    location,
+    minExperience,
+    maxExperience,
+    selectedJobType,
+    selectedCategory,
+    selectedEmploymentType,
+   
   };
+
+  // const handleMinExperienceChange = (e) => {
+  //   setMinExperience(parseInt(e.target.value, 10));
+  // };
+
+  // const handleMaxExperienceChange = (e) => {
+  //   setMaxExperience(parseInt(e.target.value, 10));
+  // };
+
+  // const handleJobTypeChange = (value) => {
+  //   setSelectedJobType(value);
+  // };
+  const handleSearch1 = async () => {
+    try {
+      const apiUrl = `https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/filteredJobs?City=Aldersyde&minExperience=2&maxExperience=4&JobType=Full Stack Engineering&JObCategory=Engineering&EmploymentType=Full Time`;
+  
+      const response = await fetch(apiUrl);
+  
+      if (response.ok) {
+        const searchData = await response.json();
+        console.log('Filtered job search results:', searchData);
+  
+        // Handle the search results as needed
+      } else {
+        console.error('Error fetching filtered job data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching filtered job data:', error.message);
+    }
+  };
+  
 
   const handleSearch = async () => {
 
@@ -132,15 +174,7 @@ const FindAJob = () => {
     navigate(`/job-details/${jobId}`);
   };
 
-
-
-
-  useEffect(() => {
-
-  }, []);
-  const [minExperience, setMinExperience] = useState(0);
-  const [maxExperience, setMaxExperience] = useState(100);
-
+ 
   const handleMinExperienceChange = (event) => {
     setMinExperience(event.target.value);
   };
@@ -149,8 +183,7 @@ const FindAJob = () => {
     setMaxExperience(event.target.value);
   };
 
-  const [selectedJobType, setSelectedJobType] = useState('');
-
+  
   const handleJobTypeChange = (value) => {
     setSelectedJobType(value === selectedJobType ? '' : value);
   };
@@ -172,7 +205,7 @@ const FindAJob = () => {
     setCurrentPage(newPage);
   };
 
-  const [employmentTypes, setEmploymentTypes] = useState([]);
+  
 
   useEffect(() => {
     const fetchEmploymentTypes = async () => {
@@ -201,6 +234,7 @@ const FindAJob = () => {
 
       </div>
       <div className='flex p-10 space-x-5'>
+        {/* left side grid */}
         <div className=
           ' p-6 h-3/6 w-2/6 mt-8  bg-slate-100'>
           <Grid className='' container spacing={1} justifyContent="center">
@@ -209,8 +243,10 @@ const FindAJob = () => {
               <div className='flex bg-white rounded-lg p-3 text-center mt-5 w-72 '>
                 <FontAwesomeIcon icon={faSearch} className='text-gray-500 text-center p-2' />
                 <input
-                  placeholder='Job title, Keywords, or Company'
+                  placeholder='Job title,  Company'
                   className='text-gray-400 text-center  focus:outline-none'
+                //   value={jobTitle}
+                // onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -220,7 +256,7 @@ const FindAJob = () => {
               <div className='flex bg-white rounded-lg p-3 text-center mt-5 w-72 '>
                 <FontAwesomeIcon icon={faMapLocationDot} className='text-gray-500 text-center p-2' />
                 <input
-                  placeholder='City or postcode'
+                  placeholder='City '
                   className='text-gray-400 text-center  focus:outline-none'
                 />
               </div>
@@ -253,20 +289,6 @@ const FindAJob = () => {
                 }}
               />
 
-              {/* <p className='text-sm text-gray-500 mt-5'>
-                Radius around selected destination
-              </p> */}
-              {/* <input
-                type='range'
-                min='1'
-                max='100'
-                step='1'
-                value={radius}
-                onChange={handleRadiusChange}
-                className='text-blue-700 text-center w-full focus:outline-none'
-              /> */}
-              {/* <button className='bg-blue-200 text-blue-800 
-              p-4 rounded-lg text-sm mx-auto block w-2/6 h-10 text-center'>{radius} Km</button> */}
             </div>
             <div>
               <p className='text-lg text-gray-600 font-medium text-left mt-5'>Job type</p>
@@ -367,7 +389,7 @@ const FindAJob = () => {
                 variant="contained"
                 color="primary"
                 fullWidth
-                onClick={handleSearch}
+                onClick={handleSearch1}
                 style={{ marginTop: '16px', backgroundColor: '#1e3a8a' }}
               >
                 Search
