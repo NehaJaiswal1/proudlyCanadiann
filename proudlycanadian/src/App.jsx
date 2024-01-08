@@ -20,6 +20,7 @@ import CoverLetter from './components/CoverLetter/CoverLetter';
 import UpdatePassword from './components/LoginRegister/UpdatePassword';
 import Thankyou from './components/Thankyou';
 import { AuthProvider } from './components/AuthContext/AuthContext';
+import ResumeTemplate from './components/Dashboard/ResumeTemplate.jsx/ResumeTemplate';
 
 
 import JobDetails from './components/JobDetails/JobDetails';
@@ -61,6 +62,7 @@ const App = () => {
             <Route path="/the-importance-of-a-great-cover-letter" element={<CoverLetter />} />
             <Route path="/disabled-workers-have-much-to-offer" element={<DisabledWorker />} />
           <Route path='/payment' element={<PaymentForm />}/>
+          <Route path="/resume" element={<ResumeTemplate />} />
           </Routes>
          
         </AuthProvider>

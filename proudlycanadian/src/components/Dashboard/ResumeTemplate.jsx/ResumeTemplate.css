@@ -1,0 +1,55 @@
+
+
+.resume {
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: pink; /* Set the background color to pink */
+    padding: 10px; /* Add padding for better appearance */
+  }
+  
+  h1 {
+    margin: 0;
+  }
+  
+  p {
+    margin: 5px 0;
+  }
+  
+  section {
+    margin-bottom: 20px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  strong {
+    font-weight: bold;
+  }
+
+  .contact-title {
+    position: relative;
+    display: inline-block;
+    color: #881337;
+  }
+  
+  .contact-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 70%; 
+    height: 2px;
+    background-color: #881337;
+  }
+  
