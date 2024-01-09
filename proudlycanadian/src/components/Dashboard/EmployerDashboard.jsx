@@ -448,6 +448,7 @@ function EmployerDashboard() {
   const [successMessage, setSuccessMessage] = useState('');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [displayCandidates, setDisplayCandidates] = useState(false);
+  const [tableData, setTableData] = useState([]);
 
   const [queryData, setQueryData] = useState({
     subject: '',
@@ -474,41 +475,45 @@ function EmployerDashboard() {
     ],
   };
 
-// ----------------------------------------------------------------   Query Support ----------------------------------------------------------------
-const handleQueryChange = (e) => {
-  setQueryData({
-    ...queryData,
-    [e.target.name]: e.target.value,
-  });
-};
-
-const handleSendQuery = async () => {
-  try {
-    const apiUrl = 'https://job-portal-website-by5i.onrender.com/job-Portal/EmpAdminQueries/addMessage';
-
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${authData.token}`,
-      },
-      body: JSON.stringify({
-        subject: queryData.subject,
-        message: queryData.message,
-      }),
+  // ----------------------------------------------------------------   Query Support ----------------------------------------------------------------
+  const handleQueryChange = (e) => {
+    setQueryData({
+      ...queryData,
+      [e.target.name]: e.target.value,
     });
+  };
 
-    if (response.ok) {
-    
-      console.log('Query sent successfully!');
-    } else {
-      
-      console.error('Error sending query:', response.statusText);
+  const handleSendQuery = async () => {
+    try {
+      const apiUrl = 'https://job-portal-website-by5i.onrender.com/job-Portal/EmpAdminQueries/addMessage';
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authData.token}`,
+        },
+        body: JSON.stringify({
+          subject: queryData.subject,
+          message: queryData.message,
+        }),
+      });
+
+      if (response.ok) {
+
+        console.log('Query sent successfully!');
+        setQueryData({
+          subject: '',
+          message: '',
+        });
+      } else {
+
+        console.error('Error sending query:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error sending query:', error.message);
     }
-  } catch (error) {
-    console.error('Error sending query:', error.message);
-  }
-};
+  };
 
   // --------------------------------------------------------------
   // Manage jobs
@@ -927,13 +932,26 @@ const handleSendQuery = async () => {
       await fetchPackageDetails();
       setIsProfileOpen(false);
     } else if (content === 'Query Support') {
-      // await fetchPackageDetails();
+      try {
+        const response = await fetch("https://job-portal-website-by5i.onrender.com/job-Portal/EmpAdminQueries/EmpQueries", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${authData.token}`,
+          },
+        });
+        const data = await response.json();
+        setTableData(data.details);
+        console.log(data)
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+
+      }
+      setIsProfileOpen(false);
+    } else {
       setIsProfileOpen(false);
     }
 
-    else {
-      setIsProfileOpen(false);
-    }
   };
 
   const handleProfileClose = () => {
@@ -2235,12 +2253,12 @@ const handleSendQuery = async () => {
               )}
 
               {(displayContent === 'Query Support') && (
-                <form className='p-10'>
+                <form className='p-10 overflow-hidden'>
                   <Typography variant="h6" style={{ marginTop: '10px', display: 'flex', alignItems: 'center' }}>
                     <FontAwesomeIcon icon={faQuestionCircle} style={{ marginRight: '8px' }} />
                     Query Support
                   </Typography>
-                  <Grid container spacing={2}>
+                  <Grid container spacing={1} >
 
                     <Grid item xs={12}>
 
@@ -2250,8 +2268,8 @@ const handleSendQuery = async () => {
                         rows={1}
                         variant="outlined"
                         name="subject"
-                        // value={queryData.query}
-                        // onChange={handleQueryChange}
+                        value={queryData.subject}
+                        onChange={handleQueryChange}
                         required
                         fullWidth
                         margin="normal"
@@ -2264,24 +2282,24 @@ const handleSendQuery = async () => {
                         multiline
                         rows={4}
                         variant="outlined"
-                        name="query"
-                        // value={queryData.query}
-                        // onChange={handleQueryChange}
+                        name="message"
+                        value={queryData.message}
+                        onChange={handleQueryChange}
                         required
                         fullWidth
                         margin="normal"
                       />
                     </Grid>
                     <Button
-                    type="button"
-                    variant="contained"
-                    color="primary"
-                    // onClick={handleSendQuery}
-                    style={{ backgroundColor: 'rgb(30 58 138)', borderRadius: '20px', marginTop: '25px', boxShadow: '2px 2px 2px rgb(30 58 140)' }}
-                  >
-                    <FontAwesomeIcon icon={faPaperPlane} style={{ marginRight: '8px' }} />
-                    Send Query
-                  </Button>
+                      type="button"
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSendQuery}
+                      style={{ backgroundColor: 'rgb(30 58 138)', borderRadius: '20px', marginLeft: '8px', boxShadow: '2px 2px 2px rgb(30 58 140)' }}
+                    >
+                      <FontAwesomeIcon icon={faPaperPlane} style={{ marginRight: '8px' }} />
+                      Send
+                    </Button>
                     <Grid item xs={12}>
                       <TableContainer component={Paper}>
                         <Table>
@@ -2289,37 +2307,22 @@ const handleSendQuery = async () => {
                             <TableRow>
                               <TableCell>Subject</TableCell>
                               <TableCell>Reply</TableCell>
-
                             </TableRow>
                           </TableHead>
-                          {/* <TableBody>
-                            {applicantList.map((applicant) => (
-                              <TableRow key={applicant.candidateId
-                              }>
-                                <TableCell>{applicant.Name}</TableCell>
-                                <TableCell>{applicant.email}</TableCell>
-                                <TableCell>{applicant.mobileNo}</TableCell>
-                                <TableCell>{applicant.address}</TableCell>
-                                <TableCell>
-                                  <IconButton onClick={() => handleEdit(applicant)}>
-                                    <FontAwesomeIcon icon={faEdit} className='text-xs' />
-                                  </IconButton>
-                                  <IconButton onClick={() => handleEdit(applicant)}>
-                                    <FontAwesomeIcon icon={faPaperPlane} className='text-xs' />
-                                  </IconButton>
-                                  <IconButton onClick={() => handleDelete(applicant)}>
-                                    <FontAwesomeIcon icon={faTrash} className='text-xs' />
-                                  </IconButton>
-                                </TableCell>
+                          <TableBody>
+                            {tableData && tableData.map((query) => (
+                              <TableRow key={query._id}>
+                                <TableCell>{query.subject}</TableCell>
+                                <TableCell>{query.adminReplies.length > 0 ? query.adminReplies[0].replyMessage : 'Not answered yet'}</TableCell>
                               </TableRow>
                             ))}
-                          </TableBody> */}
-
+                          </TableBody>
                         </Table>
                       </TableContainer>
                     </Grid>
+
                   </Grid>
-                  
+
                 </form>
               )}
               <Snackbar
