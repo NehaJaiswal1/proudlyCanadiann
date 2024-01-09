@@ -11,7 +11,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import pc from '../../images/pc.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock, faEye, faPen, faUser, faUpload, faPaperPlane, faImage, faEnvelope, faBuilding, faThLarge, faUserAlt, faMessage, faPerson, faAdd, faUserCircle, faUserPlus, faTasks, faTasksAlt, faFile, faLock, faSignOut, faEdit, faTrash, faBell, faSearch, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock, faEye, faPen, faUser, faUpload, faPaperPlane, faImage, faEnvelope, faBuilding, faThLarge, faUserAlt, faMessage, faPerson, faAdd, faUserCircle, faUserPlus, faTasks, faTasksAlt, faFile, faLock, faSignOut, faEdit, faTrash, faBell, faSearch, faHome, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../AuthContext/AuthContext.jsx'
 import { Bar, Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
@@ -449,6 +449,11 @@ function EmployerDashboard() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [displayCandidates, setDisplayCandidates] = useState(false);
 
+  const [queryData, setQueryData] = useState({
+    subject: '',
+    message: '',
+  });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -469,7 +474,41 @@ function EmployerDashboard() {
     ],
   };
 
+// ----------------------------------------------------------------   Query Support ----------------------------------------------------------------
+const handleQueryChange = (e) => {
+  setQueryData({
+    ...queryData,
+    [e.target.name]: e.target.value,
+  });
+};
 
+const handleSendQuery = async () => {
+  try {
+    const apiUrl = 'https://job-portal-website-by5i.onrender.com/job-Portal/EmpAdminQueries/addMessage';
+
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authData.token}`,
+      },
+      body: JSON.stringify({
+        subject: queryData.subject,
+        message: queryData.message,
+      }),
+    });
+
+    if (response.ok) {
+    
+      console.log('Query sent successfully!');
+    } else {
+      
+      console.error('Error sending query:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error sending query:', error.message);
+  }
+};
 
   // --------------------------------------------------------------
   // Manage jobs
@@ -887,7 +926,12 @@ function EmployerDashboard() {
     else if (content === 'My Packages') {
       await fetchPackageDetails();
       setIsProfileOpen(false);
-    } else {
+    } else if (content === 'Query Support') {
+      // await fetchPackageDetails();
+      setIsProfileOpen(false);
+    }
+
+    else {
       setIsProfileOpen(false);
     }
   };
@@ -1152,6 +1196,12 @@ function EmployerDashboard() {
                 <StyledButton onClick={() => handleButtonClick('Change Password')}>
                   <FontAwesomeIcon icon={faLock} className='mr-2' />
                   Change Password
+                </StyledButton>
+              </div>
+              <div>
+                <StyledButton onClick={() => handleButtonClick('Query Support')}>
+                  <FontAwesomeIcon icon={faQuestionCircle} className='mr-2' />
+                  Query Support
                 </StyledButton>
               </div>
               <div>
@@ -2094,7 +2144,7 @@ function EmployerDashboard() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {packageDetails.Packages.map((packageDetail,index) => (
+                        {packageDetails.Packages.map((packageDetail, index) => (
                           <TableRow key={packageDetail._id} style={{ backgroundColor: index % 2 === 0 ? '#fff' : '#e2e8f0' }}>
                             <TableCell tyle={{ textAlign: 'left', borderBottom: '1px solid #ccc' }}>
                               {packageDetail.packageTitle}
@@ -2181,6 +2231,95 @@ function EmployerDashboard() {
                     style={{ backgroundColor: 'rgb(30 58 138)', borderRadius: '20px', marginTop: '25px', boxShadow: '2px 2px 2px rgb(30 58 140)' }}>
                     Update
                   </Button>
+                </form>
+              )}
+
+              {(displayContent === 'Query Support') && (
+                <form className='p-10'>
+                  <Typography variant="h6" style={{ marginTop: '10px', display: 'flex', alignItems: 'center' }}>
+                    <FontAwesomeIcon icon={faQuestionCircle} style={{ marginRight: '8px' }} />
+                    Query Support
+                  </Typography>
+                  <Grid container spacing={2}>
+
+                    <Grid item xs={12}>
+
+                      <TextField
+                        label="Subject"
+                        multiline
+                        rows={1}
+                        variant="outlined"
+                        name="subject"
+                        // value={queryData.query}
+                        // onChange={handleQueryChange}
+                        required
+                        fullWidth
+                        margin="normal"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+
+                      <TextField
+                        label="Message"
+                        multiline
+                        rows={4}
+                        variant="outlined"
+                        name="query"
+                        // value={queryData.query}
+                        // onChange={handleQueryChange}
+                        required
+                        fullWidth
+                        margin="normal"
+                      />
+                    </Grid>
+                    <Button
+                    type="button"
+                    variant="contained"
+                    color="primary"
+                    // onClick={handleSendQuery}
+                    style={{ backgroundColor: 'rgb(30 58 138)', borderRadius: '20px', marginTop: '25px', boxShadow: '2px 2px 2px rgb(30 58 140)' }}
+                  >
+                    <FontAwesomeIcon icon={faPaperPlane} style={{ marginRight: '8px' }} />
+                    Send Query
+                  </Button>
+                    <Grid item xs={12}>
+                      <TableContainer component={Paper}>
+                        <Table>
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>Subject</TableCell>
+                              <TableCell>Reply</TableCell>
+
+                            </TableRow>
+                          </TableHead>
+                          {/* <TableBody>
+                            {applicantList.map((applicant) => (
+                              <TableRow key={applicant.candidateId
+                              }>
+                                <TableCell>{applicant.Name}</TableCell>
+                                <TableCell>{applicant.email}</TableCell>
+                                <TableCell>{applicant.mobileNo}</TableCell>
+                                <TableCell>{applicant.address}</TableCell>
+                                <TableCell>
+                                  <IconButton onClick={() => handleEdit(applicant)}>
+                                    <FontAwesomeIcon icon={faEdit} className='text-xs' />
+                                  </IconButton>
+                                  <IconButton onClick={() => handleEdit(applicant)}>
+                                    <FontAwesomeIcon icon={faPaperPlane} className='text-xs' />
+                                  </IconButton>
+                                  <IconButton onClick={() => handleDelete(applicant)}>
+                                    <FontAwesomeIcon icon={faTrash} className='text-xs' />
+                                  </IconButton>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody> */}
+
+                        </Table>
+                      </TableContainer>
+                    </Grid>
+                  </Grid>
+                  
                 </form>
               )}
               <Snackbar

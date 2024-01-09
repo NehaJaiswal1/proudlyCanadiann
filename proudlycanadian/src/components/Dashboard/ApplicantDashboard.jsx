@@ -32,7 +32,7 @@ import {
   faCog,
   faBarChart,
   faSearch,
-  faMapMarker, faTags, faIndustry, faClock, faTag, faFileAlt, faBellSlash, faBellConcierge
+  faMapMarker, faClock, faTag, faFileAlt, faBellSlash, faBellConcierge
 } from '@fortawesome/free-solid-svg-icons';
 import ProfileForm from './ProfileForm.jsx';
 import FileUploadForm from './FileUploadForm.jsx';
@@ -283,6 +283,7 @@ function ApplicantDashboard() {
       const responseData = await response.json();
       console.log('Upload response:', responseData);
       console.log('Upload response:', fileUploadFormData);
+      handlePopupOpen();
 
       setSnackbarSeverity('success');
       setSnackbarMessage('Resume uploaded successfully');

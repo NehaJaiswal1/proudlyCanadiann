@@ -1,0 +1,9 @@
+
+{
+    "rewrites": [
+      {"source": "/admin/", "destination": "https://jobportaladminpanel.vercel.app/"},
+      {"source": "/admin/:match*", "destination": "https://jobportaladminpanel.vercel.app/:match*"},
+      {"source": "/", "destination": "https://proudly-canadiann-pbv9.vercel.app/"},
+      {"source": "/:match*", "destination": "https://proudly-canadiann-pbv9.vercel.app/:match*"}
+    ]
+  }

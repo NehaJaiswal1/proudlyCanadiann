@@ -22,7 +22,6 @@ import meet from '../images/home/meet.webp';
 import ap1 from '../images/home/applicant-1.webp';
 import ap2 from '../images/home/applicant-2.webp';
 import ap3 from '../images/home/applicant-3.webp';
-
 import { cardInfo } from '../Data/cardDetail.jsx';
 import t from '../images/home/testimonial.webp'
 import { testimonialDetail } from '../Data/testimonial.jsx';
@@ -41,13 +40,14 @@ function Home() {
     const navigate = useNavigate();
     const [jobTitle, setJobTitle] = useState('');
     const [city, setCity] = useState('');
-    const [jobCategory, setJobCategory] = useState('');
+    // const [jobCategory, setJobCategory] = useState('');
     const [jobNOC, setJobNOC] = useState('');
     const [data, setData] = useState([]);
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
-    const [selectResult, setSelectResult] = useState([]);
-    const [selectedJobType, setSelectedJobType] =
-        useState('Youth and new comers');
+    const [categories, setCategories] = useState([]);
+    // const [selectResult, setSelectResult] = useState([]);
+    // const [selectedJobType, setSelectedJobType] =
+    //     useState('Youth and new comers');
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -141,6 +141,25 @@ function Home() {
     }, []);
     console.log('Data:', data);
 
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch('https://job-portal-website-by5i.onrender.com/Job-Portal/Categories/allCategories');
+                const data = await response.json();
+                if (Array.isArray(data.allCategories)) {
+                    setCategories(data.allCategories);
+                } else {
+                    console.error('Invalid API response:', data);
+                    setCategories([]);
+                }
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+                setCategories([]);
+            }
+        };
+
+        fetchCategories();
+    }, []);
 
 
     const settings = {
@@ -323,7 +342,7 @@ function Home() {
                                                     {job.EmployementType}</p>
                                                 <p className='p-2 m-2 text-sm rounded-full font-semibold w-3/6 h-2/4 bg-yellow-100
                          text-yellow-600 text-center'>
-                                                      {job.jobType
+                                                    {job.jobType
                                                         && job.jobType.split(' ').slice(0, 2).join(' ')}
                                                 </p>
                                                 {/* <button className='p-2 m-2 text-sm rounded-full font-semibold w-1/3 bg-blue-900
@@ -352,177 +371,33 @@ function Home() {
             </div>
             <div>
                 <div className="mb-8 text-center">
-                    <p className="text-3xl font-bold text-gray-600
-                     p-2 rounded-lg">
-                        Popular Job Categories</p>
+                    <p className="text-3xl font-bold text-gray-600 p-2 rounded-lg">
+                        Popular Job Categories
+                    </p>
                     <p className="text-gray-500 text-sm">
-                        2020 jobs live - 293 added today.</p>
+                        {categories.length}+ jobs live
+                    </p>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'center' }} className=' space-x-6 p-4 h-full'>
-                    <Card sx={{ m: 2, margin: '10px', borderRadius: '10px' }}
-                        className='w-2/6 h-32 md:w-2/6 lg:w-2/6 xl:w-2/6 sm:w-1/6'>
-                        <CardContent style={{ display: 'flex', alignItems: 'left', padding: '10px' }}>
-                            <div className='bg-slate-200 rounded-full items-center justify-center p-3'>
-                                <img src={coin} alt="Coin" style={{ width: '60px' }} className='rounded-full' />
-                            </div>
-                            <div>
-                                <p className='text-lg font-semibold p-2 text-gray-800'>
-                                    Accounting/Finance
-                                </p>
-                                <p className='text-gray-400 text-sm p-2'>
-                                    (2 open positions)
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Second Card */}
-                    <Card sx={{ m: 2, margin: '10px', borderRadius: '10px' }}
-                        className='w-2/6 h-32 '>
-                        <CardContent style={{ display: 'flex', alignItems: 'left', padding: '10px', borderRadius: '10px' }}>
-                            <div className='bg-slate-200 rounded-full items-center justify-center p-3'>
-                                <img src={speaker} alt="Coin" style={{ width: '60px' }} className='rounded-full' />
-                            </div>
-                            <div>
-                                <p className='text-lg font-semibold p-2 text-gray-800'>
-                                    Marketing
-                                </p>
-                                <p className='text-gray-400 text-sm p-2'>
-                                    (86 open positions)
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Third Card */}
-                    <Card sx={{ m: 2, margin: '10px', borderRadius: '10px' }}
-                        className='w-2/6 h-32'>
-                        <CardContent style={{ display: 'flex', alignItems: 'left', padding: '10px' }}>
-                            <div className='bg-slate-200 rounded-full items-center justify-center p-3'>
-                                <img src={design} alt="Coin" style={{ width: '60px' }} className='rounded-full' />
-                            </div>
-                            <div>
-                                <p className='text-lg font-semibold p-2 text-gray-800'>
-                                    Design
-                                </p>
-                                <p className='text-gray-400 text-sm p-2'>
-                                    (86 open positions)
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
+                <div className="grid grid-cols-3 gap-4 justify-center p-4">
+                    {categories.map(category => (
+                        <Card key={category._id} sx={{ m: 2, borderRadius: '10px', width: '90%' }} className='h-32'>
+                            <CardContent style={{ display: 'flex', alignItems: 'left', padding: '10px' }}>
+                                <div className='bg-slate-200 rounded-full items-center justify-center p-3'>
+                                    <img src={speaker} alt={category.category} style={{ width: '60px' }} className='rounded-full' />
+                                </div>
+                                <div>
+                                    <p className='text-lg font-semibold p-2 text-gray-800'>
+                                        {category.category}
+                                    </p>
+                                    <p className='text-gray-400 text-sm p-2'>
+                                        (10+ open positions)
+                                    </p>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'center' }} className='space-x-6 p-4 h-full'>
-                    <Card sx={{ m: 2, margin: '10px', borderRadius: '10px' }}
-                        className='w-2/6 h-32'>
-                        <CardContent style={{ display: 'flex', alignItems: 'left', padding: '10px' }}>
-                            <div className='bg-slate-200 rounded-full items-center justify-center p-3'>
-                                <img src={coin} alt="Coin" style={{ width: '60px' }} className='rounded-full' />
-                            </div>
-                            <div>
-                                <p className='text-lg font-semibold p-2 text-gray-800'>
-                                    Development
-                                </p>
-                                <p className='text-gray-400 text-sm p-2'>
-                                    (12 open positions)
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Second Card */}
-                    <Card sx={{ m: 2, margin: '10px', borderRadius: '10px' }}
-                        className='w-2/6 h-32'>
-                        <CardContent style={{ display: 'flex', alignItems: 'left', padding: '10px' }}>
-                            <div className='bg-slate-200 rounded-full items-center justify-center p-3'>
-                                <img src={speaker} alt="Coin" style={{ width: '60px' }} className='rounded-full' />
-                            </div>
-                            <div>
-                                <p className='text-lg font-semibold p-2 text-gray-800'>
-                                    Human Resources
-                                </p>
-                                <p className='text-gray-400 text-sm p-2'>
-                                    (55 open positions)
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Third Card */}
-                    <Card sx={{ m: 2, margin: '10px', borderRadius: '10px' }}
-                        className='w-2/6 h-32'>
-                        <CardContent style={{ display: 'flex', alignItems: 'left', padding: '10px' }}>
-                            <div className='bg-slate-200 rounded-full items-center justify-center p-3'>
-                                <img src={design} alt="Coin" style={{ width: '60px' }} className='rounded-full' />
-                            </div>
-                            <div>
-                                <p className='text-lg font-semibold p-2 text-gray-800'>
-                                    Automotive jobs
-                                </p>
-                                <p className='text-gray-400 text-sm p-2'>
-                                    (2 open positions)
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'center' }} className='space-x-6 p-4 h-full'>
-                    <Card sx={{ m: 2, margin: '10px', borderRadius: '10px' }}
-                        className='w-2/6 h-32'>
-                        <CardContent style={{ display: 'flex', alignItems: 'left', padding: '10px', borderRadius: '10px' }}>
-                            <div className='bg-slate-200 rounded-full items-center justify-center p-3'>
-                                <img src={coin} alt="Coin" style={{ width: '60px' }} className='rounded-full' />
-                            </div>
-                            <div>
-                                <p className='text-lg font-semibold p-2 text-gray-800'>
-                                    Customer Support
-                                </p>
-                                <p className='text-gray-400 text-sm p-2'>
-                                    (2 open positions)
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Second Card */}
-                    <Card sx={{ m: 2, margin: '10px', borderRadius: '10px' }}
-                        className='w-2/6 h-32'>
-                        <CardContent style={{ display: 'flex', alignItems: 'left', padding: '10px', borderRadius: '10px' }}>
-                            <div className='bg-slate-200 rounded-full items-center justify-center p-3'>
-                                <img src={speaker} alt="Coin" style={{ width: '60px' }} className='rounded-full' />
-                            </div>
-                            <div>
-                                <p className='text-lg font-semibold p-2 text-gray-800'>
-                                    Accounting/Finance
-                                </p>
-                                <p className='text-gray-400 text-sm p-2'>
-                                    (2 open positions)
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Third Card */}
-                    <Card sx={{ m: 2, margin: '10px', borderRadius: '10px' }}
-                        className='w-2/6 h-32'>
-                        <CardContent style={{ display: 'flex', alignItems: 'left', padding: '10px', borderRadius: '10px' }}>
-                            <div className='bg-slate-200 rounded-full items-center justify-center p-3'>
-                                <img src={design} alt="Coin" style={{ width: '60px' }} className='rounded-full' />
-                            </div>
-                            <div>
-                                <p className='text-lg font-semibold p-2 text-gray-800'>
-                                    Design
-                                </p>
-                                <p className='text-gray-400 text-sm p-2'>
-                                    (43 open positions)
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-
-
             </div>
             <div className='bg-white mt-20 flex h-full relative'>
                 <div className='mt-20 mb-40 ml-10 w-full h-full relative'>

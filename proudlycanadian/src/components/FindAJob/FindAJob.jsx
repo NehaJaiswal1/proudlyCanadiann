@@ -41,7 +41,7 @@ const FindAJob = () => {
 
   const location = useLocation();
   const jobsData = location.state?.jobsData || [];
-  console.log(jobsData)
+  console.log("jobsData filter from home page", jobsData);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -52,6 +52,10 @@ const FindAJob = () => {
   const navigate = useNavigate();
   const [jobTitle, setJobTitle] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
+  const [currentPageData, setCurrentPageData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const itemsPerPage = 10;
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedEmploymentType, setSelectedEmploymentType] = useState('');
   const [selectedJobType, setSelectedJobType] = useState('');
@@ -59,6 +63,7 @@ const FindAJob = () => {
   const [minExperience, setMinExperience] = useState(0);
   const [maxExperience, setMaxExperience] = useState(20);
   const [employmentTypes, setEmploymentTypes] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
 
   useEffect(() => {
@@ -116,17 +121,38 @@ const FindAJob = () => {
   // const handleJobTypeChange = (value) => {
   //   setSelectedJobType(value);
   // };
+  // const handleSearch1 = async () => {
+  //   try {
+  //     const apiUrl = `https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/filteredJobs?City=Aldersyde&minExperience=2&maxExperience=4&JobType=Full Stack Engineering&JObCategory=Engineering&EmploymentType=Full Time`;
+  
+  //     const response = await fetch(apiUrl);
+  
+  //     if (response.ok) {
+  //       const searchData = await response.json();
+  //       console.log('Filtered job search results:', searchData);
+  
+  //       // Handle the search results as needed
+  //     } else {
+  //       console.error('Error fetching filtered job data:', response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching filtered job data:', error.message);
+  //   }
+  // };
+  
+
   const handleSearch1 = async () => {
     try {
-      const apiUrl = `https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/filteredJobs?City=Aldersyde&minExperience=2&maxExperience=4&JobType=Full Stack Engineering&JObCategory=Engineering&EmploymentType=Full Time`;
-  
+      const apiUrl = `https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/filteredJobs?City=${selectedLocation}&minExperience=${minExperience}&maxExperience=${maxExperience}&JobType=${selectedJobType}&JObCategory=${selectedCategory}&EmploymentType=${selectedEmploymentType}`;
+    
       const response = await fetch(apiUrl);
-  
+    
       if (response.ok) {
         const searchData = await response.json();
         console.log('Filtered job search results:', searchData);
+        
+        currentPageData(searchData);
   
-        // Handle the search results as needed
       } else {
         console.error('Error fetching filtered job data:', response.statusText);
       }
@@ -135,34 +161,6 @@ const FindAJob = () => {
     }
   };
   
-
-  const handleSearch = async () => {
-
-    const apiUrl = `https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/searchJobByQuery?jobTitle=${jobTitle}&City=${selectedLocation}&jobCategory=${selectedCategory}`;
-
-    try {
-      const response = await fetch(apiUrl);
-
-      if (response.ok) {
-        const searchData = await response.json();
-        console.log('Job search results:', searchData);
-
-        navigate({
-          pathname: '/jobs',
-          state: {
-            searchResults: searchData,
-            jobTitle,
-            city: selectedLocation,
-            jobCategory: selectedCategory,
-          },
-        });
-      } else {
-        console.error('Error fetching job data:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error fetching job data:', error.message);
-    }
-  };
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
@@ -188,10 +186,7 @@ const FindAJob = () => {
     setSelectedJobType(value === selectedJobType ? '' : value);
   };
 
-  const [currentPageData, setCurrentPageData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const itemsPerPage = 10;
+ 
 
   useEffect(() => {
     const indexOfLastItem = currentPage * itemsPerPage;
