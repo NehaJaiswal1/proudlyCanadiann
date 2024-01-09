@@ -92,11 +92,11 @@ const Navbar = () => {
                rounded-full border-  text-white text-sm">
                
                <Link
-                to="/contact"
+                to="https://proudly-canadian-abcdefdecfg.vercel.app/admin/login"
                 className="p-2  
                 text-white hover:text-blue-900 "
               >
-                Job Post
+                Admin
               </Link>
               </div>
               <div className=" px-3  py-2

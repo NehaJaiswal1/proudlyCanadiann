@@ -83,6 +83,19 @@ const Navbar = () => {
               >
                 Contact
               </Link>
+              <div className=" px-3  py-2
+               hover:bg-white 
+                bg-blue-900 
+               rounded-full border-  text-white text-sm">
+               
+               <Link
+                to="https://proudly-canadian-abcdefdecfg.vercel.app/admin/login"
+                className="p-2  
+                text-white hover:text-blue-900 "
+              >
+                Admin
+              </Link>
+              </div>
              
               <div className=" px-3  py-2
                hover:bg-white 
