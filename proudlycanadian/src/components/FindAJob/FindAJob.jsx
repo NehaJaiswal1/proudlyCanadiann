@@ -19,22 +19,6 @@ import { useNavigate, useLocation } from 'react-router';
 import cl from '../../images/dl.jpeg'
 
 
-const RadioToggle = ({ label, value, selected, onChange }) => {
-  return (
-    <label className="flex items-center space-x-2 cursor-pointer">
-      <input
-        type="radio"
-        checked={selected}
-        onChange={() => onChange(value)}
-        className="hidden"
-      />
-      <div className={`w-10 h-5 bg-gray-300 rounded-full p-1 transition-transform relative ${selected && 'bg-blue-500'}`}>
-        <div className={`w-3 h-3 bg-white rounded-full transform ${selected && 'translate-x-5'}`}></div>
-      </div>
-      <span className="text-gray-600">{label}</span>
-    </label>
-  );
-};
 
 const FindAJob = () => {
 
@@ -59,6 +43,7 @@ const FindAJob = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedEmploymentType, setSelectedEmploymentType] = useState('');
   const [selectedJobType, setSelectedJobType] = useState('');
+  const [jobList, setJobList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [minExperience, setMinExperience] = useState(0);
   const [maxExperience, setMaxExperience] = useState(20);
@@ -107,7 +92,7 @@ const FindAJob = () => {
     selectedJobType,
     selectedCategory,
     selectedEmploymentType,
-   
+
   };
 
   // const handleMinExperienceChange = (e) => {
@@ -124,13 +109,13 @@ const FindAJob = () => {
   // const handleSearch1 = async () => {
   //   try {
   //     const apiUrl = `https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/filteredJobs?City=Aldersyde&minExperience=2&maxExperience=4&JobType=Full Stack Engineering&JObCategory=Engineering&EmploymentType=Full Time`;
-  
+
   //     const response = await fetch(apiUrl);
-  
+
   //     if (response.ok) {
   //       const searchData = await response.json();
   //       console.log('Filtered job search results:', searchData);
-  
+
   //       // Handle the search results as needed
   //     } else {
   //       console.error('Error fetching filtered job data:', response.statusText);
@@ -139,20 +124,20 @@ const FindAJob = () => {
   //     console.error('Error fetching filtered job data:', error.message);
   //   }
   // };
-  
+
 
   const handleSearch1 = async () => {
     try {
       const apiUrl = `https://job-portal-website-by5i.onrender.com/Job-Portal/JobRoute/filteredJobs?City=${selectedLocation}&minExperience=${minExperience}&maxExperience=${maxExperience}&JobType=${selectedJobType}&JObCategory=${selectedCategory}&EmploymentType=${selectedEmploymentType}`;
-    
+
       const response = await fetch(apiUrl);
-    
+
       if (response.ok) {
         const searchData = await response.json();
         console.log('Filtered job search results:', searchData);
-        
+
         currentPageData(searchData);
-  
+
       } else {
         console.error('Error fetching filtered job data:', response.statusText);
       }
@@ -160,7 +145,7 @@ const FindAJob = () => {
       console.error('Error fetching filtered job data:', error.message);
     }
   };
-  
+
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
@@ -172,7 +157,7 @@ const FindAJob = () => {
     navigate(`/job-details/${jobId}`);
   };
 
- 
+
   const handleMinExperienceChange = (event) => {
     setMinExperience(event.target.value);
   };
@@ -181,12 +166,12 @@ const FindAJob = () => {
     setMaxExperience(event.target.value);
   };
 
-  
+
   const handleJobTypeChange = (value) => {
     setSelectedJobType(value === selectedJobType ? '' : value);
   };
 
- 
+
 
   useEffect(() => {
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -200,6 +185,21 @@ const FindAJob = () => {
     setCurrentPage(newPage);
   };
 
+  useEffect(() => {
+    const fetchJobType = async () => {
+      try {
+        const response = await fetch('https://job-portal-website-by5i.onrender.com/job-Portal/Job-Type/allJobTypes');
+        const jobTypesData = await response.json();
+        setSelectedJobType(''); 
+        setJobList(jobTypesData.allJobTypes);
+        console.log("jobTypesData", jobTypesData);
+      } catch (error) {
+        console.error('Error fetching job types:', error);
+      }
+    };
+  
+    fetchJobType();
+  }, []);
   
 
   useEffect(() => {
@@ -215,7 +215,7 @@ const FindAJob = () => {
     };
 
     fetchEmploymentTypes();
-   
+
   }, []);
 
 
@@ -285,35 +285,30 @@ const FindAJob = () => {
               />
 
             </div>
-            <div>
-              <p className='text-lg text-gray-600 font-medium text-left mt-5'>Job type</p>
-              <div className="flex flex-col rounded-lg p-3 text-center mt-5 w-72">
-                <RadioToggle
-                  label="Freelancer"
-                  value="Freelancer"
-                  selected={selectedJobType === 'Freelancer'}
-                  onChange={handleJobTypeChange}
-                />
-                <RadioToggle
-                  label="Full Time"
-                  value="Full Time"
-                  selected={selectedJobType === 'Full Time'}
-                  onChange={handleJobTypeChange}
-                />
-                <RadioToggle
-                  label="Part Time"
-                  value="Part Time"
-                  selected={selectedJobType === 'Part Time'}
-                  onChange={handleJobTypeChange}
-                />
-                <RadioToggle
-                  label="Temporary"
-                  value="Temporary"
-                  selected={selectedJobType === 'Temporary'}
-                  onChange={handleJobTypeChange}
-                />
-              </div>
-            </div>
+            <Grid item xs={12}>
+              <FormControl fullWidth variant="outlined" margin="normal">
+                <InputLabel id="category-label">Job Type</InputLabel>
+                <Select
+                  labelId="JobType"
+                  label="JobType"
+                  value={selectedJobType}
+                  onChange={(e) => setSelectedJobType(e.target.value)}
+                  renderValue={(selected) => {
+                    const selectedJobObject = jobList.find(jobtype => jobtype._id === selected);
+                    return selectedJobObject ? selectedJobObject.jobType : '';
+                  }}
+                >
+                  {jobList.map((jobtype) => (
+                    <MenuItem key={jobtype._id} value={jobtype._id}>
+                      <Checkbox checked={selectedJobType === jobtype._id} />
+                      {jobtype.jobType}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+
             <Grid item xs={12}>
               <FormControl fullWidth variant="outlined" margin="normal">
                 <InputLabel id="category-label">Category</InputLabel>
