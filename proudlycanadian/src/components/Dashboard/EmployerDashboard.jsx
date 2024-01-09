@@ -931,7 +931,8 @@ function EmployerDashboard() {
     else if (content === 'My Packages') {
       await fetchPackageDetails();
       setIsProfileOpen(false);
-    } else if (content === 'Query Support') {
+    } 
+    else if (content === 'Query Support') {
       try {
         const response = await fetch("https://job-portal-website-by5i.onrender.com/job-Portal/EmpAdminQueries/EmpQueries", {
           method: "GET",

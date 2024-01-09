@@ -6,28 +6,30 @@ import t1 from '../../images/template/temp1.jpg';
 import t2 from '../../images/template/temp2.jpg';
 import t3 from '../../images/template/temp3.jpg';
 import { useAuth } from '../AuthContext/AuthContext.jsx'
+import { useNavigate } from 'react-router';
 
 
 const FileUploadForm = ({ fileUploadFormData, handleFileUploadInputChange, handleFileUpload }) => {
 
+  const navigate = useNavigate();
   const { logout, authData } = useAuth();
   const [newSkill, setNewSkill] = useState('');
   const skillsArray = fileUploadFormData.skills || [];
-  const [popupOpen, setPopupOpen] = useState(false);
+  // const [popupOpen, setPopupOpen] = useState(false);
 
-  const [selectedImage, setSelectedImage] = useState(null);
+  // const [selectedImage, setSelectedImage] = useState(null);
 
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
-  };
+  // const handleImageClick = (image) => {
+  //   setSelectedImage(image);
+  // };
 
-  const handleCloseImage = () => {
-    setSelectedImage(null);
-  };
+  // const handleCloseImage = () => {
+  //   setSelectedImage(null);
+  // };
 
-  const handlePopupOpen = () => {
-    setPopupOpen(true);
-  };
+  // const handlePopupOpen = () => {
+  //   setPopupOpen(true);
+  // };
 
   const handleApiSubmit = async () => {
     try {
@@ -43,7 +45,8 @@ const FileUploadForm = ({ fileUploadFormData, handleFileUploadInputChange, handl
       if (!response.ok) {
         throw new Error('Failed to upload resume');
       }
-      handlePopupOpen();
+      // /applicant/resume
+      navigate('/applicant/resume')
 
     } catch (error) {
       console.error('Error uploading resume:', error);
@@ -646,7 +649,7 @@ const FileUploadForm = ({ fileUploadFormData, handleFileUploadInputChange, handl
         </Button> */}
       </div>
       
-      <Dialog open={popupOpen} onClose={handlePopupClose} >
+      {/* <Dialog open={popupOpen} onClose={handlePopupClose} >
         <DialogContent>
           {selectedImage ? (
             <img src={selectedImage} alt="Selected Template" style={{ width: '100%', maxHeight: '300px' }} onClick={handleCloseImage} />
@@ -663,7 +666,7 @@ const FileUploadForm = ({ fileUploadFormData, handleFileUploadInputChange, handl
             Close
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
 
       <div className='mt-10 mb-10'>
         <Button

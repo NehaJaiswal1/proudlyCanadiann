@@ -83,6 +83,7 @@ const Navbar = () => {
               >
                 Contact
               </Link>
+             
               <div className=" px-3  py-2
                hover:bg-white 
                hover:text-blue-900  bg-blue-900 

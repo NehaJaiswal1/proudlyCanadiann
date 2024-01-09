@@ -88,6 +88,19 @@ const Navbar = () => {
               </Link>
               <div className=" px-3  py-2
                hover:bg-white 
+                bg-blue-900 
+               rounded-full border-  text-white text-sm">
+               
+               <Link
+                to="/contact"
+                className="p-2  
+                text-white hover:text-blue-900 "
+              >
+                Job Post
+              </Link>
+              </div>
+              <div className=" px-3  py-2
+               hover:bg-white 
                hover:text-blue-900  bg-blue-900 
                rounded-full border-  text-white text-sm">
                

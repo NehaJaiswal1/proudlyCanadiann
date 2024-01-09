@@ -62,7 +62,7 @@ const App = () => {
             <Route path="/the-importance-of-a-great-cover-letter" element={<CoverLetter />} />
             <Route path="/disabled-workers-have-much-to-offer" element={<DisabledWorker />} />
           <Route path='/payment' element={<PaymentForm />}/>
-          <Route path="/resume" element={<ResumeTemplate />} />
+          <Route path="/applicant/resume" element={<ResumeTemplate />} />
           </Routes>
          
         </AuthProvider>
