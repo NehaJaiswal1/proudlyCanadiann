@@ -74,7 +74,7 @@ const Navbar = () => {
                 className="p-2  
                 text-white "
               >
-                Virtual Jobs
+                 Jobs For Aboriginal
               </Link>
               <Link
                 to="/contact"

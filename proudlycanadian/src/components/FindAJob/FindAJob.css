@@ -1,0 +1,49 @@
+
+
+.flex {
+    display: flex;
+}
+
+@media screen and (max-width: 768px) {
+    .flex {
+        flex-direction: column;
+        justify-content: center; 
+    }
+
+    .left-section {
+        width: 100%;
+      }
+    
+      .right-section {
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      .search-keywords {
+        flex-direction: column;
+        align-items: center;
+      }
+    
+      .search-keywords input {
+        width: 100%;
+        margin-top: 10px;
+      }
+}
+
+.left-grid {
+    width: 50%;
+}
+
+.right-grid {
+    width: 50%;
+}
+
+
+@media screen and (max-width: 480px) {
+    .left-grid {
+        width: 100%;
+    }
+    .search-keywords {
+        padding: 10px;
+      }
+}

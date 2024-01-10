@@ -15,7 +15,7 @@ import { hotJobs } from '../../Data/HotJobs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag, faLocation, faMapMarker, faTags, faIndustry, faClock, faSuitcase, faSearch, faMap, faMapMarkedAlt, faMapLocation, faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, useLocation } from 'react-router';
-// import {dl} from '../../images/dl.jpeg';
+import './FindAJob.css'
 import cl from '../../images/dl.jpeg'
 
 
@@ -37,7 +37,6 @@ const FindAJob = () => {
   const [jobTitle, setJobTitle] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [currentPageData, setCurrentPageData] = useState([]);
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 10;
@@ -137,14 +136,7 @@ const FindAJob = () => {
         const searchData = await response.json();
         console.log('Filtered job search results:', searchData);
 
-        if (Array.isArray(searchData)) {
-         
-          setFilteredData(searchData);
-          console.log('Filtered data:', filteredData);
-        // currentPageData(searchData);
-        setCurrentPageData(searchData.slice(0, itemsPerPage));
-    
-        }
+        currentPageData(searchData);
 
       } else {
         console.error('Error fetching filtered job data:', response.statusText);
@@ -198,17 +190,17 @@ const FindAJob = () => {
       try {
         const response = await fetch('https://job-portal-website-by5i.onrender.com/job-Portal/Job-Type/allJobTypes');
         const jobTypesData = await response.json();
-        setSelectedJobType(''); 
+        setSelectedJobType('');
         setJobList(jobTypesData.allJobTypes);
         console.log("jobTypesData", jobTypesData);
       } catch (error) {
         console.error('Error fetching job types:', error);
       }
     };
-  
+
     fetchJobType();
   }, []);
-  
+
 
   useEffect(() => {
     const fetchEmploymentTypes = async () => {
@@ -236,23 +228,23 @@ const FindAJob = () => {
         <div className='text-3xl text-gray-800 bg-slate-200 text-center h-36 p-10'>Find Jobs</div>
 
       </div>
-      <div className='flex p-10 space-x-5'>
+      <div className='flex p-10 space-x-5 '>
         {/* left side grid */}
-        <div className=
-          ' p-6 h-3/6 w-2/6 mt-8  bg-slate-100'>
+        {/* <div className=
+          ' p-6 h-3/6 w-2/6 mt-8  bg-slate-100 overflow-hidden min-h-screen '> */}
+        <div className='p-6 h-3/6 w-full md:w-2/6 mt-8 bg-slate-100 overflow-hidden min-h-screen'>
           <Grid className='' container spacing={1} justifyContent="center">
-            <div>
+            <div className='search-keywords'>
               <p className='text-lg text-gray-600 font-medium text-left mt-5'>Search by Keywords</p>
               <div className='flex bg-white rounded-lg p-3 text-center mt-5 w-72 '>
                 <FontAwesomeIcon icon={faSearch} className='text-gray-500 text-center p-2' />
                 <input
-                  placeholder='Job title,  Company'
-                  className='text-gray-400 text-center  focus:outline-none'
-                  value={jobTitle}
-                  onChange={(e) => setJobTitle(e.target.value)}
+                  placeholder='Job title, Company'
+                  className='text-gray-400 text-center focus:outline-none'
                 />
               </div>
             </div>
+
 
             <div >
               <p className='text-lg text-gray-600 font-medium text-left mt-5'>Location</p>
@@ -261,8 +253,6 @@ const FindAJob = () => {
                 <input
                   placeholder='City '
                   className='text-gray-400 text-center  focus:outline-none'
-                  value={selectedLocation}
-            onChange={(e) => setSelectedLocation(e.target.value)}
                 />
               </div>
               <p className='text-md text-gray-600 font-medium text-left mt-5'>Minimum Experience: {minExperience}</p>
@@ -397,12 +387,12 @@ const FindAJob = () => {
             </Grid>
           </Grid>
         </div>
-        <div className="p-4 w-3/4 mt-5">
+        <div className="p-4 w-3/4 mt-5 ">
           {jobsData.length > 0 ? (
 
             jobsData.map((job, index) => (
               <div key={index} className='shadow-md rounded-2xl  shadow-slate-400 hover:border-2 hover:border-blue-900 bg-slate-50  
-              hover:h-46'>
+              hover:h-46 overflow-hidden'>
                 <div key={index} className=" flex rounded-lg mt-4 mb-4 justify-between">
                   <div className='flex ml-2'>
                     <img src={cl} className="w-20 h-20 mt-10 rounded-full border-gray-800" alt="logo-img" />
