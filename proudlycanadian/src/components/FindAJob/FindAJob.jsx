@@ -37,6 +37,7 @@ const FindAJob = () => {
   const [jobTitle, setJobTitle] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [currentPageData, setCurrentPageData] = useState([]);
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 10;
@@ -136,7 +137,14 @@ const FindAJob = () => {
         const searchData = await response.json();
         console.log('Filtered job search results:', searchData);
 
-        currentPageData(searchData);
+        if (Array.isArray(searchData)) {
+         
+          setFilteredData(searchData);
+          console.log('Filtered data:', filteredData);
+        // currentPageData(searchData);
+        setCurrentPageData(searchData.slice(0, itemsPerPage));
+    
+        }
 
       } else {
         console.error('Error fetching filtered job data:', response.statusText);
@@ -240,8 +248,8 @@ const FindAJob = () => {
                 <input
                   placeholder='Job title,  Company'
                   className='text-gray-400 text-center  focus:outline-none'
-                //   value={jobTitle}
-                // onChange={handleInputChange}
+                  value={jobTitle}
+                  onChange={(e) => setJobTitle(e.target.value)}
                 />
               </div>
             </div>
@@ -253,6 +261,8 @@ const FindAJob = () => {
                 <input
                   placeholder='City '
                   className='text-gray-400 text-center  focus:outline-none'
+                  value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
                 />
               </div>
               <p className='text-md text-gray-600 font-medium text-left mt-5'>Minimum Experience: {minExperience}</p>

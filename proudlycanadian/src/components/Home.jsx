@@ -162,6 +162,14 @@ function Home() {
     }, []);
 
 
+    // const settings = {
+    //     dots: true,
+    //     dotsClass: "slick-dots custom-dots",
+    //     infinite: true,
+    //     speed: 500,
+    //     slidesToShow: 4,
+    //     slidesToScroll: 1,
+    // };
     const settings = {
         dots: true,
         dotsClass: "slick-dots custom-dots",
@@ -169,6 +177,26 @@ function Home() {
         speed: 500,
         slidesToShow: 4,
         slidesToScroll: 1,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                },
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 2,
+                },
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                },
+            },
+        ],
     };
 
     const handleFindJobs = async () => {
@@ -295,74 +323,50 @@ function Home() {
                 <div className="flex justify-center space-x-2 ">
                 </div>
             </div>
-            <div className='p-10'>
+            <div className='p-10 overflow-hidden'>
 
-                <div className=" space-y-10 ">
-                    <div className="grid grid-cols-2 gap-4">
-                        {data.slice(0, 6).map((job) => (
-                            <div className='shadow-slate-400 
-                                    bg-slate-50 
-                                    border-2
-                                     border-slate-100 rounded-2xl'
-                                style={{ fontFamily: 'Rubik', fontWeight: '600' }}>
-                                <div key={job._id} className=" flex rounded-lg mt-4 mb-4 justify-between" >
-                                    <div className='flex '>
-
-                                        <img src={cl} alt="logo-img" className="w-16 h-16 border-2 border-gray-100 ml-5 rounded-2xl" />
-                                        <div className='ml-2 '>
-
-                                            <Link
-                                                to={`/job-details/${job._id}`}
-                                                className='mt- text-gray-700 text-lg cursor-pointer hover:underline'
-                                                style={{ textTransform: 'capitalize' }}
-                                            >
-                                                {truncateWords(job.jobTitle, 5)}
-                                            </Link>
-                                            <div className='flex mt-3 mb-3'>
-                                                <p className=' m-1 text-sm   text-gray-600'>
-                                                    <FontAwesomeIcon icon={faUser} className='mr-1 text-red-500' />
-                                                    ID-{job.jobId}</p>
-
-                                                <p className='m-1 text-sm   text-gray-600'>
-                                                    <FontAwesomeIcon icon={faBookmark} className='mr-1 text-red-500' />
-                                                    NOC-{job.NOC}</p>
-                                                <p className='m-1 text-sm   text-gray-600'>
-                                                    <FontAwesomeIcon icon={faMapMarker} className='mr-1  text-red-500' />
-                                                    {job.location.split(' ')[0]},  {job.Province.split(' ')[0]}</p>
-                                                <p className='m-1 text-sm   text-gray-600'>
-                                                    <FontAwesomeIcon icon={faClock} className='mr-1 text-red-500' />
-                                                    {formatDate(job.PostedDate)}</p>
-
-                                            </div>
-                                            <div className='flex'>
-                                                <p className='p-2 m-2 text-sm rounded-full font-semibold w-3/6 h-2/4
-                                                 bg-blue-100
-                         text-blue-600 text-center'>
-
-                                                    {job.EmployementType}</p>
-                                                <p className='p-2 m-2 text-sm rounded-full font-semibold w-3/6 h-2/4 bg-yellow-100
-                         text-yellow-600 text-center'>
-                                                    {job.jobType
-                                                        && job.jobType.split(' ').slice(0, 2).join(' ')}
-                                                </p>
-                                                {/* <button className='p-2 m-2 text-sm rounded-full font-semibold w-1/3 bg-blue-900
-                         text-white text-center'>
-                                                        Apply
-                                                    </button> */}
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div className='flex mt-3'>
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                <div className=" space-y-10 overflow-hidden">
+                    <div className="grid grid-cols-2 gap-4 overflow-hidden">
+                    {data.slice(0, 6).map((job) => (
+        <div key={job._id} className="shadow-slate-400 bg-slate-50 border-2 border-slate-100 rounded-2xl overflow-hidden" style={{ fontFamily: 'Rubik', fontWeight: '600' }}>
+            <div className="sm:flex"> 
+                <img src={cl} alt="logo-img" className="w-32 sm:w-32 h-32 border-1 border-gray-100 rounded-t-2xl object-cover" />
+                <div className='p-4'>
+                    <Link
+                        to={`/job-details/${job._id}`}
+                        className='text-gray-700 text-lg cursor-pointer hover:underline block'
+                        style={{ textTransform: 'capitalize' }}
+                    >
+                        {truncateWords(job.jobTitle, 5)}
+                    </Link>
+                    <div className='flex mt-3 mb-3 overflow-hidden'>
+                        <p className='m-1 text-sm text-gray-600'>
+                            <FontAwesomeIcon icon={faUser} className='mr-1 text-red-500' />
+                            ID-{job.jobId}</p>
+                        <p className='m-1 text-sm text-gray-600'>
+                            <FontAwesomeIcon icon={faBookmark} className='mr-1 text-red-500' />
+                            NOC-{job.NOC}</p>
+                        <p className='m-1 text-sm text-gray-600'>
+                            <FontAwesomeIcon icon={faMapMarker} className='mr-1 text-red-500' />
+                            {job.location.split(' ')[0]},  {job.Province.split(' ')[0]}</p>
+                        <p className='m-1 text-sm text-gray-600'>
+                            <FontAwesomeIcon icon={faClock} className='mr-1 text-red-500' />
+                            {formatDate(job.PostedDate)}</p>
                     </div>
-                    <div className='flex justify-center'>
+                    <div className='flex overflow-hidden'>
+                        <p className='p-2 m-2 text-sm rounded-full font-semibold w-3/6 h-2/4 bg-blue-100 text-blue-600 text-center'>
+                            {job.EmployementType}
+                        </p>
+                        <p className='p-2 m-2 text-sm rounded-full font-semibold w-3/6 h-2/4 bg-yellow-100 text-yellow-600 text-center'>
+                            {job.jobType && job.jobType.split(' ').slice(0, 2).join(' ')}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    ))}
+                    </div>
+                    <div className='flex justify-center overflow-hidden'>
                         <button className='font-semibold p-4 mt-3 bg-blue-700  rounded-md text-slate-100' onClick={jobs}>
                             Load More Listing
                         </button>
@@ -370,7 +374,7 @@ function Home() {
                 </div>
             </div>
             <div>
-                <div className="mb-8 text-center">
+                <div className="mb-8 text-center overflow-hidden">
                     <p className="text-3xl font-bold text-gray-600 p-2 rounded-lg">
                         Popular Job Categories
                     </p>
@@ -379,30 +383,30 @@ function Home() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4 justify-center p-4">
+               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 justify-center p-4 overflow-hidden">
                     {categories.map(category => (
                         <Card key={category._id} sx={{ m: 2, borderRadius: '10px', width: '90%' }} className='h-32'>
                             <CardContent style={{ display: 'flex', alignItems: 'left', padding: '10px' }}>
-                                <div className='bg-slate-200 rounded-full items-center justify-center p-3'>
+                                <div className='bg-slate-200 rounded-full items-center justify-center p-3 overflow-hidden'>
                                     <img src={speaker} alt={category.category} style={{ width: '60px' }} className='rounded-full' />
                                 </div>
-                                <div>
-                                    <p className='text-lg font-semibold p-2 text-gray-800'>
+                                <div className='text-center'>
+                                    <p className='text-lg font-semibold p-2 text-gray-800 text-center'>
                                         {category.category}
                                     </p>
-                                    <p className='text-gray-400 text-sm p-2'>
+                                    {/* <p className='text-gray-400 text-sm p-2'>
                                         (10+ open positions)
-                                    </p>
+                                    </p> */}
                                 </div>
                             </CardContent>
                         </Card>
                     ))}
                 </div>
             </div>
-            <div className='bg-white mt-20 flex h-full relative'>
-                <div className='mt-20 mb-40 ml-10 w-full h-full relative'>
+            <div className='bg-white mt-20 flex flex-col sm:flex-row h-full relative overflow-hidden'>
+                <div className='mt-20 mb-40 ml-10 w-full h-full relative '>
                     <img src={meet} className='rounded-2xl' />
-                    <div className='absolute right-0 bottom-0 font-semibold p-2 w-2/4 -mr-10 -mb-24' style={{ borderRadius: '20px' }}>
+                    <div className='absolute right-0 bottom-0 font-semibold p-2 w-2/4 -mr-10 -mb-24 overflow-hidden' style={{ borderRadius: '20px' }}>
                         <p className='p-2 bg-blue-700 text-md text-center text-white font-semibold '>Applicants List</p>
                         <div className='flex p-2 bg-white'>
                             <img src={ap1} className='rounded-full' />
@@ -429,7 +433,7 @@ function Home() {
                         </div>
                     </div>
                 </div>
-                <div className='p-10 mt-20 relative'>
+                <div className='p-10 mt-20 relative overflow-hidden'>
                     <p className='p-2 text-gray-800 
                     text-5xl font-semibold  text-left'>
                         Get applications from the
@@ -452,36 +456,24 @@ function Home() {
 
             </div>
 
-            <div className='bg-slate-200'>
-                <div className='p-5'>
+            <div className='bg-slate-200 overflow-hidden'>
+                <div className='p-5 overflow-hidden'>
                     <p className='text-center text-gray-700 text-3xl font-semibold'>Recent News Articles</p>
-                    <p className='text-center text-gray-400 text-sm mt-2'>Fresh job related news content posted each day.</p>
+                    <p className='text-center text-gray-400 text-sm mt-2'>Fresh job-related news content posted each day.</p>
                 </div>
-                <div className=" min-h-screen overflow-hidden flex  mt-10 px-8 rounded-2xl ">
+                <div className="min-h-screen overflow-hidden flex flex-wrap mt-10 px-8 rounded-2xl">
                     {cardInfo.map((card, index) => (
-                        <div key={index} sx={{ width: '350px', height: '400px', border: 'none' }}
-                            style={{
-                                width: '350px',
-                                height: '400px',
-                                margin: '15px',
-                                backgroundColor: '#e2e8f0',
-                                transition: 'transform 0.3s ease-in-out',
-                            }}>
-
+                        <div key={index} className='w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/3 2xl:w-1/4 overflow-hidden' style={{ maxWidth: '350px', margin: '15px' }}>
                             <img
                                 src={card.img}
                                 alt="Card"
                                 className='h-60 rounded-2xl transform scale-100 hover:scale-105 transition-transform duration-300'
                             />
-
-
-
-                            <div className='flex space-x-2 mt-5 bg-slate-200 text-gray-400'>
+                            <div className='flex space-x-2 mt-5 bg-slate-200 text-gray-400 overflow-hidden'>
                                 <p>{card.date}</p>
                                 <p>{card.comment} Comment</p>
                             </div>
-                            <div className='
-                            mt-2 bg-slate-200'>
+                            <div className='mt-2 bg-slate-200'>
                                 <h2 className='text-gray-800 font-semibold'>{card.title}</h2>
                                 <p className='text-sm text-slate-700 mt-2'>{card.des}</p>
                                 <p className='text-blue-600 mt-5'>Read More <FontAwesomeIcon icon={faChevronRight} /></p>
@@ -490,8 +482,9 @@ function Home() {
                     ))}
                 </div>
             </div>
-            <div className='bg-white h-full'>
-                <div className='text-center p-5'>
+
+            <div className='bg-white h-full overflow-hidden'>
+                <div className='text-center p-5 overflow-hidden'>
                     <p className='text-3xl mt-10 text-gray-700 font-bold'>
                         Testimonials From Our Customers
 
@@ -499,11 +492,11 @@ function Home() {
                     <p className='text-sm text-gray-400'>Lorem ipsum dolor sit amet elit, sed do eiusmod tempor</p>
                 </div>
 
-                <div className="h-full overflow-hidden flex mt-10 px-8 ">
-                    <div className='w-4/6 p-5 '>
+                <div className="h-full overflow-hidden flex mt-10 px-8  ">
+                    <div className='w-4/6 p-5 overflow-hidden'>
                         <img src={t} className='mb-10  w-4/6 ' />
                     </div>
-                    <div className='w-2/6 mr-10'>
+                    <div className='w-2/6 mr-10 overflow-hidden'>
                         <div key={currentCardIndex} >
                             <div className=' mt-2'>
                                 <h2 className='
@@ -529,35 +522,36 @@ function Home() {
                 </div>
 
             </div>
-            <div className='h-56 bg-white flex items-center'>
-                <div className='flex w-full space-x-20 justify-center'>
-                    <img src={one} className='w-1/12' />
-                    <img src={two} className='w-1/12' />
-                    <img src={one} className='w-1/12' />
-                    <img src={three} className='w-1/12' />
-                    <img src={two} className='w-1/12' />
-                    <img src={four} className='w-1/12' />
+            <div className='h-56 bg-white flex items-center overflow-hidden'>
+                <div className='flex w-full space-x-20 justify-center overflow-hidden '>
+                    <img src={one} className='w-1/12 ' />
+                    <img src={two} className='w-1/12 ' />
+                    <img src={one} className='w-1/12 ' />
+                    <img src={three} className='w-1/12 ' />
+                    <img src={two} className='w-1/12 ' />
+                    <img src={four} className='w-1/12 ' />
                 </div>
             </div>
 
-            <div className="bg-white p-2">
-                <p className='text-gray-800 text-3xl
-                 p-4 font-bold'>Top Company Registered</p>
-                <p className='text-gray-400 text-sm p-4'>Some of the companies we have helped recruit excellent applicants over the years.</p>
-                <div className='p-7 relative px-4 '>
+            <div className="bg-white p-2 overflow-hidden">
+                <p className='text-gray-800 text-3xl p-4 font-bold'>Top Company Registered</p>
+                <p className='text-gray-400 text-sm p-4 overflow-hidden'>
+                    Some of the companies we have helped recruit excellent applicants over the years.
+                </p>
+                <div className='p-7 relative px-4 overflow-hidden'>
                     <Slider {...settings}>
                         {registerCompany.map((company, index) => (
-                            <div key={index} className='sm:w-full md:w-1/2 lg:w-1/4'>
-                                <Card key={index} sx={{ width: '250px', height: '300px' }} style={{ margin: '15px' }}>
-                                    <div className='grid place-items-center mt-5'>
+                            <div key={index} className='w-full  sm:w-full md:w-full lg:w-1/4 overflow-hidden'>
+                                <Card key={index} sx={{ width: '250px', height: '300px' }} style={{ margin: '15px' }} >
+                                    <div className='grid place-items-center mt-5 overflow-hidden'>
                                         <img src={company.logo} alt={company.comapnyName} className='rounded-full' />
                                     </div>
-                                    <div className='p-5 items-center'>
+                                    <div className='p-5 items-center overflow-hidden'>
                                         <h2 className='text-blue-700 mt-2 text-center'>{company.comapnyName}</h2>
-                                        <div className='mt-2 text-gray-400 text-center'>
+                                        <div className='mt-2 text-gray-400 text-center overflow-hidden'>
                                             <FontAwesomeIcon icon={faMapMarker} /> {company.location}
                                         </div>
-                                        <div className='text-blue-700 p-3 bg-blue-100 rounded-lg mt-8 text-center'>
+                                        <div className='text-blue-700 p-3 bg-blue-100 rounded-lg mt-8 text-center overflow-hidden'>
                                             <p>{company.availablePositions} Open Positions</p>
                                         </div>
                                     </div>
@@ -567,6 +561,8 @@ function Home() {
                     </Slider>
                 </div>
             </div>
+
+
 
             <Footer />
 

@@ -1,5 +1,6 @@
 
 
+
 .resume {
     max-width: 600px;
     margin: 0 auto;
@@ -12,8 +13,8 @@
   .header {
     text-align: center;
     margin-bottom: 20px;
-    background-color: pink; /* Set the background color to pink */
-    padding: 10px; /* Add padding for better appearance */
+    background-color: pink;
+    padding: 10px; 
   }
   
   h1 {
