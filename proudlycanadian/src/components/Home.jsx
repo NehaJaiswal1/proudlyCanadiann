@@ -307,9 +307,9 @@ function Home() {
                         </button>
 
                     </div>
-                    <p className="text-white text-center text-sm font-semibold  mt-5">
+                    {/* <p className="text-white text-center text-sm font-semibold  mt-5">
                         Popular Searches : Designer, Developer, Driver, IT Professional, Chef, Nurse
-                    </p>
+                    </p> */}
                 </div>
 
             </div>
@@ -327,44 +327,44 @@ function Home() {
 
                 <div className=" space-y-10 overflow-hidden">
                     <div className="grid grid-cols-2 gap-4 overflow-hidden">
-                    {data.slice(0, 6).map((job) => (
-        <div key={job._id} className="shadow-slate-400 bg-slate-50 border-2 border-slate-100 rounded-2xl overflow-hidden" style={{ fontFamily: 'Rubik', fontWeight: '600' }}>
-            <div className="sm:flex"> 
-                <img src={cl} alt="logo-img" className="w-32 sm:w-32 h-32 border-1 border-gray-100 rounded-t-2xl object-cover" />
-                <div className='p-4'>
-                    <Link
-                        to={`/job-details/${job._id}`}
-                        className='text-gray-700 text-lg cursor-pointer hover:underline block'
-                        style={{ textTransform: 'capitalize' }}
-                    >
-                        {truncateWords(job.jobTitle, 5)}
-                    </Link>
-                    <div className='flex mt-3 mb-3 overflow-hidden'>
-                        <p className='m-1 text-sm text-gray-600'>
-                            <FontAwesomeIcon icon={faUser} className='mr-1 text-red-500' />
-                            ID-{job.jobId}</p>
-                        <p className='m-1 text-sm text-gray-600'>
-                            <FontAwesomeIcon icon={faBookmark} className='mr-1 text-red-500' />
-                            NOC-{job.NOC}</p>
-                        <p className='m-1 text-sm text-gray-600'>
-                            <FontAwesomeIcon icon={faMapMarker} className='mr-1 text-red-500' />
-                            {job.location.split(' ')[0]},  {job.Province.split(' ')[0]}</p>
-                        <p className='m-1 text-sm text-gray-600'>
-                            <FontAwesomeIcon icon={faClock} className='mr-1 text-red-500' />
-                            {formatDate(job.PostedDate)}</p>
-                    </div>
-                    <div className='flex overflow-hidden'>
-                        <p className='p-2 m-2 text-sm rounded-full font-semibold w-3/6 h-2/4 bg-blue-100 text-blue-600 text-center'>
-                            {job.EmployementType}
-                        </p>
-                        <p className='p-2 m-2 text-sm rounded-full font-semibold w-3/6 h-2/4 bg-yellow-100 text-yellow-600 text-center'>
-                            {job.jobType && job.jobType.split(' ').slice(0, 2).join(' ')}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    ))}
+                        {data.slice(0, 6).map((job) => (
+                            <div key={job._id} className="shadow-slate-400 bg-slate-50 border-2 border-slate-100 rounded-2xl overflow-hidden" style={{ fontFamily: 'Rubik', fontWeight: '600' }}>
+                                <div className="sm:flex">
+                                    <img src={cl} alt="logo-img" className="w-28 sm:w-28 h-28 border-1 border-gray-100 rounded-t-2xl object-cover" />
+                                    <div className='p-4'>
+                                        <Link
+                                            to={`/job-details/${job._id}`}
+                                            className='text-gray-700 text-lg cursor-pointer hover:underline block'
+                                            style={{ textTransform: 'capitalize' }}
+                                        >
+                                            {truncateWords(job.jobTitle, 5)}
+                                        </Link>
+                                        <div className='flex mt-3 mb-3 overflow-hidden'>
+                                            <p className='m-1 text-sm text-gray-600'>
+                                                <FontAwesomeIcon icon={faUser} className='mr-1 text-red-500' />
+                                                ID-{job.jobId}</p>
+                                            <p className='m-1 text-sm text-gray-600'>
+                                                <FontAwesomeIcon icon={faBookmark} className='mr-1 text-red-500' />
+                                                NOC-{job.NOC}</p>
+                                            <p className='m-1 text-sm text-gray-600'>
+                                                <FontAwesomeIcon icon={faMapMarker} className='mr-1 text-red-500' />
+                                                {job.Province.split(' ')[0]}</p>
+                                            <p className='m-1 text-sm text-gray-600'>
+                                                <FontAwesomeIcon icon={faClock} className='mr-1 text-red-500' />
+                                                {formatDate(job.PostedDate)}</p>
+                                        </div>
+                                        <div className='flex overflow-hidden'>
+                                            <p className='p-2 m-2 text-sm rounded-full font-semibold w-32  h-2/4 bg-blue-100 text-blue-600 text-center'>
+                                                {job.EmployementType}
+                                            </p>
+                                            <p className='p-2 m-2 text-sm rounded-full font-semibold w-32 h-2/4 bg-yellow-100 text-yellow-600 text-center'>
+                                                {job.jobType.split(' ').slice(0, 2).join('')}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                     <div className='flex justify-center overflow-hidden'>
                         <button className='font-semibold p-4 mt-3 bg-blue-700  rounded-md text-slate-100' onClick={jobs}>
@@ -383,7 +383,7 @@ function Home() {
                     </p>
                 </div>
 
-               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 justify-center p-4 overflow-hidden">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 justify-center p-4 overflow-hidden">
                     {categories.map(category => (
                         <Card key={category._id} sx={{ m: 2, borderRadius: '10px', width: '90%' }} className='h-32'>
                             <CardContent style={{ display: 'flex', alignItems: 'left', padding: '10px' }}>
@@ -445,8 +445,10 @@ function Home() {
                         <li className='text-gray-600 text-sm mt-10'>&#10003; Capitalize on low hanging fruit to identify</li>
                         <li className='text-gray-600 text-sm mt-10'>&#10003; But I must explain to you how all this</li>
                     </ul>
-                    <button className='w-1/4 text-white bg-blue-700 hover:bg-blue-200 hover:text-blue-700 p-4 mt-10
-                    rounded-lg'>
+                    <button
+                        className='w-1/4 text-white bg-blue-700 hover:bg-blue-200 hover:text-blue-700 p-4 mt-10 rounded-lg'
+                        onClick={() => navigate(`/`)}
+                    >
                         Post a job
                     </button>
 

@@ -31,8 +31,18 @@ const EmployerLogin = ({ onClose }) => {
     });
   };
 
+  const validateEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateEmail(formData.email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
 
     try {
 
@@ -100,6 +110,7 @@ const EmployerLogin = ({ onClose }) => {
   return (
     <div >
       <div>
+        {/* <div style={{height:'100px'}}></div> */}
         <div>
           <Container style={{
             padding: '30px', borderRadius: '8px', width: '400px', margin: 'auto', height: '90%',

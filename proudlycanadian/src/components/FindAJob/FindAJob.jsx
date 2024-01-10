@@ -461,7 +461,7 @@ const FindAJob = () => {
 
                       <Link
                         to={`/job-details/${job._id}`}
-                        className='mt- text-gray-700 font-bold mt-3 cursor-pointer hover:underline'
+                        className=' text-gray-700  font-bold mt-3 cursor-pointer hover:underline'
                         style={{ textTransform: 'capitalize' }}
                       >
                         {job.jobTitle}

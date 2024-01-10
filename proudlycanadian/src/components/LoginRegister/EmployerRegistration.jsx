@@ -4,7 +4,7 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 import pagetitle from '../../images/page-title.jpg';
 import { TextField, Alert, AlertTitle, Button, Container, Grid,
-     Typography, Checkbox, FormControlLabel, Link } from '@mui/material';
+     Typography, Checkbox, FormControlLabel, Link, alertClasses } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 
@@ -50,8 +50,37 @@ function EmployerRegistration() {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (formData.password !== formData.confirmPassword) {
-            setApiResponseMessage('Password and Confirm Password do not match.');
+        if (!formData.firstName.trim()) {
+            alertClasses('Please enter your first name.');
+            return;
+        }
+        if (!formData.lastName.trim()) {
+            alert('Please enter your last name.');
+            return;
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            alert('Please enter a valid email address.');
+            return;
+        }
+        if (!formData.password.trim()) {
+            alert('Please enter a password.');
+            return;
+        }
+
+        if (!formData.confirmPassword.trim() || formData.password !== formData.confirmPassword) {
+            alert('Password and Confirm Password do not match.');
+            return;
+        }
+
+        const phoneNumberRegex = /^\d+$/;
+        if (!phoneNumberRegex.test(formData.phoneNumber) || !formData.phoneNumber.trim()) {
+            alert('Please enter a valid phone number.');
+            return;
+        }
+
+        if (!formData.website.trim()) {
+            alert('Please enter your website.');
             return;
         }
         

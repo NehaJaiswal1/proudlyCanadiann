@@ -4,9 +4,21 @@ import React from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import man from '../images/about-man.png'
-
+import { useNavigate } from 'react-router-dom';
 
 function About() {
+
+  const navigate = useNavigate();
+
+  const disablePeople = () => {
+    navigate('/business-benefits-of-hiring-disabled-people')
+}
+const coverLetter = () => {
+    navigate('/the-importance-of-a-great-cover-letter')
+}
+const disabledWorker = () => {
+    navigate('/disabled-workers-have-much-to-offer')
+} 
   return (
     <div>
       <Navbar />
@@ -39,11 +51,11 @@ function About() {
         <p className='text-white font-bold  text-2xl p-4 '>Supporting Aboriginal And Indigenous People </p>
         <p className='text-white font-thin text-lg mt-2'> Proudly Canadians is a online interface jobsite aimed at increasing the employment rate of Canada’s aboriginal and indigenous people community. It is designed to “inclusive” e-recruitment.
           Many aboriginal and indigenous workers are able and very interested to work.</p>
-        <button className='font-semibold text-sm p-4  my-20  mx-2 bg-blue-950  rounded-md border border-white text-white'>BUSINESS BENEFITS OF HIRING DISABLED PEOPLE</button>
+        <button className='font-semibold text-sm p-4  my-20  mx-2 bg-blue-950  rounded-md border border-white text-white' onClick={disablePeople}>BUSINESS BENEFITS OF HIRING DISABLED PEOPLE</button>
 
-        <button className='font-semibold text-sm p-4 my-20  mx-2 bg-blue-950  rounded-md border border-white text-white'>THE IMPORTANCE OF A GREAT COVER LETTER PEOPLE</button>
+        <button className='font-semibold text-sm p-4 my-20  mx-2 bg-blue-950  rounded-md border border-white text-white' onClick={coverLetter}>THE IMPORTANCE OF A GREAT COVER LETTER PEOPLE</button>
 
-        <button className='font-semibold text-sm p-4 my-20 mx-2 bg-blue-950  rounded-md border border-white text-white'>DISABLED WORKERS HAVE MUCH TO OFFER</button>
+        <button className='font-semibold text-sm p-4 my-20 mx-2 bg-blue-950  rounded-md border border-white text-white' onClick={disabledWorker}>DISABLED WORKERS HAVE MUCH TO OFFER</button>
 
 
 
@@ -56,7 +68,7 @@ function About() {
           <p className='font-semibold text-gray-700 mt-2'>
             Whether you're looking for a career stepping-stone or your dream job, chances are you're scouring online job boards. This is the best websites for job searches in Canada.
           </p>
-          <button className='font-semibold p-4 mt-5 md:mt-28 bg-blue-950 rounded-md text-white overflow-hidden'>BROWSE OUR JOB LISTINGS</button>
+          <button className='font-semibold p-4 mt-5 md:mt-28 bg-blue-950 rounded-md text-white overflow-hidden' onClick={()=>navigate(`/jobs`)}>BROWSE OUR JOB LISTINGS</button>
         </div>
         <div className='p-5 md:p-20 w-full md:w-2/4 overflow-hidden'>
           <h2 className='font-bold text-xl text-gray-800 mt-7 '>FOR Employers</h2>
@@ -64,7 +76,7 @@ function About() {
           <p className='font-semibold text-gray-700 mt-2'>
             Canadians is highly recommended for aboriginal and indigenous candidates; this is a user-friendly site and great opportunities for career advancement.
           </p>
-          <button className='font-semibold p-4 mt-5 md:mt-20 bg-blue-950 rounded-md text-white overflow-hidden'>ADVERTISE YOUR JOB NOW</button>
+          <button className='font-semibold p-4 mt-5 md:mt-20 bg-blue-950 rounded-md text-white overflow-hidden' onClick={()=>navigate(`/employers`)}>ADVERTISE YOUR JOB NOW</button>
         </div>
       </div>
 

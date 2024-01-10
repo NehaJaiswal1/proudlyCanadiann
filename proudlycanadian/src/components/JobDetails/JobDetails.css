@@ -48,3 +48,7 @@
     print-color-adjust: exact;
   }
 }
+
+.equal-width-div {
+  width: calc(33.33% - 3rem); 
+}

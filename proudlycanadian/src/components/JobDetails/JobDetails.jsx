@@ -5,7 +5,7 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 import { Container } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPrint, faFlag, faTags, faLocation, faMapLocation, faMapMarker, faCalendar, faUsd, faCheckCircle, faIndustry, faCircle, faGraduationCap, faBriefcase, faCalendarAlt, faMoneyBillAlt, faSave, faSuitcase } from '@fortawesome/free-solid-svg-icons';
+import { faPrint, faFlag, faTags, faLocation, faMapLocation, faMapMarker, faCalendar, faUsd, faCheckCircle, faIndustry, faCircle, faGraduationCap, faBriefcase, faCalendarAlt, faMoneyBillAlt, faSave, faSuitcase, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import './JobDetails.css';
 import { faCloudversify, faFacebook, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -27,6 +27,18 @@ const JobDetails = () => {
     const handleApply = () => {
         console.log(jobId)
         navigate(`/employers/auth/login`);
+    };
+
+    const handleFacebookClick = () => {
+        window.location.href = 'https://facebook.com';
+    };
+
+    const handleTwitterClick = () => {
+        window.location.href = 'https://twitter.com/';
+    };
+
+    const handleLinkdinClick = () => {
+        window.location.href = 'http://linkedin.com';
     };
 
     const formatDate = (dateString) => {
@@ -74,34 +86,29 @@ const JobDetails = () => {
                         <p className="text-gray-700 text-2xl font-semibold mt-3 text-center md:text-left">
                             {foundJob ? capitalizeFirstLetter(foundJob.jobTitle) : 'Job not found'}
                         </p>
-                        <div className='flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mt-3'>
-                            <p className="text-gray-500 text-sm">
+                        <div className='flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-5 mt-3'>
+                            <p className="text-gray-500 text-md">
                                 <FontAwesomeIcon icon={faSuitcase} className='text-gray-400' /> {foundJob ? foundJob.NOC : '-'}
                             </p>
-                            <p className="text-gray-500 text-sm">
+                            <p className="text-gray-500 text-md">
                                 <FontAwesomeIcon icon={faMapMarker} className='text-gray-400' /> {foundJob ? capitalizeFirstLetter(foundJob.location) : '-'}
                             </p>
-                            <p className="text-gray-500 text-sm">
+                            <p className="text-gray-500 text-md">
                                 <FontAwesomeIcon icon={faUsd} className='text-gray-500' /> {foundJob ? foundJob.salary.max : '-'} - {foundJob ? foundJob.salary.min : '-'}
                             </p>
                         </div>
-                        <div className="flex flex-wrap space-y-2 md:space-y-0 md:space-x-4 mt-2">
-                            <div className="bg-blue-200 rounded-2xl p-1 text-center mt-2 md:mt-0 w-full md:w-1/6">
-                                <p className="text-blue-600 text-xs font-semibold">
-                                    {foundJob ? capitalizeFirstLetter(foundJob.jobType) : '-'}
-                                </p>
+                        <div className="flex flex-wrap space-y-2 md:space-y-0 md:space-x-2 mt-5">
+                            <div className="bg-blue-200 rounded-2xl p-2 text-center mt-2 md:mt-0 md:w-2/8 h-3/4 text-blue-600 text-md font-semibold equal-width-div">
+                                {foundJob ? capitalizeFirstLetter(foundJob.jobType) : '-'}
                             </div>
-                            <div className="bg-green-100 rounded-2xl p-1 text-center mt-2 md:mt-0 w-full md:w-1/6">
-                                <p className="text-green-600 text-xs font-semibold">
-                                    {foundJob ? capitalizeFirstLetter(foundJob.EmployementType) : '-'}
-                                </p>
+                            <div className="bg-green-100 rounded-2xl p-2 text-center mt-2 md:mt-0 md:w-2/8 h-3/4 text-green-600 text-md font-semibold equal-width-div">
+                                {foundJob ? capitalizeFirstLetter(foundJob.EmployementType) : '-'}
                             </div>
-                            <div className="bg-yellow-100 rounded-2xl p-1 text-center mt-2 md:mt-0 w-full md:w-1/6">
-                                <p className="text-yellow-600 text-xs font-semibold">
-                                    Urgent
-                                </p>
+                            <div className="bg-yellow-100 rounded-2xl p-2 text-center mt-2 md:mt-0 md:w-2/8 h-3/4 text-yellow-600 text-md font-semibold equal-width-div">
+                                Urgent
                             </div>
                         </div>
+
                     </div>
 
                     <div className='w-full md:w-1/6'>
@@ -120,9 +127,9 @@ const JobDetails = () => {
             </div>
             <div className='flex mt-10 mb-10'>
                 <div className="ml-20 mt-2 w-2/4 rounded-2xl relative print-content job-description-card" style={{ textTransform: 'capitalize' }}>
-                    <div className="px-6 py-4" style={{ fontSize: '16px'  }}>
-                        <p 
-                        className="text-gray-800 text-xl 
+                    <div className="px-6 py-4" style={{ fontSize: '16px' }}>
+                        <p
+                            className="text-gray-800 text-xl 
                         font-semibold mt-3 text-left">
                             Job Description
                         </p>
@@ -151,29 +158,42 @@ const JobDetails = () => {
                         </p>
 
                         <div className='mt-5'>
-                            <span className=" text-gray-800 text-xl font-semibold mt-3 text-left ">Skills and Experience : </span>
+                            <span className="text-gray-800 text-xl font-semibold mt-3 text-left">Skills and Experience : </span>
+
                             <ul className="list-disc pl-6 mt-1">
+                                <span className="font-semibold text-gray-600 ">Skills  : </span>
+                                {foundJob && foundJob.skills ? (
+                                    foundJob.skills.map((skill, index) => (
+                                        <li key={index} className="text-gray-500 text-sm">
+                                            {skill}
 
-                                <li className="text-gray-500 text-sm">
-                                    {foundJob ? foundJob.skills : '-'}
-                                    <span className="font-semibold text-gray-500 ml-20">Experience : </span>   {foundJob ? foundJob.workingExperience.min : '-'} - {foundJob ? foundJob.workingExperience.max : '-'} <span className=" text-gray-500">years </span>
-
-                                </li>
+                                        </li>
+                                    ))
+                                ) : (
+                                    <li className="text-gray-500 text-sm">
+                                        No skills specified
+                                    </li>
+                                )}
                             </ul>
+                            <span className="font-semibold text-gray-600 ">Experience : </span>
+                            {foundJob.workingExperience.min} - {foundJob.workingExperience.max} <span className="text-gray-500">years </span>
+
                         </div>
 
 
-                        <div className='space-x-4 flex mt-10'>
-                            <h2 className='mt-8 font-thin'>share this job on : </h2>
-                            <button className='text-white w-1/4 h-1/4 p-3 bg-blue-900 mr-5 rounded-md ml-10 mt-8'>
+                        <h2 className='mt-8 font-semibold text-gray-600'>share this job On: </h2>
+                        <div className='space-x-4 flex '>
+
+                            <button className='text-white w-1/4 h-1/4 p-3 bg-blue-900 mr-5 rounded-md ml-10 mt-8' onClick={handleFacebookClick}>
+
                                 <FontAwesomeIcon icon={faFacebook} className='text-white mr-2' />
                                 Facebook
                             </button>
-                            <button className='text-white w-1/4 p-3 h-1/4  mr-5 rounded-md mt-8' style={{backgroundColor: '#017ab3'}}>
+                            <button className='text-white w-1/4 p-3 h-1/4  mr-5 rounded-md mt-8' style={{ backgroundColor: '#017ab3' }} onClick={handleTwitterClick}>
                                 <FontAwesomeIcon icon={faTwitter} className='text-white mr-2' />
                                 Twitter
                             </button>
-                            <button className='h-1/4 mt-8 text-white w-1/4 p-3  rounded-md  ' style={{backgroundColor: '#017ab3'}}>
+                            <button className='h-1/4 mt-8 text-white w-1/4 p-3  rounded-md  ' style={{ backgroundColor: '#017ab3' }} onClick={handleLinkdinClick}>
                                 <FontAwesomeIcon icon={faLinkedin} className='text-white mr-2' />
                                 LinkedIn
                             </button>
@@ -182,50 +202,45 @@ const JobDetails = () => {
                     </div>
                 </div>
 
-                <div className="ml-20 mt-2 w-2/6 bg-slate-100 rounded-2xl overflow-hidden shadow-md relative print-content job-description-card p-5" style={{ textTransform: 'capitalize' }}>
+                <div className="ml-20 mt-2 w-2/6 bg-slate-100 rounded-2xl overflow-hidden shadow-md relative print-content job-description-card p-5 " style={{ textTransform: 'capitalize' }}>
                     <p className="text-gray-800 text-xl font-semibold mt-3 text-left ml-5  mb-5">
                         Job Overview
                     </p>
-                    <div className="space-y-4 ml-5 mb-20">
+                    <div className="space-y-10 ml-5 mb-20">
                         <div className='text-sm flex items-center'>
                             <FontAwesomeIcon icon={faCalendar} className='text-blue-800 text-2xl mr-3' />
-                            <span className=" text-gray-800 text-lg">Posted On:</span>
+                            <p className=" text-gray-800 text-lg">Posted On:  {foundJob ? formatDate(foundJob.PostedDate) : '-'} </p>
                         </div>
-                        <p className=" text-sm text-left ml-10 ">
-                            {foundJob ? formatDate(foundJob.PostedDate) : '-'}
-                        </p>
+                        {/* <p className=" text-sm text-left ml-10 ">
+                           
+                        </p> */}
 
                         <div className='text-sm flex items-center'>
                             <FontAwesomeIcon icon={faBriefcase} className='text-blue-800 text-2xl mr-3' />
-                            <span className=" text-gray-800 text-lg">Openings:</span>
+                            <p className=" text-gray-800 text-lg">Openings:  {foundJob ? foundJob.positionAvailable : '-'}</p>
                         </div>
-                        <p className=" text-sm text-left ml-10 ">
-                            {foundJob ? foundJob.positionAvailable : '-'}
-                        </p>
+                        {/* <p className=" text-sm text-left ml-10 ">
+                           
+                        </p> */}
 
-                        <div className=' text-sm'>
+                        <div className='flex text-sm'>
                             <FontAwesomeIcon icon={faCalendarAlt} className='text-blue-800 text-2xl mr-3' />
-                            <span className="text-gray-800 text-lg">Job Expires On:</span>
+                            <p className="text-gray-800 text-lg">Expires On:                             {foundJob ? formatDate(foundJob.ExpiryDate) : '-'}</p>
                         </div>
-                        <p className="text-sm text-left ml-10 ">
-                            {foundJob ? formatDate(foundJob.ExpiryDate) : '-'}
-                        </p>
+                        {/* <p className="text-sm text-left ml-10 ">
 
-                        <div className=' text-sm'>
+                        </p> */}
+
+                        <div className='flex text-sm'>
                             <FontAwesomeIcon icon={faMapMarker} className='text-blue-800 text-2xl mr-3' />
-                            <span className="text-gray-800 text-lg">Location:</span>
+                            <p className="text-gray-800 text-lg">Location: {foundJob ? capitalizeFirstLetter(foundJob.City) : '-'}, {foundJob ? capitalizeFirstLetter(foundJob.Province) : '-'}, {foundJob ? capitalizeFirstLetter(foundJob.country) : '-'}</p>
                         </div>
-                        <p className="text-sm text-left ml-10 ">
-                            {foundJob ? capitalizeFirstLetter(foundJob.City) : '-'}, {foundJob ? capitalizeFirstLetter(foundJob.Province) : '-'}, {foundJob ? capitalizeFirstLetter(foundJob.country) : '-'}
-                        </p>
 
-                        <div className='space-x-2 text-sm'>
-                            <FontAwesomeIcon icon={faMoneyBillAlt} className='text-blue-800 text-2xl mr-3' />
-                            <span className="text-gray-800 text-lg">Salary:</span>
+
+                        <div className='flex space-x-2 text-sm'>
+                            <FontAwesomeIcon icon={faDollarSign} className='text-blue-800 text-2xl mr-3' />
+                            <p className="text-gray-800 text-lg">Salary:  ${foundJob ? foundJob.salary.max : '-'} -  ${foundJob ? foundJob.salary.min : '-'}</p>
                         </div>
-                        <p className="text-sm text-left ml-10  ">
-                            {foundJob ? foundJob.salary.max : '-'} - {foundJob ? foundJob.salary.min : '-'}
-                        </p>
 
                     </div>
                 </div>
